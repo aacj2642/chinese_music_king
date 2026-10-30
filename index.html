@@ -3281,6 +3281,7 @@
         currentRoundNumber = 0;
         roundHistory = [];
         selectedWinnerIdx = null;
+        selectedPenaltyPlayerIdx = null;
         roundPhase = "IDLE";
         lastQuizView = "game";
 
@@ -3345,6 +3346,7 @@
         currentTrack = unplayedTracks.splice(randomIndex, 1)[0];
         currentRoundNumber++;
         selectedWinnerIdx = null;
+        selectedPenaltyPlayerIdx = null;
 
         // 更新頂部題號與剩餘曲目數
         document.getElementById("roundBadge").innerText =
@@ -3500,31 +3502,37 @@
 
         updateHintUI();
 
-        // 顯示裁判判定面板（步驟 1：有沒有人答對，並標明本題階梯得分）
+        // 顯示裁判判定面板（步驟 1：判定結果，並標明本題階梯得分與扣分）
         const askPrompt = document.getElementById("refereeAskPrompt");
         if (askPrompt) {
-          askPrompt.innerText = `🎯 答案已揭曉！本題答對可得 +${currentRoundPoints} 分（已開 ${hintsUsedCount} 個提示），有沒有人答對？`;
+          askPrompt.innerText = penaltyEnabled
+            ? `🎯 答案已揭曉！本題答對可得 +${currentRoundPoints} 分，答錯扣 -${currentRoundPenalty} 分（已開 ${hintsUsedCount} 個提示），裁判請判定：`
+            : `🎯 答案已揭曉！本題答對可得 +${currentRoundPoints} 分（已開 ${hintsUsedCount} 個提示），裁判請判定：有沒有人答對？`;
+        }
+
+        const btnJudgeWrong = document.getElementById("btnJudgeWrong");
+        if (btnJudgeWrong) {
+          btnJudgeWrong.style.display = penaltyEnabled ? "inline-flex" : "none";
+          btnJudgeWrong.innerText = `❌ 有人答錯！（扣 ${currentRoundPenalty} 分）`;
         }
 
         document.getElementById("refereePanel").style.display = "flex";
         document.getElementById("refereeStepAsk").style.display = "flex";
-        document.getElementById("refereeStepSelectPlayer").style.display =
-          "none";
+        document.getElementById("refereeStepSelectPlayer").style.display = "none";
+        document.getElementById("refereeStepSelectPenaltyPlayer").style.display = "none";
         document.getElementById("revealedFooterControls").style.display = "flex";
       }
 
       // =====================================================
-      // STEP 5: 裁判選擇有沒有答對 -> 選擇分數給哪位玩家 -> 繼續下一首
+      // STEP 5: 裁判選擇結果 -> 選擇給分或扣分玩家 -> 繼續下一首
       // =====================================================
       function showWinnerSelection() {
         selectedWinnerIdx = null;
         document.getElementById("refereeStepAsk").style.display = "none";
-        document.getElementById("refereeStepSelectPlayer").style.display =
-          "flex";
+        document.getElementById("refereeStepSelectPenaltyPlayer").style.display = "none";
+        document.getElementById("refereeStepSelectPlayer").style.display = "flex";
 
-        const selectPrompt = document.getElementById(
-          "refereeSelectPlayerPrompt",
-        );
+        const selectPrompt = document.getElementById("refereeSelectPlayerPrompt");
         if (selectPrompt) {
           selectPrompt.innerText = `👑 請選擇本題分數 (+${currentRoundPoints} 分) 要給哪一位玩家：`;
         }
@@ -3535,11 +3543,32 @@
         renderWinnerSelectButtons();
       }
 
+      function showPenaltySelection() {
+        selectedPenaltyPlayerIdx = null;
+        document.getElementById("refereeStepAsk").style.display = "none";
+        document.getElementById("refereeStepSelectPlayer").style.display = "none";
+        document.getElementById("refereeStepSelectPenaltyPlayer").style.display = "flex";
+
+        const penaltyPrompt = document.getElementById("refereeSelectPenaltyPrompt");
+        if (penaltyPrompt) {
+          penaltyPrompt.innerText = `⚠️ 請選擇哪一位玩家答錯要扣 ${currentRoundPenalty} 分：`;
+        }
+
+        const confirmBtn = document.getElementById("btnConfirmPenaltyNext");
+        if (confirmBtn) confirmBtn.style.display = "none";
+
+        const confirmThenWinnerBtn = document.getElementById("btnConfirmPenaltyThenWinner");
+        if (confirmThenWinnerBtn) confirmThenWinnerBtn.style.display = "none";
+
+        renderPenaltySelectButtons();
+      }
+
       function backToRefereeAsk() {
         selectedWinnerIdx = null;
+        selectedPenaltyPlayerIdx = null;
         document.getElementById("refereeStepAsk").style.display = "flex";
-        document.getElementById("refereeStepSelectPlayer").style.display =
-          "none";
+        document.getElementById("refereeStepSelectPlayer").style.display = "none";
+        document.getElementById("refereeStepSelectPenaltyPlayer").style.display = "none";
       }
 
       function renderWinnerSelectButtons() {
@@ -3577,6 +3606,51 @@
           : `🎲 給「${players[idx].name}」+${currentRoundPoints} 分，繼續下一首`;
       }
 
+      function renderPenaltySelectButtons() {
+        const grid = document.getElementById("penaltySelectGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        players.forEach((player, idx) => {
+          const isSelected = selectedPenaltyPlayerIdx === idx;
+          const btn = document.createElement("button");
+          btn.className = `btn-player-penalty ${isSelected ? "selected" : ""}`;
+          btn.onclick = () => selectPenaltyPlayer(idx);
+          btn.innerHTML = `
+            <span>${isSelected ? "❌ " : "👤 "}${escapeHtml(player.name)}</span>
+            <span class="penalty-pts">${
+              isSelected
+                ? `${player.score} → ${player.score - currentRoundPenalty} 分 (-${currentRoundPenalty})`
+                : `目前 ${player.score} 分`
+            }</span>
+          `;
+          grid.appendChild(btn);
+        });
+      }
+
+      function selectPenaltyPlayer(idx) {
+        selectedPenaltyPlayerIdx = idx;
+        renderPenaltySelectButtons();
+
+        const confirmBtn = document.getElementById("btnConfirmPenaltyNext");
+        const confirmText = document.getElementById("btnConfirmPenaltyText");
+        const confirmThenWinnerBtn = document.getElementById("btnConfirmPenaltyThenWinner");
+        const confirmThenWinnerText = document.getElementById("btnConfirmPenaltyThenWinnerText");
+
+        if (confirmBtn && confirmText) {
+          confirmBtn.style.display = "inline-flex";
+          const isLastTrack = unplayedTracks.length === 0;
+          confirmText.innerText = isLastTrack
+            ? `🏆 扣「${players[idx].name}」${currentRoundPenalty} 分，曲目已用完進入結算`
+            : `🎲 扣「${players[idx].name}」${currentRoundPenalty} 分，繼續下一首`;
+        }
+
+        if (confirmThenWinnerBtn && confirmThenWinnerText) {
+          confirmThenWinnerBtn.style.display = "inline-flex";
+          confirmThenWinnerText.innerText = `⭕ 扣「${players[idx].name}」${currentRoundPenalty} 分後，接著選「答對得 +${currentRoundPoints} 分」的玩家`;
+        }
+      }
+
       function confirmWinnerAndNext() {
         if (selectedWinnerIdx === null || !players[selectedWinnerIdx]) return;
 
@@ -3589,10 +3663,52 @@
           winnerName: winner.name,
           points: currentRoundPoints,
           hintsUsed: hintsUsedCount,
+          type: "CORRECT",
         });
 
         renderScoreboard(selectedWinnerIdx);
         proceedToNextOrSettle();
+      }
+
+      function confirmPenaltyAndNext() {
+        if (selectedPenaltyPlayerIdx === null || !players[selectedPenaltyPlayerIdx]) return;
+
+        const penalizedPlayer = players[selectedPenaltyPlayerIdx];
+        penalizedPlayer.score -= currentRoundPenalty;
+
+        roundHistory.push({
+          round: currentRoundNumber,
+          track: currentTrack,
+          wrongName: penalizedPlayer.name,
+          points: -currentRoundPenalty,
+          hintsUsed: hintsUsedCount,
+          type: "WRONG",
+        });
+
+        renderScoreboard(null, selectedPenaltyPlayerIdx);
+        proceedToNextOrSettle();
+      }
+
+      function confirmPenaltyThenWinner() {
+        if (selectedPenaltyPlayerIdx === null || !players[selectedPenaltyPlayerIdx]) return;
+
+        const penalizedPlayer = players[selectedPenaltyPlayerIdx];
+        penalizedPlayer.score -= currentRoundPenalty;
+
+        roundHistory.push({
+          round: currentRoundNumber,
+          track: currentTrack,
+          wrongName: penalizedPlayer.name,
+          points: -currentRoundPenalty,
+          hintsUsed: hintsUsedCount,
+          type: "WRONG",
+        });
+
+        renderScoreboard(null, selectedPenaltyPlayerIdx);
+
+        // 接著進入得分選擇
+        document.getElementById("refereeStepSelectPenaltyPlayer").style.display = "none";
+        showWinnerSelection();
       }
 
       function handleNoOneCorrect() {
@@ -3602,6 +3718,7 @@
           winnerName: null,
           points: 0,
           hintsUsed: hintsUsedCount,
+          type: "SKIP",
         });
 
         proceedToNextOrSettle();
@@ -3616,7 +3733,7 @@
       }
 
       // 更新即時積分榜
-      function renderScoreboard(justScoredIdx = null) {
+      function renderScoreboard(justScoredIdx = null, justPenalizedIdx = null) {
         const grid = document.getElementById("scoreboardGrid");
         grid.innerHTML = "";
 
@@ -3624,23 +3741,26 @@
 
         players.forEach((player, idx) => {
           const isLeader = maxScore > 0 && player.score === maxScore;
+          const isNegative = player.score < 0;
           const card = document.createElement("div");
           card.className = `score-card ${isLeader ? "is-leader" : ""} ${
             justScoredIdx === idx ? "just-scored" : ""
+          } ${
+            justPenalizedIdx === idx ? "just-penalized" : ""
           }`;
           card.innerHTML = `
             <div class="score-player-name" title="${escapeHtml(player.name)}">
-              <span>${isLeader ? "👑" : "🎋"}</span>
+              <span>${isLeader ? "👑" : isNegative ? "⚠️" : "🎋"}</span>
               <span>${escapeHtml(player.name)}</span>
             </div>
-            <div class="score-badge">${player.score} 分</div>
+            <div class="score-badge ${isNegative ? "is-negative" : ""}">${player.score} 分</div>
           `;
           grid.appendChild(card);
         });
 
         const leaderHint = document.getElementById("leaderHintText");
-        if (maxScore === 0) {
-          leaderHint.innerText = "尚未有人得分，快搶答拿下首勝！";
+        if (maxScore <= 0) {
+          leaderHint.innerText = "尚未有人獲得正分，快搶答拿下首勝！";
         } else {
           const leaders = players
             .filter((p) => p.score === maxScore)
@@ -3724,16 +3844,22 @@
             div.className = "round-history-item";
             const pts = item.points !== undefined ? item.points : 1;
             const hints = item.hintsUsed !== undefined ? item.hintsUsed : 0;
-            const winnerBadge = item.winnerName
-              ? `<span style="color: #10b981; font-weight: 700;">⭕ ${escapeHtml(item.winnerName)} (+${pts}分 · ${hints}提示)</span>`
-              : `<span style="color: var(--text-dim);">❌ 無人答對 (${hints}提示)</span>`;
+            let resultBadge = "";
+            if (item.type === "WRONG" || item.wrongName) {
+              const displayPts = pts <= 0 ? pts : -pts;
+              resultBadge = `<span style="color: #f87171; font-weight: 700;">❌ ${escapeHtml(item.wrongName || "有人")} 答錯 (${displayPts}分 · ${hints}提示)</span>`;
+            } else if (item.winnerName) {
+              resultBadge = `<span style="color: #10b981; font-weight: 700;">⭕ ${escapeHtml(item.winnerName)} 答對 (+${pts}分 · ${hints}提示)</span>`;
+            } else {
+              resultBadge = `<span style="color: var(--text-dim);">⏭️ 無人作答 (${hints}提示)</span>`;
+            }
             div.innerHTML = `
               <div>
                 <span style="color: var(--accent-gold); font-weight: 700; margin-right: 0.4rem;">第 ${item.round} 題</span>
-                <span>${escapeHtml(item.track["曲名"])}</span>
-                <span style="color: var(--text-dim); font-size: 0.8rem; margin-left: 0.4rem;">(${escapeHtml(item.track["編制 / 主奏"] || "")})</span>
+                <span>${escapeHtml(item.track ? item.track["曲名"] : "曲目")}</span>
+                <span style="color: var(--text-dim); font-size: 0.8rem; margin-left: 0.4rem;">(${escapeHtml(item.track ? item.track["編制 / 主奏"] || "" : "")})</span>
               </div>
-              <div>${winnerBadge}</div>
+              <div>${resultBadge}</div>
             `;
             historyList.appendChild(div);
           });
