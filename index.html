@@ -1,0 +1,1642 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>國樂之王 · 隨機曲目播放器</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-main: #0c0e14;
+        --bg-card: #151922;
+        --bg-card-hover: #1c2230;
+        --accent-gold: #e5b95f;
+        --accent-gold-hover: #f3ce7a;
+        --accent-red: #c93b3b;
+        --accent-cyan: #38bdf8;
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --text-dim: #6b7280;
+        --border-color: rgba(229, 185, 95, 0.25);
+        --border-subtle: rgba(255, 255, 255, 0.08);
+        --shadow-glow: 0 0 35px rgba(229, 185, 95, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        font-family:
+          "Noto Sans TC",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-image:
+          radial-gradient(
+            circle at 50% -20%,
+            rgba(229, 185, 95, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 10% 80%,
+            rgba(201, 59, 59, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 90% 70%,
+            rgba(56, 189, 248, 0.05) 0%,
+            transparent 50%
+          );
+        background-attachment: fixed;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 920px;
+        padding: 2.5rem 1.25rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.8rem;
+      }
+
+      /* Header */
+      header {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .badge-sub {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        background: rgba(229, 185, 95, 0.12);
+        border: 1px solid var(--border-color);
+        color: var(--accent-gold);
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+
+      h1 {
+        font-family: "Noto Serif TC", serif;
+        font-size: 2.6rem;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        background: linear-gradient(135deg, #ffffff 30%, #e5b95f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 0.2rem;
+      }
+
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        max-width: 500px;
+        line-height: 1.6;
+      }
+
+      /* File Protocol Notice Banner (for Error 153 prevention) */
+      .file-protocol-notice {
+        width: 100%;
+        background: rgba(201, 59, 59, 0.12);
+        border: 1px solid rgba(201, 59, 59, 0.4);
+        border-radius: 12px;
+        padding: 1rem 1.3rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        color: #fca5a5;
+        font-size: 0.9rem;
+        line-height: 1.55;
+        box-shadow: 0 4px 20px rgba(201, 59, 59, 0.15);
+      }
+
+      .notice-icon {
+        font-size: 1.4rem;
+        line-height: 1.2;
+      }
+
+      .notice-title {
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.3rem;
+        font-size: 0.95rem;
+      }
+
+      .notice-btn-row {
+        margin-top: 0.6rem;
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .notice-link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: #c93b3b;
+        color: #ffffff;
+        padding: 0.35rem 0.85rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.82rem;
+        transition: background 0.2s;
+      }
+
+      .notice-link-btn:hover {
+        background: #e04545;
+      }
+
+      /* Action Trigger */
+      .action-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+        width: 100%;
+      }
+
+      .btn-random {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        padding: 1.05rem 3rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 10px 28px rgba(229, 185, 95, 0.38);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        letter-spacing: 0.05em;
+        user-select: none;
+      }
+
+      .btn-random:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 14px 38px rgba(229, 185, 95, 0.52);
+        background: linear-gradient(135deg, #f5cc70 0%, #d89f36 100%);
+      }
+
+      .btn-random:active {
+        transform: translateY(1px) scale(0.99);
+        box-shadow: 0 5px 18px rgba(229, 185, 95, 0.3);
+      }
+
+      .btn-random .dice-icon {
+        font-size: 1.5rem;
+        display: inline-block;
+        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .btn-random:hover .dice-icon {
+        transform: rotate(180deg) scale(1.15);
+      }
+
+      .track-counter-pill {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        border: 1px solid var(--border-subtle);
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        background-color: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+      }
+
+      /* Player Card */
+      .player-card {
+        width: 100%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow:
+          0 20px 45px rgba(0, 0, 0, 0.55),
+          var(--shadow-glow);
+        backdrop-filter: blur(12px);
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      /* Track Meta */
+      .track-meta {
+        padding: 1.5rem 1.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        border-bottom: 1px solid var(--border-subtle);
+        background: linear-gradient(
+          180deg,
+          rgba(229, 185, 95, 0.06) 0%,
+          rgba(21, 25, 34, 0) 100%
+        );
+      }
+
+      .track-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
+
+      .track-title-box {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .track-title {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #ffffff;
+        letter-spacing: 0.04em;
+      }
+
+      .track-tags {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .tag-category {
+        background: rgba(201, 59, 59, 0.15);
+        border: 1px solid rgba(201, 59, 59, 0.35);
+        color: #f87171;
+        padding: 0.25rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .tag-views {
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        color: var(--accent-cyan);
+        padding: 0.25rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      /* Iframe Wrapper */
+      .video-container {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        background: #08090d;
+      }
+
+      .video-container iframe,
+      .video-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .video-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        color: var(--text-dim);
+        background: radial-gradient(circle at center, #1b202c 0%, #0d0f14 100%);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .video-placeholder:hover {
+        color: var(--text-main);
+        background: radial-gradient(circle at center, #222938 0%, #101319 100%);
+      }
+
+      .placeholder-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: rgba(229, 185, 95, 0.12);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--accent-gold);
+        box-shadow: 0 0 20px rgba(229, 185, 95, 0.2);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .video-placeholder:hover .placeholder-icon {
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(229, 185, 95, 0.4);
+      }
+
+      /* Player Footer Controls */
+      .player-controls {
+        padding: 1rem 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        background: rgba(15, 18, 26, 0.85);
+      }
+
+      .control-group-left {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .control-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+        padding: 0.5rem 1.1rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        user-select: none;
+      }
+
+      .control-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-main);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .control-btn.btn-yt-highlight {
+        background: rgba(201, 59, 59, 0.2);
+        color: #ff8585;
+        border-color: rgba(201, 59, 59, 0.4);
+        font-weight: 500;
+      }
+
+      .control-btn.btn-yt-highlight:hover {
+        background: #c93b3b;
+        color: #ffffff;
+        border-color: #c93b3b;
+      }
+
+      .control-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      /* Playlist Section */
+      .playlist-section {
+        width: 100%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        padding: 1.4rem 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .section-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+      }
+
+      .search-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: 0.45rem 0.85rem;
+        color: var(--text-main);
+        font-size: 0.88rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent-gold);
+      }
+
+      .track-list {
+        max-height: 320px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding-right: 0.4rem;
+      }
+
+      .track-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .track-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 4px;
+      }
+
+      .track-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.65rem 0.95rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .track-item:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-subtle);
+        transform: translateX(4px);
+      }
+
+      .track-item.playing {
+        background: rgba(229, 185, 95, 0.12);
+        border-color: var(--border-color);
+      }
+
+      .track-item-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .track-item-index {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        width: 26px;
+        text-align: right;
+      }
+
+      .track-item-name {
+        font-size: 0.94rem;
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      .track-item.playing .track-item-name {
+        color: var(--accent-gold);
+        font-weight: 700;
+      }
+
+      .track-item-inst {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+      }
+
+      .track-item-views {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
+
+      /* Footer info */
+      footer {
+        color: var(--text-dim);
+        font-size: 0.82rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .file-source-tip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        text-decoration: underline;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        transition: color 0.2s;
+      }
+
+      .file-source-tip:hover {
+        color: var(--accent-gold);
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1.5rem 1rem 3rem;
+          gap: 1.5rem;
+        }
+
+        h1 {
+          font-size: 2.1rem;
+        }
+
+        .btn-random {
+          width: 100%;
+          justify-content: center;
+          padding: 0.95rem 1.5rem;
+          font-size: 1.2rem;
+        }
+
+        .track-title {
+          font-size: 1.4rem;
+        }
+
+        .track-header-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .search-box {
+          max-width: 100%;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header>
+        <span class="badge-sub">🎋 經典國樂典藏 · 隨選隨播</span>
+        <h1>國樂之王</h1>
+        <p class="subtitle">
+          典藏 100 首經典華語國樂、協奏曲與絲竹名作，感受悠遠中華音律。
+        </p>
+      </header>
+
+      <!-- Error 153 Protocol Notice (Shown if opened via file:///) -->
+      <div
+        id="fileProtocolNotice"
+        class="file-protocol-notice"
+        style="display: none"
+      >
+        <div class="notice-icon">⚠️</div>
+        <div class="notice-content">
+          <div class="notice-title">
+            偵測到您使用本機檔案路徑 (file://) 直接開啟
+          </div>
+          <div class="notice-desc">
+            YouTube 官方近期的安全性政策要求嵌入播放器必須具備網頁來源標頭 (HTTP
+            Origin)，直接雙擊 HTML 開啟會觸發<strong
+              >「錯誤 153（影片播放器設定錯誤）」</strong
+            >而無法內嵌播放。
+          </div>
+          <div class="notice-btn-row">
+            <a
+              class="notice-link-btn"
+              href="http://localhost:8000"
+              target="_blank"
+            >
+              🚀 點此開啟本機伺服器 (http://localhost:8000)
+            </a>
+            <span style="font-size: 0.8rem; color: #f87171; align-self: center">
+              (💡 提示：請先在資料夾雙擊執行「點我啟動播放器.bat」)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Random Action Button -->
+      <div class="action-panel">
+        <button class="btn-random" id="btnRandom" onclick="playRandomTrack()">
+          <span class="dice-icon">🎲</span>
+          <span>隨機播放一首</span>
+        </button>
+        <div class="track-counter-pill">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">正在讀取曲目表.json...</span>
+        </div>
+      </div>
+
+      <!-- Main Player Card -->
+      <main class="player-card">
+        <div class="track-meta">
+          <div class="track-header-row">
+            <div class="track-title-box">
+              <div class="track-title" id="trackTitle">點擊隨機播放</div>
+            </div>
+            <div class="track-tags">
+              <span class="tag-category" id="trackInst">國樂之美</span>
+              <span class="tag-views" id="trackViews">準備就緒</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-container">
+          <div
+            class="video-placeholder"
+            id="videoPlaceholder"
+            onclick="playRandomTrack()"
+          >
+            <div class="placeholder-icon">▶</div>
+            <p>點擊上方「隨機播放一首」或直接點此開始</p>
+          </div>
+          <iframe
+            id="ytPlayer"
+            style="display: none"
+            src=""
+            title="YouTube video player"
+            frameborder="0"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+              web-share;
+            "
+            allowfullscreen
+          >
+          </iframe>
+        </div>
+
+        <div class="player-controls">
+          <div class="control-group-left">
+            <button
+              class="control-btn"
+              onclick="playPrevTrack()"
+              id="btnPrev"
+              title="播放上一首"
+              disabled
+            >
+              ⏮️ 上一首
+            </button>
+            <button
+              class="control-btn"
+              onclick="playRandomTrack()"
+              title="換下一首隨機曲目"
+            >
+              ⏭️ 再抽一首
+            </button>
+          </div>
+          <a
+            class="control-btn btn-yt-highlight"
+            id="btnExternalLink"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display: none"
+          >
+            ▶ 在 YouTube 開啟此曲
+          </a>
+        </div>
+      </main>
+
+      <!-- Playlist Browser -->
+      <section class="playlist-section">
+        <div class="section-header">
+          <div class="section-title">
+            <span>📜 全部曲目清單</span>
+            <span
+              style="
+                font-size: 0.85rem;
+                color: var(--text-dim);
+                font-weight: normal;
+              "
+              id="playlistCount"
+              >(0 首)</span
+            >
+          </div>
+          <div class="search-box">
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="搜尋曲名或樂器 (例如：二胡, 琵琶)..."
+              oninput="renderTrackList()"
+            />
+          </div>
+        </div>
+        <div class="track-list" id="trackListContainer">
+          <!-- Tracks rendered by JS -->
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div>國樂之王 · 隨機曲目播放系統</div>
+        <label
+          class="file-source-tip"
+          title="點擊可手動載入更新後的 曲目表.json"
+        >
+          📂 點此手動載入本機 JSON 檔案
+          <input
+            type="file"
+            id="fileSelector"
+            accept=".json"
+            style="display: none"
+            onchange="handleFileSelect(event)"
+          />
+        </label>
+      </footer>
+    </div>
+
+    <script>
+      // 內建備援資料庫 (防止使用者以 file:/// 本機協議直接雙擊開啟時受瀏覽器 CORS 限制)
+      const EMBEDDED_FALLBACK = [
+        {
+          曲名: "梁山伯與祝英台",
+          "編制 / 主奏": "二胡協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/tu5XohUR3Pg",
+          參考觀看量: 12496172,
+        },
+        {
+          曲名: "春江花月夜",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/Lykgg5phVJE",
+          參考觀看量: 10460088,
+        },
+        {
+          曲名: "平湖秋月",
+          "編制 / 主奏": "廣東音樂 / 高胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/WXbYMxexCV8",
+          參考觀看量: 1919466,
+        },
+        {
+          曲名: "百鳥朝鳳",
+          "編制 / 主奏": "嗩吶協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/Rq_IIvzuF5Y",
+          參考觀看量: 6157533,
+        },
+        {
+          曲名: "二泉映月",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/Fj13KU3SAvE",
+          參考觀看量: 4236585,
+        },
+        {
+          曲名: "江河水",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/RD6hq_hVDLM",
+          參考觀看量: 3669599,
+        },
+        {
+          曲名: "賽馬",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/zH1ch4Ydg1k",
+          參考觀看量: 45821,
+        },
+        {
+          曲名: "高山流水",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/WbCjceRPXyw",
+          參考觀看量: 3445728,
+        },
+        {
+          曲名: "闖將令",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/8eQ2y8-jO1M",
+          參考觀看量: 2867589,
+        },
+        {
+          曲名: "十面埋伏",
+          "編制 / 主奏": "琵琶齊奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/3PfNnmtfGvE",
+          參考觀看量: 2704379,
+        },
+        {
+          曲名: "流水",
+          "編制 / 主奏": "古琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/BcElotwrZ8o",
+          參考觀看量: 2627754,
+        },
+        {
+          曲名: "彩雲追月",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/DRFJBXLlvfs",
+          參考觀看量: 535741,
+        },
+        {
+          曲名: "漁舟唱晚",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/T2AzQyb5_Jg",
+          參考觀看量: 2308015,
+        },
+        {
+          曲名: "得勝令",
+          "編制 / 主奏": "廣東音樂 / 絲竹吹打",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/4fUPn0a1TMY",
+          參考觀看量: 67974,
+        },
+        {
+          曲名: "夜深沉",
+          "編制 / 主奏": "京胡與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/dyf8zpGlHZw",
+          參考觀看量: 2168758,
+        },
+        {
+          曲名: "戰馬奔騰",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/tgotVTkTSwo",
+          參考觀看量: 2136210,
+        },
+        {
+          曲名: "霸王卸甲",
+          "編制 / 主奏": "琵琶獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/-ZmAgFyVo48",
+          參考觀看量: 2124852,
+        },
+        {
+          曲名: "牧民新歌",
+          "編制 / 主奏": "笛子與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/SIyRi_LD0Yw",
+          參考觀看量: 2096274,
+        },
+        {
+          曲名: "蘭花花敘事曲",
+          "編制 / 主奏": "二胡協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/T2LIJb6O9KM",
+          參考觀看量: 1694046,
+        },
+        {
+          曲名: "鬧天宮",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/NS3QNJTvudQ",
+          參考觀看量: 8018,
+        },
+        {
+          曲名: "彝族舞曲",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/H6qcG4-i1tg",
+          參考觀看量: 1490628,
+        },
+        {
+          曲名: "金蛇狂舞",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/1x5TeFkR6qI",
+          參考觀看量: 1483529,
+        },
+        {
+          曲名: "豫北敘事曲",
+          "編制 / 主奏": "二胡與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/wrLj6nPWawE",
+          參考觀看量: 245356,
+        },
+        {
+          曲名: "柳青娘",
+          "編制 / 主奏": "潮州弦詩樂",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/LGAloB6TO3Q",
+          參考觀看量: 1090430,
+        },
+        {
+          曲名: "廣陵散",
+          "編制 / 主奏": "古琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/IV4rkOdELrs",
+          參考觀看量: 1067875,
+        },
+        {
+          曲名: "妝台秋思",
+          "編制 / 主奏": "廣東音樂 / 高胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/q7D87BsxB-0",
+          參考觀看量: 979217,
+        },
+        {
+          曲名: "雨打芭蕉",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/pwXFDDj8biE",
+          參考觀看量: 971000,
+        },
+        {
+          曲名: "陽關三疊",
+          "編制 / 主奏": "古琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/n8eS9KpRpXo",
+          參考觀看量: 962158,
+        },
+        {
+          曲名: "瑤族舞曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/JmFwAPbJxxs",
+          參考觀看量: 895362,
+        },
+        {
+          曲名: "花好月圓",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/-9crGpn9Ed8",
+          參考觀看量: 886412,
+        },
+        {
+          曲名: "陽春白雪",
+          "編制 / 主奏": "琵琶獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/o1d3lsISQFk",
+          參考觀看量: 794629,
+        },
+        {
+          曲名: "寒鴉戲水",
+          "編制 / 主奏": "潮州弦詩樂",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/8S5eH_59b1M",
+          參考觀看量: 757868,
+        },
+        {
+          曲名: "旱天雷",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/NvlhKw2DNig",
+          參考觀看量: 755497,
+        },
+        {
+          曲名: "倒垂簾",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/OIxmka7Cm6Y",
+          參考觀看量: 5738,
+        },
+        {
+          曲名: "春節序曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/DTx-DkdZ-i8",
+          參考觀看量: 741123,
+        },
+        {
+          曲名: "雙星恨",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/m7grngKfk_8",
+          參考觀看量: 696861,
+        },
+        {
+          曲名: "戰颱風",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/ORH7wi1tAbY",
+          參考觀看量: 637527,
+        },
+        {
+          曲名: "揚鞭催馬運糧忙",
+          "編制 / 主奏": "梆笛獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/3JrdJu7Vb00",
+          參考觀看量: 630071,
+        },
+        {
+          曲名: "塞上曲",
+          "編制 / 主奏": "琵琶獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/PImQ7BddYa0",
+          參考觀看量: 617977,
+        },
+        {
+          曲名: "鳳凰展翅",
+          "編制 / 主奏": "笙獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/_iR-KrbeFs0",
+          參考觀看量: 558027,
+        },
+        {
+          曲名: "絲綢之路",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/1_hOYfMgL0g",
+          參考觀看量: 531611,
+        },
+        {
+          曲名: "劍器",
+          "編制 / 主奏": "柳琴與民族管弦樂",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/qD7g5eQRYns",
+          參考觀看量: 217,
+        },
+        {
+          曲名: "行者",
+          "編制 / 主奏": "古箏與打擊樂 / 民族室內樂",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/O266fF4sxPU",
+          參考觀看量: 487114,
+        },
+        {
+          曲名: "東海漁歌",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/1OwmYFc7o3Y",
+          參考觀看量: 485784,
+        },
+        {
+          曲名: "台灣追想曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/6KDnl6I1p2o",
+          參考觀看量: 481027,
+        },
+        {
+          曲名: "花木蘭",
+          "編制 / 主奏": "琵琶協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/BdpGA7dTy28",
+          參考觀看量: 470290,
+        },
+        {
+          曲名: "秦·兵馬俑",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/i7Hz_xpMt4I",
+          參考觀看量: 461538,
+        },
+        {
+          曲名: "酒狂",
+          "編制 / 主奏": "古琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/S6XAjpEa2r0",
+          參考觀看量: 446791,
+        },
+        {
+          曲名: "走西口",
+          "編制 / 主奏": "竹笛協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/81AwmQqDY9o",
+          參考觀看量: 422898,
+        },
+        {
+          曲名: "賽龍奪錦",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/40KTXcXb4GU",
+          參考觀看量: 394879,
+        },
+        {
+          曲名: "平沙落雁",
+          "編制 / 主奏": "古琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/uPurIC-Cbj4",
+          參考觀看量: 380607,
+        },
+        {
+          曲名: "小刀會序曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/Z41dLqfV5wo",
+          參考觀看量: 364019,
+        },
+        {
+          曲名: "喜洋洋",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/FGfewK2e_tU",
+          參考觀看量: 351630,
+        },
+        {
+          曲名: "桃花過渡",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/U_pxSbofyEQ",
+          參考觀看量: 21524,
+        },
+        {
+          曲名: "風獅爺傳奇",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/LN2f4ZDAY9U",
+          參考觀看量: 328287,
+        },
+        {
+          曲名: "月夜",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/EKO4Jp37zAY",
+          參考觀看量: 322688,
+        },
+        {
+          曲名: "娛樂升平",
+          "編制 / 主奏": "廣東音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/OaVihym86-U",
+          參考觀看量: 320734,
+        },
+        {
+          曲名: "茉莉花",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/qGeSTMQK_EA",
+          參考觀看量: 320536,
+        },
+        {
+          曲名: "雲想花想",
+          "編制 / 主奏": "琵琶協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/9Sd_AfEVDQc",
+          參考觀看量: 319079,
+        },
+        {
+          曲名: "昭君怨",
+          "編制 / 主奏": "潮州音樂 / 絲竹",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/ne64ukBLhL0",
+          參考觀看量: 310918,
+        },
+        {
+          曲名: "太陽頌",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/DdaPvzqtjPY",
+          參考觀看量: 306131,
+        },
+        {
+          曲名: "春",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/pV-ZqjFQJBs",
+          參考觀看量: 294587,
+        },
+        {
+          曲名: "紅樓夢序曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/0V37J9ty_0w",
+          參考觀看量: 203087,
+        },
+        {
+          曲名: "豐收鑼鼓",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/LgtCTUIMtT4",
+          參考觀看量: 282467,
+        },
+        {
+          曲名: "北京喜訊到邊寨",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/cqNAd6Rc6lM",
+          參考觀看量: 280009,
+        },
+        {
+          曲名: "狂想曲",
+          "編制 / 主奏": "揚琴協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/eA23RsgV2nQ",
+          參考觀看量: 258428,
+        },
+        {
+          曲名: "挑山",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/B--H3wWHSKI",
+          參考觀看量: 249696,
+        },
+        {
+          曲名: "姑蘇行",
+          "編制 / 主奏": "笛子與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/zlh25zKrBZY",
+          參考觀看量: 232310,
+        },
+        {
+          曲名: "黃土情",
+          "編制 / 主奏": "揚琴協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/gV6dnoGzchs",
+          參考觀看量: 6537,
+        },
+        {
+          曲名: "慶典序曲",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/pdPCSb2pb_U",
+          參考觀看量: 221220,
+        },
+        {
+          曲名: "病中吟",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/ibiUvwZY7GQ",
+          參考觀看量: 203528,
+        },
+        {
+          曲名: "大浪淘沙",
+          "編制 / 主奏": "琵琶獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/KCK29taZ2N4",
+          參考觀看量: 200420,
+        },
+        {
+          曲名: "白蛇傳",
+          "編制 / 主奏": "竹笛協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/o1aKUSU2Hss",
+          參考觀看量: 199764,
+        },
+        {
+          曲名: "紫竹調",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/5WTpKQFCehU",
+          參考觀看量: 199654,
+        },
+        {
+          曲名: "丟丟銅仔",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/aM9tIFCZWBM",
+          參考觀看量: 97768,
+        },
+        {
+          曲名: "陽明春曉",
+          "編制 / 主奏": "梆笛獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/2mV0VQti4zA",
+          參考觀看量: 193203,
+        },
+        {
+          曲名: "將軍令",
+          "編制 / 主奏": "揚琴獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/A5i4O6DQmXI",
+          參考觀看量: 169077,
+        },
+        {
+          曲名: "一枝花",
+          "編制 / 主奏": "二胡與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/c9MsLPamJTs",
+          參考觀看量: 167938,
+        },
+        {
+          曲名: "臨安遺恨",
+          "編制 / 主奏": "古箏協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/r4T4chpPogo",
+          參考觀看量: 161665,
+        },
+        {
+          曲名: "獅子滾繡球",
+          "編制 / 主奏": "潮州大鑼鼓",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/JNMJtgUDvzg",
+          參考觀看量: 154507,
+        },
+        {
+          曲名: "步步高",
+          "編制 / 主奏": "民族管弦樂合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/ugN0CdyUJJM",
+          參考觀看量: 147283,
+        },
+        {
+          曲名: "香山射鼓",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/jd2kodD4aoM",
+          參考觀看量: 145403,
+        },
+        {
+          曲名: "良宵",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/pOLN3gLYZ74",
+          參考觀看量: 136127,
+        },
+        {
+          曲名: "草原英雄小姐妹",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/2i3AXEvUerk",
+          參考觀看量: 126923,
+        },
+        {
+          曲名: "龍騰虎躍",
+          "編制 / 主奏": "打擊樂與樂隊合奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/T66v_jzPSHI",
+          參考觀看量: 124394,
+        },
+        {
+          曲名: "唐響",
+          "編制 / 主奏": "琵琶協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/gcgiVGDsRAc",
+          參考觀看量: 110269,
+        },
+        {
+          曲名: "葡萄熟了",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/dBemWIKtdeY",
+          參考觀看量: 109831,
+        },
+        {
+          曲名: "出水蓮",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/a8onhhhoUDc",
+          參考觀看量: 107064,
+        },
+        {
+          曲名: "空山鳥語",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/0zDEWsOBitU",
+          參考觀看量: 103866,
+        },
+        {
+          曲名: "三門峽暢想曲",
+          "編制 / 主奏": "二胡與鋼琴",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/-7M8w3z2oIg",
+          參考觀看量: 99909,
+        },
+        {
+          曲名: "秦川抒懷",
+          "編制 / 主奏": "笛子與樂隊",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/_Wm4jh4TYm4",
+          參考觀看量: 95553,
+        },
+        {
+          曲名: "雲南回憶",
+          "編制 / 主奏": "中阮協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/Z2POBECt2Jw",
+          參考觀看量: 85444,
+        },
+        {
+          曲名: "雪山春曉",
+          "編制 / 主奏": "古箏獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/QqtJPv3rYJk",
+          參考觀看量: 78502,
+        },
+        {
+          曲名: "長城隨想",
+          "編制 / 主奏": "二胡協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/g8mNMcNBhNI",
+          參考觀看量: 77320,
+        },
+        {
+          曲名: "定風波",
+          "編制 / 主奏": "古箏協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/ZkWKS5bsy88",
+          參考觀看量: 39571,
+        },
+        {
+          曲名: "楓橋夜泊",
+          "編制 / 主奏": "古箏協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/NjkCw8duzHE",
+          參考觀看量: 23895,
+        },
+        {
+          曲名: "聽松",
+          "編制 / 主奏": "二胡獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/cvXqVBtPAjI",
+          參考觀看量: 14085,
+        },
+        {
+          曲名: "鷓鴣飛",
+          "編制 / 主奏": "曲笛獨奏",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/VBZmDMAj56M",
+          參考觀看量: 12765,
+        },
+        {
+          曲名: "霸王別姬",
+          "編制 / 主奏": "京胡與樂隊協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/AUUIbCYhLg8",
+          參考觀看量: 2417,
+        },
+        {
+          曲名: "陌上花開",
+          "編制 / 主奏": "竹笛協奏曲",
+          "YouTube 外嵌連結": "https://www.youtube.com/embed/VX2H74DYydY",
+          參考觀看量: 1232,
+        },
+      ];
+
+      let playlist = [];
+      let currentTrack = null;
+      let history = [];
+      let historyIndex = -1;
+
+      // 初始化讀取曲目表.json
+      async function init() {
+        const statusText = document.getElementById("statusText");
+        const statusDot = document.getElementById("statusDot");
+
+        // 檢查是否直接以 file:/// 協定開啟
+        if (window.location.protocol === "file:") {
+          const notice = document.getElementById("fileProtocolNotice");
+          if (notice) notice.style.display = "flex";
+        }
+
+        try {
+          // 優先嘗試從同目錄讀取 曲目表.json
+          const response = await fetch("./曲目表.json", { cache: "no-store" });
+          if (!response.ok) throw new Error("HTTP Status " + response.status);
+          playlist = await response.json();
+          statusText.innerText = `已讀取 曲目表.json (共 ${playlist.length} 首)`;
+          statusDot.style.backgroundColor = "#10b981";
+        } catch (err) {
+          // 若以 file:// 協定直接點開被瀏覽器安全性原則擋下 fetch，平滑切換至內建備援清單
+          console.warn(
+            "無法透過 fetch 讀取曲目表.json (通常為 file:// 協議限制)，已切換至備援資料庫",
+            err,
+          );
+          playlist = EMBEDDED_FALLBACK;
+          statusText.innerText = `曲目表已就緒 (共 ${playlist.length} 首)`;
+          statusDot.style.backgroundColor = "#10b981";
+        }
+
+        document.getElementById("playlistCount").innerText =
+          `(${playlist.length} 首)`;
+        renderTrackList();
+      }
+
+      // 隨機播放一首
+      function playRandomTrack() {
+        if (!playlist || playlist.length === 0) {
+          alert("曲目表為空，無法播放！");
+          return;
+        }
+
+        let randomIndex;
+        if (playlist.length === 1) {
+          randomIndex = 0;
+        } else {
+          // 避免連續抽到同一首
+          do {
+            randomIndex = Math.floor(Math.random() * playlist.length);
+          } while (
+            currentTrack &&
+            playlist[randomIndex]["曲名"] === currentTrack["曲名"]
+          );
+        }
+
+        const selected = playlist[randomIndex];
+
+        // 記錄播放歷史
+        history.push(selected);
+        historyIndex = history.length - 1;
+        updateHistoryButtons();
+
+        playTrack(selected, true);
+      }
+
+      // 播放指定曲目
+      function playTrack(track, autoplay = true) {
+        if (!track) return;
+        currentTrack = track;
+
+        // 更新曲目資訊
+        document.getElementById("trackTitle").innerText =
+          track["曲名"] || "未知曲目";
+        document.getElementById("trackInst").innerText =
+          track["編制 / 主奏"] || "國樂演奏";
+
+        const views = track["參考觀看量"];
+        document.getElementById("trackViews").innerText = views
+          ? `🔥 ${Number(views).toLocaleString()} 次觀看`
+          : "熱門推薦";
+
+        // YouTube 播放設定
+        const embedUrl = track["YouTube 外嵌連結"] || "";
+        if (embedUrl) {
+          const separator = embedUrl.includes("?") ? "&" : "?";
+          let params = `autoplay=${autoplay ? 1 : 0}&playsinline=1&enablejsapi=1`;
+
+          // 若透過本機伺服器 (http) 提供標準 Origin 參數給 YouTube API
+          if (window.location.protocol.startsWith("http")) {
+            params += `&origin=${encodeURIComponent(window.location.origin)}`;
+          }
+
+          const finalUrl = `${embedUrl}${separator}${params}`;
+
+          const iframe = document.getElementById("ytPlayer");
+          const placeholder = document.getElementById("videoPlaceholder");
+
+          iframe.src = finalUrl;
+          iframe.style.display = "block";
+          placeholder.style.display = "none";
+
+          // 外部連結按鈕
+          const btnExternal = document.getElementById("btnExternalLink");
+          const videoIdMatch = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
+          if (videoIdMatch && videoIdMatch[1]) {
+            btnExternal.href = `https://www.youtube.com/watch?v=${videoIdMatch[1]}`;
+            btnExternal.style.display = "inline-flex";
+          } else {
+            btnExternal.href = embedUrl;
+            btnExternal.style.display = "inline-flex";
+          }
+        }
+
+        // 更新清單高亮
+        highlightPlayingItem();
+      }
+
+      // 播放上一首
+      function playPrevTrack() {
+        if (historyIndex > 0) {
+          historyIndex--;
+          updateHistoryButtons();
+          playTrack(history[historyIndex], true);
+        }
+      }
+
+      function updateHistoryButtons() {
+        const btnPrev = document.getElementById("btnPrev");
+        if (btnPrev) {
+          btnPrev.disabled = historyIndex <= 0;
+        }
+      }
+
+      // 渲染下方曲目清單與搜尋過濾
+      function renderTrackList() {
+        const container = document.getElementById("trackListContainer");
+        const query = (document.getElementById("searchInput").value || "")
+          .trim()
+          .toLowerCase();
+
+        const filtered = playlist.filter((item) => {
+          if (!query) return true;
+          const name = (item["曲名"] || "").toLowerCase();
+          const inst = (item["編制 / 主奏"] || "").toLowerCase();
+          return name.includes(query) || inst.includes(query);
+        });
+
+        container.innerHTML = "";
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 2rem;">無符合「${query}」的曲目</div>`;
+          return;
+        }
+
+        filtered.forEach((item, index) => {
+          const isCurrent =
+            currentTrack && currentTrack["曲名"] === item["曲名"];
+          const div = document.createElement("div");
+          div.className = `track-item ${isCurrent ? "playing" : ""}`;
+          div.dataset.name = item["曲名"];
+          div.onclick = () => {
+            history.push(item);
+            historyIndex = history.length - 1;
+            updateHistoryButtons();
+            playTrack(item, true);
+          };
+
+          const views = item["參考觀看量"]
+            ? Number(item["參考觀看量"]).toLocaleString() + " 次"
+            : "";
+
+          div.innerHTML = `
+          <div class="track-item-left">
+            <span class="track-item-index">${index + 1}</span>
+            <div>
+              <span class="track-item-name">${item["曲名"]}</span>
+              <span class="track-item-inst" style="margin-left: 0.5rem;">${item["編制 / 主奏"]}</span>
+            </div>
+          </div>
+          <div class="track-item-views">${views}</div>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      function highlightPlayingItem() {
+        if (!currentTrack) return;
+        document.querySelectorAll(".track-item").forEach((el) => {
+          if (el.dataset.name === currentTrack["曲名"]) {
+            el.classList.add("playing");
+          } else {
+            el.classList.remove("playing");
+          }
+        });
+      }
+
+      // 手動載入本機 JSON 檔案 (如果使用者有自訂或替換檔案的需求)
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (Array.isArray(data) && data.length > 0) {
+              playlist = data;
+              document.getElementById("statusText").innerText =
+                `已載入新檔案：${file.name} (共 ${playlist.length} 首)`;
+              document.getElementById("playlistCount").innerText =
+                `(${playlist.length} 首)`;
+              renderTrackList();
+              alert(`成功載入 ${playlist.length} 首曲目！`);
+            } else {
+              alert("檔案格式不正確，需為包含曲目陣列的 JSON！");
+            }
+          } catch (err) {
+            alert("解析 JSON 失敗：" + err.message);
+          }
+        };
+        reader.readAsText(file, "utf-8");
+      }
+
+      // 頁面載入完成後執行
+      window.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
