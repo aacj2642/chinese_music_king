@@ -2380,34 +2380,13 @@
       let freeFilteredIndices = [];
       let freeAutoMode = "sequential"; // 'sequential' | 'random' | 'stop'
 
-      // 內建補充提示字典（若曲目表.json 中個別曲目 tip1/tip2 為空時自動補齊）
-      const FALLBACK_TRACK_TIPS = {
-        "龍年新世紀－太陽": {
-          tip1: "以千禧龍年為題、展現萬物向陽與熾熱生命力的四樂章大型打擊樂協奏曲開篇",
-          tip2: "關迺忠創作的雙打擊樂協奏曲《龍年新世紀》第一樂章，融合現代拉丁節奏與中式排鼓、定音鼓的震撼對答",
-        },
-        笑傲江湖: {
-          tip1: "取材自金庸經典武俠小說意境、旋律瀟灑豪邁且炫技十足的吹管協奏曲",
-          tip2: "蘇文慶創作的高音笙協奏曲代表作，以清亮高亢的傳統簧管樂器詮釋江湖俠客快意恩仇與孤傲情懷",
-        },
-        "抒情變奏曲-第三樂章": {
-          tip1: "以江蘇民歌主題發展出豐富管弦色彩變化、充滿青春朝氣的民族管弦樂名作終章",
-          tip2: "劉長遠創作的當代民族管弦樂經典《抒情變奏曲》第三樂章，在熱烈快板與交響化織體中將主題推向輝煌頂點",
-        },
-        沙迪爾傳奇: {
-          tip1: "取材自新疆維吾爾族民間英雄傳說、充滿西域切分節奏與壯烈史詩感的管弦樂合奏曲",
-          tip2: "劉湲創作的民族管弦樂名作，刻畫十九世紀反抗壓迫的維吾爾民歌歌手沙迪爾豪邁不屈的傳奇一生",
-        },
-      };
-
       function getTrackTips(track) {
         if (!track) return { tip1: "暫無提示", tip2: "暫無提示" };
         const name = track["曲名"] || "";
         const inst = track["編制 / 主奏"] || "國樂演奏";
-        const fallback = FALLBACK_TRACK_TIPS[name] || {};
 
-        const rawTip1 = (track.tip1 || "").trim() || fallback.tip1 || "";
-        const rawTip2 = (track.tip2 || "").trim() || fallback.tip2 || "";
+        const rawTip1 = (track.tip1 || "").trim();
+        const rawTip2 = (track.tip2 || "").trim();
 
         const tip1 =
           rawTip1 ||
