@@ -1236,6 +1236,404 @@
         color: var(--accent-gold);
       }
 
+      /* =========================================
+         MODE SWITCHER TABS (爭霸賽 / 自由播放模式切換)
+      ========================================= */
+      .mode-switcher {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(21, 25, 34, 0.9);
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        padding: 0.35rem;
+        gap: 0.35rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .mode-tab-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 0.55rem 1.35rem;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.22s ease;
+      }
+
+      .mode-tab-btn:hover {
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .mode-tab-btn.active {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        box-shadow: 0 4px 16px rgba(229, 185, 95, 0.35);
+      }
+
+      /* =========================================
+         HINT SYSTEM & TIERED SCORING (提示與階梯計分)
+      ========================================= */
+      .tag-points {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.45);
+        color: #34d399;
+        padding: 0.25rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.86rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: all 0.25s ease;
+      }
+
+      .tag-points.pts-2 {
+        background: rgba(229, 185, 95, 0.16);
+        border-color: rgba(229, 185, 95, 0.5);
+        color: var(--accent-gold);
+      }
+
+      .tag-points.pts-1 {
+        background: rgba(249, 115, 22, 0.16);
+        border-color: rgba(249, 115, 22, 0.45);
+        color: #fb923c;
+      }
+
+      .btn-hint-action {
+        background: linear-gradient(
+          135deg,
+          rgba(229, 185, 95, 0.22) 0%,
+          rgba(201, 147, 45, 0.12) 100%
+        );
+        border: 1.5px solid var(--accent-gold);
+        color: var(--accent-gold);
+        padding: 0.52rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px rgba(229, 185, 95, 0.15);
+      }
+
+      .btn-hint-action:hover:not(:disabled) {
+        background: var(--accent-gold);
+        color: #12141a;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(229, 185, 95, 0.35);
+      }
+
+      .btn-hint-action:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        border-color: var(--border-subtle);
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: none;
+      }
+
+      .hint-panel {
+        margin-top: 0.65rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+
+      .hint-card {
+        background: rgba(229, 185, 95, 0.09);
+        border: 1px solid rgba(229, 185, 95, 0.35);
+        border-left: 4px solid var(--accent-gold);
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        font-size: 0.92rem;
+        line-height: 1.55;
+        color: var(--text-main);
+        animation: hintFadeIn 0.28s ease;
+      }
+
+      @keyframes hintFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hint-badge {
+        background: var(--accent-gold);
+        color: #12141a;
+        font-size: 0.76rem;
+        font-weight: 900;
+        padding: 0.15rem 0.55rem;
+        border-radius: 6px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      /* =========================================
+         VIEW 4: FREE PLAY MODE (自由播放與曲庫鑑賞)
+      ========================================= */
+      .free-play-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.35rem;
+      }
+
+      .free-controls-bar {
+        padding: 1rem 1.5rem;
+        background: rgba(12, 14, 20, 0.92);
+        border-top: 1px solid var(--border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .free-nav-btns {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-free-ctrl {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-main);
+        padding: 0.5rem 0.95rem;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.2s;
+      }
+
+      .btn-free-ctrl:hover {
+        background: rgba(229, 185, 95, 0.15);
+        border-color: var(--accent-gold);
+        color: var(--accent-gold);
+      }
+
+      .btn-free-ctrl.primary-gold {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        border-color: var(--accent-gold);
+        font-weight: 800;
+      }
+
+      .btn-free-ctrl.primary-gold:hover {
+        background: linear-gradient(135deg, #f3ce7a 0%, #d89f36 100%);
+        color: #12141a;
+      }
+
+      .free-tips-showcase {
+        padding: 1rem 1.6rem 1.25rem;
+        background: rgba(18, 22, 31, 0.85);
+        border-top: 1px solid var(--border-subtle);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .free-browser-body {
+        padding: 1.5rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.15rem;
+      }
+
+      .free-filter-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+      }
+
+      .free-search-box {
+        flex: 1;
+        min-width: 220px;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.55rem 0.95rem;
+        transition: border-color 0.2s;
+      }
+
+      .free-search-box:focus-within {
+        border-color: var(--accent-gold);
+      }
+
+      .free-search-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-size: 0.94rem;
+        outline: none;
+      }
+
+      .free-sort-select {
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-main);
+        padding: 0.58rem 0.9rem;
+        border-radius: 12px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .free-sort-select option {
+        background: #151922;
+        color: var(--text-main);
+      }
+
+      .free-category-pills {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .cat-pill {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+        padding: 0.38rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.18s;
+      }
+
+      .cat-pill:hover {
+        background: rgba(229, 185, 95, 0.12);
+        color: var(--text-main);
+        border-color: var(--border-color);
+      }
+
+      .cat-pill.active {
+        background: var(--accent-gold);
+        color: #12141a;
+        border-color: var(--accent-gold);
+        font-weight: 800;
+      }
+
+      .free-track-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+        gap: 0.7rem;
+        max-height: 460px;
+        overflow-y: auto;
+        padding-right: 0.25rem;
+      }
+
+      .free-track-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.75rem 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+        transition: all 0.2s;
+      }
+
+      .free-track-item:hover {
+        background: rgba(229, 185, 95, 0.09);
+        border-color: rgba(229, 185, 95, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .free-track-item.active {
+        background: linear-gradient(
+          135deg,
+          rgba(229, 185, 95, 0.2) 0%,
+          rgba(201, 147, 45, 0.08) 100%
+        );
+        border-color: var(--accent-gold);
+        box-shadow: 0 4px 16px rgba(229, 185, 95, 0.16);
+      }
+
+      .free-track-left {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        min-width: 0;
+      }
+
+      .free-track-num {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--text-dim);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.22rem 0.48rem;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+
+      .free-track-item.active .free-track-num {
+        background: var(--accent-gold);
+        color: #12141a;
+      }
+
+      .free-track-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+      }
+
+      .free-track-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .free-track-item.active .free-track-name {
+        color: var(--accent-gold);
+      }
+
+      .free-track-sub {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       @media (max-width: 640px) {
         .container {
           padding: 1.25rem 0.9rem 3rem;
@@ -1275,11 +1673,29 @@
     <div class="container">
       <!-- Header -->
       <header>
-        <span class="badge-sub">🎋 經典國樂盲聽猜歌 · 搶答爭霸賽</span>
+        <span class="badge-sub">🎋 經典國樂盲聽猜歌 · 搶答爭霸賽 &amp; 曲庫鑑賞</span>
         <h1>國樂之王</h1>
-        <p class="subtitle">
-          隨機切入經典國樂段落，盲聽搶答曲名！本局播過的曲目絕不重複出現。
+        <p class="subtitle" id="headerSubtitle">
+          隨機切入經典國樂段落，盲聽搶答曲名！支援階梯計分提示與自由播放鑑賞模式。
         </p>
+
+        <!-- Mode Switcher Tabs -->
+        <div class="mode-switcher" style="margin-top: 0.45rem">
+          <button
+            class="mode-tab-btn active"
+            id="tabBtnQuizMode"
+            onclick="switchAppMode('quiz')"
+          >
+            <span>⚔️ 盲聽搶答爭霸賽</span>
+          </button>
+          <button
+            class="mode-tab-btn"
+            id="tabBtnFreeMode"
+            onclick="switchAppMode('free')"
+          >
+            <span>🎧 自由播放模式（曲庫鑑賞）</span>
+          </button>
+        </div>
       </header>
 
       <!-- Error 153 Protocol Notice (Shown if opened via file:///) -->
@@ -1376,15 +1792,29 @@
 
           <!-- Game Flow Summary -->
           <div class="rules-summary">
-            <strong>🎯 遊戲流程說明：</strong><br />
+            <strong>🎯 遊戲流程與階梯計分說明：</strong><br />
             1. 點擊<strong>「隨機播放」</strong>將從隨機段落開始播歌，<strong>畫面與曲名全程隱藏</strong>，且同一局播過的曲目不會再出現。<br />
-            2. 有人要搶答時，<strong>直接點擊畫面任意處即可「暫停搶答」</strong>（或按空白鍵）。<br />
-            3. 猜完後點擊<strong>「揭曉答案」</strong>觀看影片與曲名，由裁判選擇<strong>有沒有人答對</strong>並將分數加給答對的玩家，接著繼續下一首！
+            2. <strong>💡 提示與階梯計分制：</strong>每題預設答對得 <strong>3 分</strong>；點擊開啟<strong>「提示 1」</strong>後答對得 <strong>2 分</strong>；再開啟<strong>「提示 2」</strong>後答對得 <strong>1 分</strong>。<br />
+            3. 有人要搶答時，<strong>直接點擊畫面任意處即可「暫停搶答」</strong>（或按空白鍵），揭曉答案後由裁判判定給分！
           </div>
 
-          <div style="display: flex; justify-content: center">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              gap: 1rem;
+              flex-wrap: wrap;
+            "
+          >
             <button class="btn-gold-large" onclick="startNewGame()">
               <span>⚔️ 開始新局爭霸</span>
+            </button>
+            <button
+              class="btn-blind-secondary"
+              onclick="switchAppMode('free')"
+              style="padding: 0.9rem 1.7rem; font-size: 1.05rem; border-radius: 50px"
+            >
+              <span>🎧 進入自由播放模式</span>
             </button>
           </div>
         </div>
@@ -1427,7 +1857,7 @@
         <!-- Live Scoreboard -->
         <div class="scoreboard-panel">
           <div class="scoreboard-header">
-            <span>👑 即時積分榜（答對一首得 1 分）</span>
+            <span>👑 即時積分榜（0 提示 +3 分｜1 提示 +2 分｜2 提示 +1 分）</span>
             <span id="leaderHintText">各憑本事搶答！</span>
           </div>
           <div class="scoreboard-grid" id="scoreboardGrid">
@@ -1445,8 +1875,29 @@
                 </div>
               </div>
               <div class="track-tags">
+                <span class="tag-points" id="roundPointsTag">💎 本題可得 3 分</span>
+                <button
+                  class="btn-hint-action"
+                  id="btnHeaderHint"
+                  onclick="unlockNextHint(event)"
+                  style="display: none"
+                >
+                  💡 開啟提示 1（答對變 2 分）
+                </button>
                 <span class="tag-category" id="trackInst">盲聽搶答模式</span>
                 <span class="tag-views" id="trackViews">畫面已隱藏</span>
+              </div>
+            </div>
+
+            <!-- Progressive Hint Display Area -->
+            <div class="hint-panel" id="hintPanel" style="display: none">
+              <div class="hint-card" id="hintCard1" style="display: none">
+                <span class="hint-badge">💡 提示 1</span>
+                <span id="hintText1"></span>
+              </div>
+              <div class="hint-card" id="hintCard2" style="display: none">
+                <span class="hint-badge">💡 提示 2</span>
+                <span id="hintText2"></span>
               </div>
             </div>
           </div>
@@ -1514,6 +1965,13 @@
                   onclick="event.stopPropagation()"
                 >
                   <button
+                    class="btn-hint-action"
+                    id="btnOverlayPlayingHint"
+                    onclick="unlockNextHint(event)"
+                  >
+                    💡 開啟提示 1（答對變 2 分）
+                  </button>
+                  <button
                     class="btn-blind-secondary"
                     onclick="seekAnotherRandomSegment(event)"
                     title="若剛好抽到安靜片段，可切換至同曲另一段隨機位置"
@@ -1556,6 +2014,13 @@
                 </button>
                 <div class="blind-helper-row">
                   <button
+                    class="btn-hint-action"
+                    id="btnOverlayPausedHint"
+                    onclick="unlockNextHint(event)"
+                  >
+                    💡 開啟提示 1（答對變 2 分）
+                  </button>
+                  <button
                     class="btn-blind-secondary"
                     onclick="resumeBlindPlayback(event)"
                   >
@@ -1580,7 +2045,7 @@
           >
             <!-- Step 1: Did anyone get it right? -->
             <div class="referee-step-box" id="refereeStepAsk">
-              <div class="referee-prompt">
+              <div class="referee-prompt" id="refereeAskPrompt">
                 🎯 答案已揭曉！裁判請判定：有沒有人答對？
               </div>
               <div class="referee-choice-row">
@@ -1605,8 +2070,8 @@
               id="refereeStepSelectPlayer"
               style="display: none"
             >
-              <div class="referee-prompt">
-                👑 請選擇分數 (+1 分) 要給哪一位玩家：
+              <div class="referee-prompt" id="refereeSelectPlayerPrompt">
+                👑 請選擇分數 (+3 分) 要給哪一位玩家：
               </div>
               <div class="winner-select-grid" id="winnerSelectGrid">
                 <!-- Player award buttons rendered by JS -->
@@ -1707,6 +2172,153 @@
         </div>
       </section>
 
+      <!-- =====================================================
+           SECTION 4: 自由播放與曲庫鑑賞模式 (Free Play / Jukebox)
+      ====================================================== -->
+      <section
+        id="freePlaySection"
+        class="free-play-wrapper"
+        style="display: none"
+      >
+        <!-- Free Play Now Playing Stage Card -->
+        <div class="stage-card">
+          <div class="track-meta">
+            <div class="track-header-row">
+              <div class="track-title-box">
+                <div class="track-title" id="freeTrackTitle">
+                  🎵 請從下方曲目庫選擇或點擊隨機播放
+                </div>
+              </div>
+              <div class="track-tags">
+                <span class="tag-category" id="freeTrackInst">自由點播模式</span>
+                <span class="tag-views" id="freeTrackViews">共 0 首經典曲目</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unmasked Video Container -->
+          <div class="video-container" id="freeVideoContainer">
+            <div class="yt-mount-wrapper" id="ytFreeMountWrapper">
+              <div id="ytFreePlayer"></div>
+            </div>
+          </div>
+
+          <!-- Free Play Controls Bar -->
+          <div class="free-controls-bar">
+            <div class="free-nav-btns">
+              <button
+                class="btn-free-ctrl"
+                onclick="freePlayPrevTrack()"
+                title="播放清單中的上一首"
+              >
+                ⏮️ 上一首
+              </button>
+              <button
+                class="btn-free-ctrl primary-gold"
+                onclick="freePlayRandomTrack()"
+                title="從目前篩選清單中隨機抽播一首"
+              >
+                🔀 隨機抽播一首
+              </button>
+              <button
+                class="btn-free-ctrl"
+                onclick="freePlayNextTrack()"
+                title="播放清單中的下一首"
+              >
+                ⏭️ 下一首
+              </button>
+              <button
+                class="btn-free-ctrl"
+                onclick="freePlaySeekRandomSegment()"
+                title="跳至本曲隨機段落試聽"
+              >
+                🎲 跳至隨機段落
+              </button>
+            </div>
+
+            <div class="free-nav-btns">
+              <button
+                class="btn-free-ctrl"
+                id="btnFreeAutoMode"
+                onclick="toggleFreeAutoMode()"
+                title="切換曲目播完後的自動接續方式"
+              >
+                🔁 播完自動：順序下一首
+              </button>
+              <a
+                class="control-btn btn-yt-highlight"
+                id="btnFreeExternalLink"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ▶ 在 YouTube 開啟
+              </a>
+            </div>
+          </div>
+
+          <!-- Track Background & Appreciation Tips Showcase -->
+          <div class="free-tips-showcase" id="freeTipsShowcase">
+            <div class="hint-card">
+              <span class="hint-badge">📖 曲目導聆 1</span>
+              <span id="freeTipText1">點擊下方任一曲目即可立即播放並查看曲目背景賞析。</span>
+            </div>
+            <div class="hint-card">
+              <span class="hint-badge">🎼 曲目導聆 2</span>
+              <span id="freeTipText2">支援依樂器編制分類、關鍵字搜尋與觀看量排序。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracklist Browser & Filter Card -->
+        <div class="stage-card">
+          <div class="free-browser-body">
+            <div class="setup-header" style="padding-bottom: 0.85rem">
+              <div class="setup-title" style="font-size: 1.35rem">
+                <span>📚 經典國樂曲目庫點播</span>
+              </div>
+              <div class="track-counter-pill">
+                <span id="freeFilterCountText">顯示 0 / 0 首</span>
+              </div>
+            </div>
+
+            <!-- Search & Sort Row -->
+            <div class="free-filter-row">
+              <div class="free-search-box">
+                <span>🔍</span>
+                <input
+                  type="text"
+                  id="freeSearchInput"
+                  class="free-search-input"
+                  placeholder="搜尋曲名、主奏樂器、作曲家或賞析關鍵字..."
+                  oninput="renderFreePlayTrackList()"
+                />
+              </div>
+              <select
+                id="freeSortSelect"
+                class="free-sort-select"
+                onchange="renderFreePlayTrackList()"
+              >
+                <option value="default">🔢 預設排序（依曲庫順序）</option>
+                <option value="views_desc">🔥 參考觀看量（由高至低）</option>
+                <option value="views_asc">🌱 參考觀看量（由低至高）</option>
+                <option value="name_asc">🔤 依曲名排序</option>
+              </select>
+            </div>
+
+            <!-- Category Pills -->
+            <div class="free-category-pills" id="freeCategoryPills">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Track Grid List -->
+            <div class="free-track-list" id="freeTrackList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer>
         <div>國樂之王 · 盲聽搶答爭霸系統</div>
@@ -1736,19 +2348,76 @@
       let currentRoundNumber = 0; // 目前題號
       let roundPhase = "IDLE"; // 'IDLE' | 'PLAYING' | 'PAUSED' | 'REVEALED'
 
+      // 提示與階梯計分狀態 (0提示=3分, 1提示=2分, 2提示=1分)
+      let hintsUsedCount = 0;
+      let currentRoundPoints = 3;
+
+      // 模式切換狀態 ('quiz' | 'free')
+      let appMode = "quiz";
+      let lastQuizView = "setup"; // 'setup' | 'game' | 'settlement'
+
       // 玩家設定與分數
       let setupPlayerCount = 4;
       let savedPlayerNames = ["", "", "", ""];
       let players = []; // [{ name: '玩家 1', score: 0 }, ...]
       let selectedWinnerIdx = null;
-      let roundHistory = []; // [{ round, track, winnerName }]
+      let roundHistory = []; // [{ round, track, winnerName, points, hintsUsed }]
 
-      // YouTube IFrame API 播放器狀態
+      // YouTube IFrame API 播放器狀態 (競賽主舞台)
       let ytPlayer = null;
       let ytApiReady = false;
       let pendingVideoLoad = null;
       let needsProportionalRandomSeek = false;
       let unmuteSafetyTimer = null;
+
+      // 自由播放模式狀態與播放器
+      let ytFreePlayer = null;
+      let ytFreeApiReady = false;
+      let pendingFreeVideoLoad = null;
+      let freeNeedsRandomSeek = false;
+      let freeCurrentTrackIndex = -1;
+      let freeSelectedCategory = "全部";
+      let freeFilteredIndices = [];
+      let freeAutoMode = "sequential"; // 'sequential' | 'random' | 'stop'
+
+      // 內建補充提示字典（若曲目表.json 中個別曲目 tip1/tip2 為空時自動補齊）
+      const FALLBACK_TRACK_TIPS = {
+        "龍年新世紀－太陽": {
+          tip1: "以千禧龍年為題、展現萬物向陽與熾熱生命力的四樂章大型打擊樂協奏曲開篇",
+          tip2: "關迺忠創作的雙打擊樂協奏曲《龍年新世紀》第一樂章，融合現代拉丁節奏與中式排鼓、定音鼓的震撼對答",
+        },
+        笑傲江湖: {
+          tip1: "取材自金庸經典武俠小說意境、旋律瀟灑豪邁且炫技十足的吹管協奏曲",
+          tip2: "蘇文慶創作的高音笙協奏曲代表作，以清亮高亢的傳統簧管樂器詮釋江湖俠客快意恩仇與孤傲情懷",
+        },
+        "抒情變奏曲-第三樂章": {
+          tip1: "以江蘇民歌主題發展出豐富管弦色彩變化、充滿青春朝氣的民族管弦樂名作終章",
+          tip2: "劉長遠創作的當代民族管弦樂經典《抒情變奏曲》第三樂章，在熱烈快板與交響化織體中將主題推向輝煌頂點",
+        },
+        沙迪爾傳奇: {
+          tip1: "取材自新疆維吾爾族民間英雄傳說、充滿西域切分節奏與壯烈史詩感的管弦樂合奏曲",
+          tip2: "劉湲創作的民族管弦樂名作，刻畫十九世紀反抗壓迫的維吾爾民歌歌手沙迪爾豪邁不屈的傳奇一生",
+        },
+      };
+
+      function getTrackTips(track) {
+        if (!track) return { tip1: "暫無提示", tip2: "暫無提示" };
+        const name = track["曲名"] || "";
+        const inst = track["編制 / 主奏"] || "國樂演奏";
+        const fallback = FALLBACK_TRACK_TIPS[name] || {};
+
+        const rawTip1 = (track.tip1 || "").trim() || fallback.tip1 || "";
+        const rawTip2 = (track.tip2 || "").trim() || fallback.tip2 || "";
+
+        const tip1 =
+          rawTip1 ||
+          `此曲編制／主奏為「${inst}」，曲名共有 ${name.length || "?"} 個字。`;
+        const tip2 =
+          rawTip2 ||
+          `編制為「${inst}」，曲名第一個字為「${name ? name.charAt(0) : "?"}」。`;
+
+        return { tip1, tip2 };
+      }
 
       // =====================================================
       // 初始化與曲目讀取
@@ -1775,12 +2444,14 @@
         }
 
         renderPlayerInputs();
+        initFreePlayView();
         loadYouTubeIframeAPI();
 
         // 支援空白鍵快速暫停搶答
         window.addEventListener("keydown", (e) => {
           if (
             e.code === "Space" &&
+            appMode === "quiz" &&
             document.getElementById("gameSection").style.display !== "none" &&
             roundPhase === "PLAYING"
           ) {
@@ -1791,11 +2462,71 @@
       }
 
       // =====================================================
+      // 模式切換：盲聽搶答爭霸賽 vs 自由播放模式
+      // =====================================================
+      function switchAppMode(targetMode) {
+        if (targetMode === appMode) return;
+        appMode = targetMode;
+
+        const tabQuiz = document.getElementById("tabBtnQuizMode");
+        const tabFree = document.getElementById("tabBtnFreeMode");
+        const setupSec = document.getElementById("setupSection");
+        const gameSec = document.getElementById("gameSection");
+        const settleSec = document.getElementById("settlementSection");
+        const freeSec = document.getElementById("freePlaySection");
+
+        if (targetMode === "free") {
+          tabQuiz.classList.remove("active");
+          tabFree.classList.add("active");
+
+          // 記錄目前競賽模式所在的子畫面並暫停競賽音樂
+          if (gameSec.style.display !== "none") {
+            lastQuizView = "game";
+            if (roundPhase === "PLAYING") {
+              pauseForBuzz();
+            } else {
+              pauseCurrentVideo();
+            }
+          } else if (settleSec.style.display !== "none") {
+            lastQuizView = "settlement";
+            pauseCurrentVideo();
+          } else {
+            lastQuizView = "setup";
+            pauseCurrentVideo();
+          }
+
+          setupSec.style.display = "none";
+          gameSec.style.display = "none";
+          settleSec.style.display = "none";
+          freeSec.style.display = "flex";
+
+          initFreePlayView();
+          initYTFreePlayerInstance();
+        } else {
+          tabFree.classList.remove("active");
+          tabQuiz.classList.add("active");
+
+          pauseFreePlayVideo();
+          freeSec.style.display = "none";
+
+          if (lastQuizView === "game") {
+            gameSec.style.display = "flex";
+          } else if (lastQuizView === "settlement") {
+            settleSec.style.display = "block";
+          } else {
+            setupSec.style.display = "block";
+            renderPlayerInputs();
+          }
+        }
+      }
+
+      // =====================================================
       // YouTube IFrame Player API 載入與隨機段落控制
       // =====================================================
       function loadYouTubeIframeAPI() {
         if (window.YT && window.YT.Player) {
           initYTPlayerInstance();
+          if (appMode === "free") initYTFreePlayerInstance();
           return;
         }
         const tag = document.createElement("script");
@@ -1806,10 +2537,12 @@
 
       window.onYouTubeIframeAPIReady = function () {
         initYTPlayerInstance();
+        if (appMode === "free") {
+          initYTFreePlayerInstance();
+        }
       };
 
-      function initYTPlayerInstance() {
-        if (ytPlayer) return;
+      function getCommonPlayerVars() {
         const playerVars = {
           autoplay: 0,
           controls: 1,
@@ -1821,11 +2554,16 @@
         if (window.location.protocol.startsWith("http")) {
           playerVars.origin = window.location.origin;
         }
+        return playerVars;
+      }
+
+      function initYTPlayerInstance() {
+        if (ytPlayer || !window.YT || !window.YT.Player) return;
 
         ytPlayer = new YT.Player("ytPlayer", {
           width: "100%",
           height: "100%",
-          playerVars: playerVars,
+          playerVars: getCommonPlayerVars(),
           events: {
             onReady: () => {
               ytApiReady = true;
@@ -1837,6 +2575,35 @@
             },
             onStateChange: onYTStateChange,
             onError: onYTError,
+          },
+        });
+      }
+
+      function initYTFreePlayerInstance() {
+        if (ytFreePlayer || !window.YT || !window.YT.Player) return;
+
+        const defaultIdx =
+          freeCurrentTrackIndex >= 0 ? freeCurrentTrackIndex : 0;
+        const defaultTrack = playlist[defaultIdx];
+        const defaultVideoId = defaultTrack
+          ? extractVideoId(defaultTrack["YouTube 外嵌連結"] || "")
+          : "";
+
+        ytFreePlayer = new YT.Player("ytFreePlayer", {
+          width: "100%",
+          height: "100%",
+          videoId: defaultVideoId || undefined,
+          playerVars: getCommonPlayerVars(),
+          events: {
+            onReady: () => {
+              ytFreeApiReady = true;
+              if (pendingFreeVideoLoad) {
+                const { videoId, startSec } = pendingFreeVideoLoad;
+                pendingFreeVideoLoad = null;
+                executeFreeVideoLoad(videoId, startSec);
+              }
+            },
+            onStateChange: onYTFreeStateChange,
           },
         });
       }
@@ -1980,6 +2747,106 @@
       }
 
       // =====================================================
+      // 提示按鈕與階梯計分系統 (0提示=3分, 1提示=2分, 2提示=1分)
+      // =====================================================
+      function resetRoundHints() {
+        hintsUsedCount = 0;
+        currentRoundPoints = 3;
+        updateHintUI();
+      }
+
+      function unlockNextHint(event) {
+        if (event) event.stopPropagation();
+        if (!currentTrack) return;
+        if (roundPhase !== "PLAYING" && roundPhase !== "PAUSED") return;
+        if (hintsUsedCount >= 2) return;
+
+        hintsUsedCount++;
+        currentRoundPoints = Math.max(1, 3 - hintsUsedCount);
+        updateHintUI();
+      }
+
+      function updateHintUI() {
+        const pointsTag = document.getElementById("roundPointsTag");
+        const btnHeaderHint = document.getElementById("btnHeaderHint");
+        const btnPlayingHint = document.getElementById("btnOverlayPlayingHint");
+        const btnPausedHint = document.getElementById("btnOverlayPausedHint");
+        const hintPanel = document.getElementById("hintPanel");
+        const hintCard1 = document.getElementById("hintCard1");
+        const hintCard2 = document.getElementById("hintCard2");
+        const hintText1 = document.getElementById("hintText1");
+        const hintText2 = document.getElementById("hintText2");
+
+        // 更新本題可得積分標籤
+        pointsTag.className = "tag-points";
+        if (roundPhase === "IDLE") {
+          pointsTag.innerText = "💎 每題最高 3 分";
+        } else if (hintsUsedCount === 0) {
+          pointsTag.innerText = "💎 本題可得 3 分（未用提示）";
+        } else if (hintsUsedCount === 1) {
+          pointsTag.innerText = "💎 本題可得 2 分（已用 1 提示）";
+          pointsTag.classList.add("pts-2");
+        } else {
+          pointsTag.innerText = "💎 本題可得 1 分（已用 2 提示）";
+          pointsTag.classList.add("pts-1");
+        }
+
+        // 控制頂部提示按鈕顯示時機
+        if (roundPhase === "PLAYING" || roundPhase === "PAUSED") {
+          btnHeaderHint.style.display = "inline-flex";
+        } else {
+          btnHeaderHint.style.display = "none";
+        }
+
+        // 更新三處提示按鈕的文字與啟用狀態
+        let btnLabel = "💡 開啟提示 1（答對變 2 分）";
+        let isDisabled = false;
+        if (hintsUsedCount === 1) {
+          btnLabel = "💡 開啟提示 2（答對變 1 分）";
+        } else if (hintsUsedCount >= 2) {
+          btnLabel = "💡 提示已全開（本題 1 分）";
+          isDisabled = true;
+        }
+
+        [btnHeaderHint, btnPlayingHint, btnPausedHint].forEach((btn) => {
+          if (!btn) return;
+          btn.innerText = btnLabel;
+          btn.disabled = isDisabled;
+        });
+
+        // 更新提示內容卡片顯示
+        if (!currentTrack || roundPhase === "IDLE") {
+          hintPanel.style.display = "none";
+          hintCard1.style.display = "none";
+          hintCard2.style.display = "none";
+          return;
+        }
+
+        const { tip1, tip2 } = getTrackTips(currentTrack);
+        hintText1.innerText = tip1;
+        hintText2.innerText = tip2;
+
+        if (roundPhase === "REVEALED") {
+          // 揭曉答案後完整展示兩個提示作為曲目導聆介紹（不影響已鎖定的本題得分）
+          hintPanel.style.display = "flex";
+          hintCard1.style.display = "flex";
+          hintCard2.style.display = "flex";
+        } else if (hintsUsedCount === 1) {
+          hintPanel.style.display = "flex";
+          hintCard1.style.display = "flex";
+          hintCard2.style.display = "none";
+        } else if (hintsUsedCount >= 2) {
+          hintPanel.style.display = "flex";
+          hintCard1.style.display = "flex";
+          hintCard2.style.display = "flex";
+        } else {
+          hintPanel.style.display = "none";
+          hintCard1.style.display = "none";
+          hintCard2.style.display = "none";
+        }
+      }
+
+      // =====================================================
       // STEP 1 & 2: 開新局、選擇遊戲人數與輸入名字
       // =====================================================
       function saveCurrentInputValues() {
@@ -2079,12 +2946,15 @@
         roundHistory = [];
         selectedWinnerIdx = null;
         roundPhase = "IDLE";
+        lastQuizView = "game";
 
         pauseCurrentVideo();
+        pauseFreePlayVideo();
 
         // 切換顯示區
         document.getElementById("setupSection").style.display = "none";
         document.getElementById("settlementSection").style.display = "none";
+        document.getElementById("freePlaySection").style.display = "none";
         document.getElementById("gameSection").style.display = "flex";
 
         // 更新頂部狀態與計分板
@@ -2099,6 +2969,8 @@
 
       function setStageToReadyForFirstRound() {
         roundPhase = "IDLE";
+        resetRoundHints();
+
         const videoContainer = document.getElementById("videoContainer");
         videoContainer.classList.add("is-blind");
 
@@ -2145,8 +3017,10 @@
           unplayedTracks.length;
         document.getElementById("totalPoolCount").innerText = playlist.length;
 
-        // 進入盲聽播放狀態（隱藏影片與曲名）
+        // 進入盲聽播放狀態（隱藏影片與曲名），重置本題提示與階梯分數
         roundPhase = "PLAYING";
+        resetRoundHints();
+
         const videoContainer = document.getElementById("videoContainer");
         videoContainer.classList.add("is-blind");
 
@@ -2242,6 +3116,7 @@
 
         document.getElementById("trackInst").innerText = "⏸️ 搶答暫停中";
         document.getElementById("trackViews").innerText = "等待揭曉答案";
+        updateHintUI();
       }
 
       function resumeBlindPlayback(event) {
@@ -2258,6 +3133,7 @@
 
         document.getElementById("trackInst").innerText = "🙈 盲聽猜歌中";
         document.getElementById("trackViews").innerText = "點擊下方畫面暫停搶答";
+        updateHintUI();
       }
 
       // 點擊「揭曉答案」
@@ -2267,7 +3143,7 @@
 
         roundPhase = "REVEALED";
 
-        // 解除盲聽遮罩，顯示影片畫面与真實曲名資訊
+        // 解除盲聽遮罩，顯示影片畫面與真實曲名資訊
         document.getElementById("videoContainer").classList.remove("is-blind");
         document.getElementById("blindOverlay").style.display = "none";
 
@@ -2286,7 +3162,14 @@
           ? `🔥 ${Number(views).toLocaleString()} 次觀看`
           : "經典名曲";
 
-        // 顯示裁判判定面板（步驟 1：有沒有人答對）
+        updateHintUI();
+
+        // 顯示裁判判定面板（步驟 1：有沒有人答對，並標明本題階梯得分）
+        const askPrompt = document.getElementById("refereeAskPrompt");
+        if (askPrompt) {
+          askPrompt.innerText = `🎯 答案已揭曉！本題答對可得 +${currentRoundPoints} 分（已開 ${hintsUsedCount} 個提示），有沒有人答對？`;
+        }
+
         document.getElementById("refereePanel").style.display = "flex";
         document.getElementById("refereeStepAsk").style.display = "flex";
         document.getElementById("refereeStepSelectPlayer").style.display =
@@ -2302,6 +3185,13 @@
         document.getElementById("refereeStepAsk").style.display = "none";
         document.getElementById("refereeStepSelectPlayer").style.display =
           "flex";
+
+        const selectPrompt = document.getElementById(
+          "refereeSelectPlayerPrompt",
+        );
+        if (selectPrompt) {
+          selectPrompt.innerText = `👑 請選擇本題分數 (+${currentRoundPoints} 分) 要給哪一位玩家：`;
+        }
 
         const confirmBtn = document.getElementById("btnConfirmWinnerNext");
         confirmBtn.style.display = "none";
@@ -2329,7 +3219,7 @@
             <span>${isSelected ? "✅ " : "👤 "}${escapeHtml(player.name)}</span>
             <span class="award-pts">${
               isSelected
-                ? `${player.score} → ${player.score + 1} 分`
+                ? `${player.score} → ${player.score + currentRoundPoints} 分 (+${currentRoundPoints})`
                 : `目前 ${player.score} 分`
             }</span>
           `;
@@ -2347,20 +3237,22 @@
 
         const isLastTrack = unplayedTracks.length === 0;
         confirmText.innerText = isLastTrack
-          ? `🏆 給分給「${players[idx].name}」，曲目已用完進入結算`
-          : `🎲 給分給「${players[idx].name}」，繼續下一首`;
+          ? `🏆 給「${players[idx].name}」+${currentRoundPoints} 分，曲目已用完進入結算`
+          : `🎲 給「${players[idx].name}」+${currentRoundPoints} 分，繼續下一首`;
       }
 
       function confirmWinnerAndNext() {
         if (selectedWinnerIdx === null || !players[selectedWinnerIdx]) return;
 
         const winner = players[selectedWinnerIdx];
-        winner.score += 1;
+        winner.score += currentRoundPoints;
 
         roundHistory.push({
           round: currentRoundNumber,
           track: currentTrack,
           winnerName: winner.name,
+          points: currentRoundPoints,
+          hintsUsed: hintsUsedCount,
         });
 
         renderScoreboard(selectedWinnerIdx);
@@ -2372,6 +3264,8 @@
           round: currentRoundNumber,
           track: currentTrack,
           winnerName: null,
+          points: 0,
+          hintsUsed: hintsUsedCount,
         });
 
         proceedToNextOrSettle();
@@ -2424,9 +3318,11 @@
       // =====================================================
       function finishGame(reasonText = "賽事結算") {
         pauseCurrentVideo();
+        lastQuizView = "settlement";
 
         document.getElementById("setupSection").style.display = "none";
         document.getElementById("gameSection").style.display = "none";
+        document.getElementById("freePlaySection").style.display = "none";
         document.getElementById("settlementSection").style.display = "block";
 
         document.getElementById("settlementReasonBadge").innerText =
@@ -2490,9 +3386,11 @@
           roundHistory.forEach((item) => {
             const div = document.createElement("div");
             div.className = "round-history-item";
+            const pts = item.points !== undefined ? item.points : 1;
+            const hints = item.hintsUsed !== undefined ? item.hintsUsed : 0;
             const winnerBadge = item.winnerName
-              ? `<span style="color: #10b981; font-weight: 700;">⭕ ${escapeHtml(item.winnerName)} (+1)</span>`
-              : `<span style="color: var(--text-dim);">❌ 無人答對</span>`;
+              ? `<span style="color: #10b981; font-weight: 700;">⭕ ${escapeHtml(item.winnerName)} (+${pts}分 · ${hints}提示)</span>`
+              : `<span style="color: var(--text-dim);">❌ 無人答對 (${hints}提示)</span>`;
             div.innerHTML = `
               <div>
                 <span style="color: var(--accent-gold); font-weight: 700; margin-right: 0.4rem;">第 ${item.round} 題</span>
@@ -2507,6 +3405,7 @@
       }
 
       function resumeFromEarlySettlement() {
+        lastQuizView = "game";
         document.getElementById("settlementSection").style.display = "none";
         document.getElementById("gameSection").style.display = "flex";
       }
@@ -2517,10 +3416,375 @@
 
       function goToSetupScreen() {
         pauseCurrentVideo();
+        lastQuizView = "setup";
         document.getElementById("gameSection").style.display = "none";
         document.getElementById("settlementSection").style.display = "none";
+        document.getElementById("freePlaySection").style.display = "none";
         document.getElementById("setupSection").style.display = "block";
         renderPlayerInputs();
+      }
+
+      // =====================================================
+      // SECTION 4: 自由播放與曲庫鑑賞模式 (Free Play / Jukebox)
+      // =====================================================
+      function getTrackCategoryGroup(track) {
+        const inst = track["編制 / 主奏"] || "";
+        if (inst.includes("二胡") || inst.includes("京胡") || inst.includes("高胡") || inst.includes("胡")) {
+          return "二胡 / 胡琴";
+        }
+        if (inst.includes("古箏")) {
+          return "古箏";
+        }
+        if (inst.includes("琵琶") || inst.includes("中阮") || inst.includes("揚琴") || inst.includes("柳琴")) {
+          return "琵琶 / 彈撥";
+        }
+        if (inst.includes("笛") || inst.includes("嗩吶") || inst.includes("笙")) {
+          return "吹管 (笛/嗩吶/笙)";
+        }
+        if (inst.includes("打擊")) {
+          return "打擊樂";
+        }
+        return "國樂合奏";
+      }
+
+      function initFreePlayView() {
+        // 若尚未選擇任何曲目且曲庫不為空，預設選中第 1 首曲目並展示其導聆資訊
+        if (freeCurrentTrackIndex === -1 && playlist.length > 0) {
+          freeCurrentTrackIndex = 0;
+          updateFreeTrackMetaDisplay(0);
+        }
+        renderFreeCategoryPills();
+        renderFreePlayTrackList();
+      }
+
+      function renderFreeCategoryPills() {
+        const container = document.getElementById("freeCategoryPills");
+        if (!container) return;
+
+        const categories = [
+          "全部",
+          "國樂合奏",
+          "二胡 / 胡琴",
+          "古箏",
+          "琵琶 / 彈撥",
+          "吹管 (笛/嗩吶/笙)",
+          "打擊樂",
+        ];
+
+        container.innerHTML = "";
+        categories.forEach((cat) => {
+          const count =
+            cat === "全部"
+              ? playlist.length
+              : playlist.filter((t) => getTrackCategoryGroup(t) === cat).length;
+
+          const btn = document.createElement("button");
+          btn.className = `cat-pill ${freeSelectedCategory === cat ? "active" : ""}`;
+          btn.onclick = () => {
+            freeSelectedCategory = cat;
+            renderFreeCategoryPills();
+            renderFreePlayTrackList();
+          };
+          btn.innerText = `${cat} (${count})`;
+          container.appendChild(btn);
+        });
+      }
+
+      function renderFreePlayTrackList() {
+        const listEl = document.getElementById("freeTrackList");
+        const countEl = document.getElementById("freeFilterCountText");
+        if (!listEl) return;
+
+        const keyword = (
+          document.getElementById("freeSearchInput")?.value || ""
+        )
+          .trim()
+          .toLowerCase();
+        const sortBy =
+          document.getElementById("freeSortSelect")?.value || "default";
+
+        // 篩選符合分類與搜尋關鍵字的曲目索引
+        let matched = playlist
+          .map((track, idx) => ({ track, idx }))
+          .filter(({ track }) => {
+            if (
+              freeSelectedCategory !== "全部" &&
+              getTrackCategoryGroup(track) !== freeSelectedCategory
+            ) {
+              return false;
+            }
+            if (!keyword) return true;
+            const { tip1, tip2 } = getTrackTips(track);
+            const haystack = `${track["曲名"] || ""} ${track["編制 / 主奏"] || ""} ${tip1} ${tip2}`.toLowerCase();
+            return haystack.includes(keyword);
+          });
+
+        // 排序
+        if (sortBy === "views_desc") {
+          matched.sort(
+            (a, b) =>
+              (Number(b.track["參考觀看量"]) || 0) -
+              (Number(a.track["參考觀看量"]) || 0),
+          );
+        } else if (sortBy === "views_asc") {
+          matched.sort(
+            (a, b) =>
+              (Number(a.track["參考觀看量"]) || 0) -
+              (Number(b.track["參考觀看量"]) || 0),
+          );
+        } else if (sortBy === "name_asc") {
+          matched.sort((a, b) =>
+            (a.track["曲名"] || "").localeCompare(
+              b.track["曲名"] || "",
+              "zh-Hant",
+            ),
+          );
+        }
+
+        freeFilteredIndices = matched.map((m) => m.idx);
+        if (countEl) {
+          countEl.innerText = `顯示 ${matched.length} / ${playlist.length} 首`;
+        }
+
+        listEl.innerHTML = "";
+        if (matched.length === 0) {
+          listEl.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 2rem;">找不到符合條件的曲目，請嘗試其他關鍵字或分類</div>`;
+          return;
+        }
+
+        matched.forEach(({ track, idx }) => {
+          const isActive = idx === freeCurrentTrackIndex;
+          const views = Number(track["參考觀看量"]) || 0;
+          const viewsFormatted =
+            views >= 10000
+              ? `${(views / 10000).toFixed(1)} 萬次觀看`
+              : `${views.toLocaleString()} 次觀看`;
+
+          const item = document.createElement("div");
+          item.className = `free-track-item ${isActive ? "active" : ""}`;
+          item.onclick = () => playFreeTrack(idx, false);
+          item.innerHTML = `
+            <div class="free-track-left">
+              <span class="free-track-num">${isActive ? "🔊" : `#${String(idx + 1).padStart(2, "0")}`}</span>
+              <div class="free-track-info">
+                <div class="free-track-name" title="${escapeHtml(track["曲名"])}">${escapeHtml(track["曲名"])}</div>
+                <div class="free-track-sub">${escapeHtml(track["編制 / 主奏"] || "國樂")} · ${viewsFormatted}</div>
+              </div>
+            </div>
+            <span style="color: var(--accent-gold); font-size: 0.9rem; flex-shrink: 0;">▶</span>
+          `;
+          listEl.appendChild(item);
+        });
+      }
+
+      function updateFreeTrackMetaDisplay(trackIdx) {
+        const track = playlist[trackIdx];
+        if (!track) return;
+
+        document.getElementById("freeTrackTitle").innerText =
+          `🎵 ${track["曲名"] || "未知曲目"}`;
+        document.getElementById("freeTrackInst").innerText =
+          track["編制 / 主奏"] || "國樂演奏";
+
+        const views = Number(track["參考觀看量"]) || 0;
+        document.getElementById("freeTrackViews").innerText = views
+          ? `🔥 ${views.toLocaleString()} 次觀看`
+          : "經典名曲";
+
+        const embedUrl = track["YouTube 外嵌連結"] || "";
+        const videoId = extractVideoId(embedUrl);
+        const btnFreeExternal = document.getElementById("btnFreeExternalLink");
+        if (btnFreeExternal) {
+          btnFreeExternal.href = videoId
+            ? `https://www.youtube.com/watch?v=${videoId}`
+            : embedUrl;
+        }
+
+        const { tip1, tip2 } = getTrackTips(track);
+        document.getElementById("freeTipText1").innerText = tip1;
+        document.getElementById("freeTipText2").innerText = tip2;
+      }
+
+      function playFreeTrack(trackIdx, randomSegment = false) {
+        if (trackIdx < 0 || trackIdx >= playlist.length) return;
+        freeCurrentTrackIndex = trackIdx;
+        updateFreeTrackMetaDisplay(trackIdx);
+        renderFreePlayTrackList();
+
+        const track = playlist[trackIdx];
+        const embedUrl = track["YouTube 外嵌連結"] || "";
+        const videoId = extractVideoId(embedUrl);
+        const startSec = randomSegment
+          ? Math.floor(Math.random() * 70) + 25
+          : 0;
+        freeNeedsRandomSeek = randomSegment;
+
+        if (
+          ytFreeApiReady &&
+          ytFreePlayer &&
+          typeof ytFreePlayer.loadVideoById === "function"
+        ) {
+          executeFreeVideoLoad(videoId, startSec);
+        } else if (window.YT && window.YT.Player) {
+          pendingFreeVideoLoad = { videoId, startSec };
+          initYTFreePlayerInstance();
+        } else {
+          fallbackFreeIframeLoad(embedUrl, startSec);
+        }
+      }
+
+      function executeFreeVideoLoad(videoId, startSec) {
+        try {
+          ytFreePlayer.unMute();
+          ytFreePlayer.setVolume(100);
+          ytFreePlayer.loadVideoById({
+            videoId: videoId,
+            startSeconds: startSec,
+          });
+        } catch (err) {
+          console.warn("自由播放載入異常：", err);
+        }
+      }
+
+      function fallbackFreeIframeLoad(embedUrl, startSec) {
+        const wrapper = document.getElementById("ytFreeMountWrapper");
+        const separator = embedUrl.includes("?") ? "&" : "?";
+        let params = `autoplay=1&playsinline=1&enablejsapi=1&rel=0&start=${startSec}`;
+        if (window.location.protocol.startsWith("http")) {
+          params += `&origin=${encodeURIComponent(window.location.origin)}`;
+        }
+        wrapper.innerHTML = `<iframe id="ytFreeFallbackIframe" src="${embedUrl}${separator}${params}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+      }
+
+      function onYTFreeStateChange(event) {
+        if (
+          event.data === YT.PlayerState.PLAYING &&
+          freeNeedsRandomSeek
+        ) {
+          freeNeedsRandomSeek = false;
+          try {
+            const duration = ytFreePlayer.getDuration();
+            if (duration && duration > 45) {
+              const minSec = Math.max(12, Math.floor(duration * 0.12));
+              const maxSec = Math.max(
+                minSec + 10,
+                Math.min(Math.floor(duration - 20), Math.floor(duration * 0.78)),
+              );
+              const randomStart =
+                Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
+              ytFreePlayer.seekTo(randomStart, true);
+            }
+          } catch (e) {}
+        } else if (event.data === YT.PlayerState.ENDED) {
+          if (freeAutoMode === "sequential") {
+            freePlayNextTrack();
+          } else if (freeAutoMode === "random") {
+            freePlayRandomTrack();
+          }
+        }
+      }
+
+      function pauseFreePlayVideo() {
+        if (
+          ytFreeApiReady &&
+          ytFreePlayer &&
+          typeof ytFreePlayer.pauseVideo === "function"
+        ) {
+          try {
+            ytFreePlayer.pauseVideo();
+          } catch (e) {}
+        }
+        const iframe = document.querySelector("#ytFreeMountWrapper iframe");
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+            "*",
+          );
+        }
+      }
+
+      function freePlayPrevTrack() {
+        const pool =
+          freeFilteredIndices.length > 0
+            ? freeFilteredIndices
+            : playlist.map((_, i) => i);
+        if (pool.length === 0) return;
+
+        const pos = pool.indexOf(freeCurrentTrackIndex);
+        const prevIdx =
+          pos > 0 ? pool[pos - 1] : pool[pool.length - 1];
+        playFreeTrack(prevIdx, false);
+      }
+
+      function freePlayNextTrack() {
+        const pool =
+          freeFilteredIndices.length > 0
+            ? freeFilteredIndices
+            : playlist.map((_, i) => i);
+        if (pool.length === 0) return;
+
+        const pos = pool.indexOf(freeCurrentTrackIndex);
+        const nextIdx =
+          pos >= 0 && pos < pool.length - 1 ? pool[pos + 1] : pool[0];
+        playFreeTrack(nextIdx, false);
+      }
+
+      function freePlayRandomTrack() {
+        const pool =
+          freeFilteredIndices.length > 0
+            ? freeFilteredIndices
+            : playlist.map((_, i) => i);
+        if (pool.length === 0) return;
+
+        let candidates = pool;
+        if (pool.length > 1 && pool.includes(freeCurrentTrackIndex)) {
+          candidates = pool.filter((i) => i !== freeCurrentTrackIndex);
+        }
+        const randomIdx =
+          candidates[Math.floor(Math.random() * candidates.length)];
+        playFreeTrack(randomIdx, false);
+      }
+
+      function freePlaySeekRandomSegment() {
+        if (freeCurrentTrackIndex === -1 && playlist.length > 0) {
+          playFreeTrack(0, true);
+          return;
+        }
+        if (
+          ytFreeApiReady &&
+          ytFreePlayer &&
+          typeof ytFreePlayer.getDuration === "function"
+        ) {
+          const duration = ytFreePlayer.getDuration();
+          let randomSec = Math.floor(Math.random() * 80) + 20;
+          if (duration && duration > 45) {
+            const minSec = Math.max(10, Math.floor(duration * 0.12));
+            const maxSec = Math.max(
+              minSec + 10,
+              Math.min(Math.floor(duration - 18), Math.floor(duration * 0.8)),
+            );
+            randomSec =
+              Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
+          }
+          ytFreePlayer.seekTo(randomSec, true);
+          ytFreePlayer.playVideo();
+        } else if (freeCurrentTrackIndex >= 0) {
+          playFreeTrack(freeCurrentTrackIndex, true);
+        }
+      }
+
+      function toggleFreeAutoMode() {
+        const btn = document.getElementById("btnFreeAutoMode");
+        if (freeAutoMode === "sequential") {
+          freeAutoMode = "random";
+          btn.innerText = "🔀 播完自動：隨機下一首";
+        } else if (freeAutoMode === "random") {
+          freeAutoMode = "stop";
+          btn.innerText = "⏹️ 播完自動：單曲停止";
+        } else {
+          freeAutoMode = "sequential";
+          btn.innerText = "🔁 播完自動：順序下一首";
+        }
       }
 
       // 手動載入自訂本機 JSON 檔案
@@ -2536,8 +3800,10 @@
               playlist = data;
               document.getElementById("statusText").innerText =
                 `已載入自訂檔案：${file.name} (共 ${playlist.length} 首)`;
+              freeCurrentTrackIndex = -1;
+              initFreePlayView();
               alert(
-                `成功載入 ${playlist.length} 首曲目！開新局時將使用新的曲目庫。`,
+                `成功載入 ${playlist.length} 首曲目！開新局與自由播放模式將使用新的曲目庫。`,
               );
             } else {
               alert("檔案格式不正確，需為包含曲目陣列的 JSON！");
