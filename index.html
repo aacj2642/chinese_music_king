@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>國樂之王 · 隨機曲目播放器</title>
+    <title>國樂之王 · 盲聽搶答爭霸賽</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,16 +15,18 @@
         --bg-main: #0c0e14;
         --bg-card: #151922;
         --bg-card-hover: #1c2230;
+        --bg-elevated: #1e2433;
         --accent-gold: #e5b95f;
         --accent-gold-hover: #f3ce7a;
         --accent-red: #c93b3b;
+        --accent-green: #10b981;
         --accent-cyan: #38bdf8;
         --text-main: #f3f4f6;
         --text-muted: #9ca3af;
         --text-dim: #6b7280;
-        --border-color: rgba(229, 185, 95, 0.25);
+        --border-color: rgba(229, 185, 95, 0.28);
         --border-subtle: rgba(255, 255, 255, 0.08);
-        --shadow-glow: 0 0 35px rgba(229, 185, 95, 0.12);
+        --shadow-glow: 0 0 35px rgba(229, 185, 95, 0.14);
       }
 
       * {
@@ -50,12 +52,12 @@
         background-image:
           radial-gradient(
             circle at 50% -20%,
-            rgba(229, 185, 95, 0.12) 0%,
+            rgba(229, 185, 95, 0.14) 0%,
             transparent 60%
           ),
           radial-gradient(
             circle at 10% 80%,
-            rgba(201, 59, 59, 0.06) 0%,
+            rgba(201, 59, 59, 0.07) 0%,
             transparent 50%
           ),
           radial-gradient(
@@ -68,12 +70,12 @@
 
       .container {
         width: 100%;
-        max-width: 920px;
-        padding: 2.5rem 1.25rem 4rem;
+        max-width: 940px;
+        padding: 2rem 1.25rem 4rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.8rem;
+        gap: 1.5rem;
       }
 
       /* Header */
@@ -82,39 +84,38 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.45rem;
       }
 
       .badge-sub {
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        padding: 0.35rem 0.9rem;
+        padding: 0.3rem 0.9rem;
         border-radius: 9999px;
         background: rgba(229, 185, 95, 0.12);
         border: 1px solid var(--border-color);
         color: var(--accent-gold);
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         font-weight: 500;
         letter-spacing: 0.05em;
       }
 
       h1 {
         font-family: "Noto Serif TC", serif;
-        font-size: 2.6rem;
+        font-size: 2.5rem;
         font-weight: 900;
         letter-spacing: 0.06em;
         background: linear-gradient(135deg, #ffffff 30%, #e5b95f 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 0.2rem;
       }
 
       .subtitle {
         color: var(--text-muted);
-        font-size: 0.95rem;
-        max-width: 500px;
-        line-height: 1.6;
+        font-size: 0.92rem;
+        max-width: 560px;
+        line-height: 1.55;
       }
 
       /* File Protocol Notice Banner (for Error 153 prevention) */
@@ -170,77 +171,8 @@
         background: #e04545;
       }
 
-      /* Action Trigger */
-      .action-panel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.85rem;
-        width: 100%;
-      }
-
-      .btn-random {
-        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
-        color: #12141a;
-        font-family: "Noto Serif TC", serif;
-        font-size: 1.35rem;
-        font-weight: 900;
-        padding: 1.05rem 3rem;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        box-shadow: 0 10px 28px rgba(229, 185, 95, 0.38);
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.8rem;
-        letter-spacing: 0.05em;
-        user-select: none;
-      }
-
-      .btn-random:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 14px 38px rgba(229, 185, 95, 0.52);
-        background: linear-gradient(135deg, #f5cc70 0%, #d89f36 100%);
-      }
-
-      .btn-random:active {
-        transform: translateY(1px) scale(0.99);
-        box-shadow: 0 5px 18px rgba(229, 185, 95, 0.3);
-      }
-
-      .btn-random .dice-icon {
-        font-size: 1.5rem;
-        display: inline-block;
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-
-      .btn-random:hover .dice-icon {
-        transform: rotate(180deg) scale(1.15);
-      }
-
-      .track-counter-pill {
-        font-size: 0.82rem;
-        color: var(--text-dim);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: rgba(255, 255, 255, 0.03);
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        border: 1px solid var(--border-subtle);
-      }
-
-      .status-dot {
-        width: 7px;
-        height: 7px;
-        background-color: #10b981;
-        border-radius: 50%;
-        box-shadow: 0 0 8px #10b981;
-      }
-
-      /* Player Card */
-      .player-card {
+      /* Common Card Styling */
+      .stage-card {
         width: 100%;
         background: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -250,21 +182,426 @@
           0 20px 45px rgba(0, 0, 0, 0.55),
           var(--shadow-glow);
         backdrop-filter: blur(12px);
-        transition:
-          transform 0.3s ease,
-          border-color 0.3s ease;
       }
 
-      /* Track Meta */
-      .track-meta {
-        padding: 1.5rem 1.8rem;
+      /* =========================================
+         VIEW 1: SETUP (開新局 · 設定人數與姓名)
+      ========================================= */
+      .setup-body {
+        padding: 2rem 2.2rem;
         display: flex;
         flex-direction: column;
+        gap: 1.75rem;
+      }
+
+      .setup-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 1.1rem;
+      }
+
+      .setup-title {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.55rem;
+        font-weight: 900;
+        color: var(--accent-gold);
+        display: flex;
+        align-items: center;
         gap: 0.6rem;
+      }
+
+      .track-counter-pill {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        border: 1px solid var(--border-subtle);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+      }
+
+      .setup-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+      }
+
+      .setup-label {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .setup-label span.step-num {
+        background: var(--accent-gold);
+        color: #12141a;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      .count-selector-row {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+      }
+
+      .count-pill {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+        padding: 0.55rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .count-pill:hover {
+        background: rgba(229, 185, 95, 0.12);
+        color: var(--text-main);
+        border-color: var(--border-color);
+      }
+
+      .count-pill.active {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        border-color: var(--accent-gold);
+        box-shadow: 0 4px 15px rgba(229, 185, 95, 0.35);
+      }
+
+      .count-stepper {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-subtle);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-left: auto;
+      }
+
+      .stepper-btn {
+        background: transparent;
+        border: none;
+        color: var(--accent-gold);
+        font-size: 1.2rem;
+        font-weight: 900;
+        width: 38px;
+        height: 38px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .stepper-btn:hover {
+        background: rgba(229, 185, 95, 0.15);
+      }
+
+      .stepper-value {
+        padding: 0 0.85rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        min-width: 64px;
+        text-align: center;
+      }
+
+      .player-inputs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 0.85rem;
+      }
+
+      .player-input-card {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: rgba(0, 0, 0, 0.28);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.55rem 0.85rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .player-input-card:focus-within {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 2px rgba(229, 185, 95, 0.15);
+      }
+
+      .player-avatar-badge {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(229, 185, 95, 0.14);
+        border: 1px solid rgba(229, 185, 95, 0.3);
+        color: var(--accent-gold);
+        font-weight: 700;
+        font-size: 0.82rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .player-name-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-size: 0.95rem;
+        font-weight: 500;
+        outline: none;
+      }
+
+      .player-name-input::placeholder {
+        color: var(--text-dim);
+      }
+
+      .rules-summary {
+        background: rgba(229, 185, 95, 0.06);
+        border: 1px solid rgba(229, 185, 95, 0.2);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+      }
+
+      .rules-summary strong {
+        color: var(--accent-gold);
+      }
+
+      /* Primary Gold Action Button */
+      .btn-gold-large {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.3rem;
+        font-weight: 900;
+        padding: 1rem 2.6rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 10px 28px rgba(229, 185, 95, 0.35);
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        letter-spacing: 0.05em;
+        user-select: none;
+      }
+
+      .btn-gold-large:hover {
+        transform: translateY(-2px) scale(1.015);
+        box-shadow: 0 14px 36px rgba(229, 185, 95, 0.5);
+        background: linear-gradient(135deg, #f5cc70 0%, #d89f36 100%);
+      }
+
+      .btn-gold-large:active {
+        transform: translateY(1px) scale(0.99);
+      }
+
+      /* =========================================
+         VIEW 2: GAME ARENA (遊戲進行中)
+      ========================================= */
+      .game-top-bar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 14px;
+        padding: 0.85rem 1.25rem;
+      }
+
+      .game-progress-info {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+      }
+
+      .round-pill {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        font-weight: 900;
+        font-size: 0.9rem;
+        padding: 0.3rem 0.85rem;
+        border-radius: 8px;
+        letter-spacing: 0.03em;
+      }
+
+      .remaining-pill {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .remaining-pill strong {
+        color: var(--accent-cyan);
+        font-size: 1rem;
+      }
+
+      .game-top-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-top-action {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-main);
+        padding: 0.45rem 0.95rem;
+        border-radius: 8px;
+        font-size: 0.86rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.2s;
+      }
+
+      .btn-top-action:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .btn-top-action.btn-settle-early {
+        background: rgba(229, 185, 95, 0.14);
+        border-color: rgba(229, 185, 95, 0.4);
+        color: var(--accent-gold);
+      }
+
+      .btn-top-action.btn-settle-early:hover {
+        background: var(--accent-gold);
+        color: #12141a;
+      }
+
+      /* Scoreboard Bar */
+      .scoreboard-panel {
+        width: 100%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .scoreboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .scoreboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.65rem;
+      }
+
+      .score-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.65rem 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        transition: all 0.25s;
+      }
+
+      .score-card.is-leader {
+        background: rgba(229, 185, 95, 0.1);
+        border-color: rgba(229, 185, 95, 0.45);
+        box-shadow: 0 0 18px rgba(229, 185, 95, 0.12);
+      }
+
+      .score-card.just-scored {
+        animation: scorePulse 0.6s ease;
+      }
+
+      @keyframes scorePulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.06);
+          border-color: #10b981;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .score-player-name {
+        font-weight: 700;
+        font-size: 0.94rem;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .score-badge {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.15rem;
+        font-weight: 900;
+        color: var(--accent-gold);
+        background: rgba(229, 185, 95, 0.14);
+        padding: 0.15rem 0.6rem;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      /* Track Meta Header */
+      .track-meta {
+        padding: 1.35rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
         border-bottom: 1px solid var(--border-subtle);
         background: linear-gradient(
           180deg,
-          rgba(229, 185, 95, 0.06) 0%,
+          rgba(229, 185, 95, 0.07) 0%,
           rgba(21, 25, 34, 0) 100%
         );
       }
@@ -280,15 +617,20 @@
       .track-title-box {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.65rem;
       }
 
       .track-title {
         font-family: "Noto Serif TC", serif;
-        font-size: 1.8rem;
+        font-size: 1.75rem;
         font-weight: 900;
         color: #ffffff;
         letter-spacing: 0.04em;
+      }
+
+      .track-title.mystery-text {
+        color: var(--accent-gold);
+        letter-spacing: 0.08em;
       }
 
       .track-tags {
@@ -299,12 +641,12 @@
       }
 
       .tag-category {
-        background: rgba(201, 59, 59, 0.15);
+        background: rgba(201, 59, 59, 0.16);
         border: 1px solid rgba(201, 59, 59, 0.35);
         color: #f87171;
         padding: 0.25rem 0.75rem;
         border-radius: 8px;
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         font-weight: 500;
       }
 
@@ -314,107 +656,400 @@
         color: var(--accent-cyan);
         padding: 0.25rem 0.75rem;
         border-radius: 8px;
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         font-weight: 500;
         display: flex;
         align-items: center;
         gap: 0.3rem;
       }
 
-      /* Iframe Wrapper */
+      /* Video & Blindfold Container */
       .video-container {
         position: relative;
         width: 100%;
-        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        padding-top: 52%;
         background: #08090d;
+        overflow: hidden;
+        user-select: none;
       }
 
-      .video-container iframe,
-      .video-placeholder {
+      .yt-mount-wrapper {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.35s ease;
+      }
+
+      .yt-mount-wrapper iframe {
         width: 100%;
         height: 100%;
         border: none;
       }
 
-      .video-placeholder {
+      /* CRITICAL: Hide video completely during blind play & buzzing */
+      .video-container.is-blind .yt-mount-wrapper {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      /* Interactive Blindfold Cover */
+      .blind-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 1.2rem;
-        color: var(--text-dim);
-        background: radial-gradient(circle at center, #1b202c 0%, #0d0f14 100%);
+        padding: 1.5rem;
+        text-align: center;
+        background:
+          radial-gradient(
+            circle at 50% 45%,
+            rgba(32, 39, 56, 0.98) 0%,
+            rgba(10, 12, 18, 0.99) 100%
+          );
+        transition: background 0.25s ease;
+      }
+
+      .blind-overlay.clickable-buzz {
         cursor: pointer;
-        transition: all 0.2s;
       }
 
-      .video-placeholder:hover {
-        color: var(--text-main);
-        background: radial-gradient(circle at center, #222938 0%, #101319 100%);
+      .blind-overlay.clickable-buzz:hover {
+        background:
+          radial-gradient(
+            circle at 50% 45%,
+            rgba(45, 54, 77, 0.99) 0%,
+            rgba(13, 16, 24, 1) 100%
+          );
       }
 
-      .placeholder-icon {
-        width: 70px;
-        height: 70px;
+      .blind-overlay.clickable-buzz:active {
+        transform: scale(0.997);
+      }
+
+      .blind-center-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.1rem;
+        max-width: 540px;
+      }
+
+      /* Soundwave / Emblem Circle */
+      .blind-emblem {
+        width: 96px;
+        height: 96px;
         border-radius: 50%;
         background: rgba(229, 185, 95, 0.12);
-        border: 1px solid var(--border-color);
+        border: 2px solid rgba(229, 185, 95, 0.45);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: 2.5rem;
         color: var(--accent-gold);
-        box-shadow: 0 0 20px rgba(229, 185, 95, 0.2);
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
+        box-shadow: 0 0 30px rgba(229, 185, 95, 0.22);
+        position: relative;
       }
 
-      .video-placeholder:hover .placeholder-icon {
-        transform: scale(1.1);
-        box-shadow: 0 0 30px rgba(229, 185, 95, 0.4);
+      .blind-emblem.playing-pulse::after {
+        content: "";
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        border: 2px solid rgba(229, 185, 95, 0.4);
+        animation: ringPulse 1.6s infinite ease-out;
+      }
+
+      @keyframes ringPulse {
+        0% {
+          transform: scale(0.92);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1.38);
+          opacity: 0;
+        }
+      }
+
+      /* Equalizer Bars inside Playing State */
+      .eq-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+        height: 36px;
+      }
+
+      .eq-bar {
+        width: 6px;
+        background: var(--accent-gold);
+        border-radius: 3px;
+        animation: eqBounce 0.8s infinite ease-in-out alternate;
+      }
+
+      .eq-bar:nth-child(1) {
+        height: 16px;
+        animation-delay: 0s;
+      }
+      .eq-bar:nth-child(2) {
+        height: 32px;
+        animation-delay: 0.2s;
+      }
+      .eq-bar:nth-child(3) {
+        height: 22px;
+        animation-delay: 0.4s;
+      }
+      .eq-bar:nth-child(4) {
+        height: 36px;
+        animation-delay: 0.15s;
+      }
+      .eq-bar:nth-child(5) {
+        height: 18px;
+        animation-delay: 0.35s;
+      }
+
+      @keyframes eqBounce {
+        0% {
+          transform: scaleY(0.35);
+        }
+        100% {
+          transform: scaleY(1);
+        }
+      }
+
+      .blind-main-title {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.65rem;
+        font-weight: 900;
+        color: #ffffff;
+        letter-spacing: 0.04em;
+      }
+
+      .blind-sub-desc {
+        font-size: 0.96rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .buzz-cta-banner {
+        margin-top: 0.35rem;
+        background: rgba(201, 59, 59, 0.22);
+        border: 1.5px solid rgba(248, 113, 113, 0.6);
+        color: #fecaca;
+        padding: 0.7rem 1.6rem;
+        border-radius: 999px;
+        font-size: 1.08rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        box-shadow: 0 6px 24px rgba(201, 59, 59, 0.3);
+        transition: all 0.2s;
+      }
+
+      .blind-overlay.clickable-buzz:hover .buzz-cta-banner {
+        background: #c93b3b;
+        color: #ffffff;
+        transform: scale(1.04);
+      }
+
+      .blind-helper-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+      }
+
+      .btn-blind-secondary {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: var(--text-main);
+        padding: 0.55rem 1.15rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.2s;
+      }
+
+      .btn-blind-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--accent-gold);
+        color: var(--accent-gold);
+      }
+
+      /* =========================================
+         REFEREE JUDGMENT PANEL (揭曉答案後裁判區)
+      ========================================= */
+      .referee-panel {
+        padding: 1.5rem 1.8rem;
+        background: linear-gradient(
+          180deg,
+          rgba(229, 185, 95, 0.1) 0%,
+          rgba(15, 18, 26, 0.95) 100%
+        );
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1.15rem;
+      }
+
+      .referee-step-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .referee-prompt {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: var(--accent-gold);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .referee-choice-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .btn-judge-yes {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 800;
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        transition: all 0.2s;
+      }
+
+      .btn-judge-yes:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45);
+      }
+
+      .btn-judge-no {
+        background: rgba(201, 59, 59, 0.18);
+        border: 1.5px solid rgba(201, 59, 59, 0.5);
+        color: #fca5a5;
+        font-size: 1.05rem;
+        font-weight: 700;
+        padding: 0.85rem 1.8rem;
+        border-radius: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        transition: all 0.2s;
+      }
+
+      .btn-judge-no:hover {
+        background: #c93b3b;
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      .winner-select-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .btn-player-award {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid var(--border-subtle);
+        color: var(--text-main);
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.98rem;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+
+      .btn-player-award:hover {
+        background: rgba(229, 185, 95, 0.14);
+        border-color: var(--accent-gold);
+        transform: translateY(-2px);
+      }
+
+      .btn-player-award.selected {
+        background: linear-gradient(135deg, #e5b95f 0%, #c9932d 100%);
+        color: #12141a;
+        border-color: #ffffff;
+        box-shadow: 0 6px 20px rgba(229, 185, 95, 0.4);
+      }
+
+      .btn-player-award .award-pts {
+        font-size: 0.82rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--accent-gold);
+      }
+
+      .btn-player-award.selected .award-pts {
+        background: rgba(18, 20, 26, 0.2);
+        color: #12141a;
+        font-weight: 900;
       }
 
       /* Player Footer Controls */
       .player-controls {
-        padding: 1rem 1.8rem;
+        padding: 0.9rem 1.75rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 1rem;
-        background: rgba(15, 18, 26, 0.85);
-      }
-
-      .control-group-left {
-        display: flex;
-        align-items: center;
         gap: 0.8rem;
+        background: rgba(12, 14, 20, 0.9);
+        border-top: 1px solid var(--border-subtle);
       }
 
       .control-btn {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--border-subtle);
         color: var(--text-muted);
-        padding: 0.5rem 1.1rem;
+        padding: 0.45rem 1rem;
         border-radius: 8px;
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
         text-decoration: none;
         transition: all 0.2s;
-        user-select: none;
       }
 
       .control-btn:hover {
         background: rgba(255, 255, 255, 0.1);
         color: var(--text-main);
-        border-color: rgba(255, 255, 255, 0.2);
       }
 
       .control-btn.btn-yt-highlight {
@@ -427,141 +1062,151 @@
       .control-btn.btn-yt-highlight:hover {
         background: #c93b3b;
         color: #ffffff;
-        border-color: #c93b3b;
       }
 
-      .control-btn:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
-      }
-
-      /* Playlist Section */
-      .playlist-section {
-        width: 100%;
-        background: var(--bg-card);
-        border: 1px solid var(--border-subtle);
-        border-radius: 16px;
-        padding: 1.4rem 1.6rem;
+      /* =========================================
+         VIEW 3: SETTLEMENT (結算畫面)
+      ========================================= */
+      .settlement-body {
+        padding: 2.2rem 2rem;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-      }
-
-      .section-header {
-        display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
+        gap: 1.75rem;
       }
 
-      .section-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: var(--text-main);
+      .settlement-banner {
+        text-align: center;
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: 0.5rem;
       }
 
-      .search-box {
-        position: relative;
-        flex: 1;
-        max-width: 300px;
-      }
-
-      .search-input {
-        width: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-subtle);
-        border-radius: 8px;
-        padding: 0.45rem 0.85rem;
-        color: var(--text-main);
-        font-size: 0.88rem;
-        outline: none;
-        transition: border-color 0.2s;
-      }
-
-      .search-input:focus {
-        border-color: var(--accent-gold);
-      }
-
-      .track-list {
-        max-height: 320px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        padding-right: 0.4rem;
-      }
-
-      .track-list::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .track-list::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 4px;
-      }
-
-      .track-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.65rem 0.95rem;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid transparent;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.15s;
-      }
-
-      .track-item:hover {
-        background: var(--bg-card-hover);
-        border-color: var(--border-subtle);
-        transform: translateX(4px);
-      }
-
-      .track-item.playing {
-        background: rgba(229, 185, 95, 0.12);
-        border-color: var(--border-color);
-      }
-
-      .track-item-left {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .track-item-index {
-        font-size: 0.78rem;
-        color: var(--text-dim);
-        width: 26px;
-        text-align: right;
-      }
-
-      .track-item-name {
-        font-size: 0.94rem;
-        font-weight: 500;
-        color: var(--text-main);
-      }
-
-      .track-item.playing .track-item-name {
+      .settlement-reason-badge {
+        background: rgba(229, 185, 95, 0.14);
+        border: 1px solid var(--border-color);
         color: var(--accent-gold);
+        padding: 0.3rem 0.95rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
         font-weight: 700;
       }
 
-      .track-item-inst {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        background: rgba(255, 255, 255, 0.05);
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
+      .settlement-title {
+        font-family: "Noto Serif TC", serif;
+        font-size: 2.1rem;
+        font-weight: 900;
+        color: #ffffff;
       }
 
-      .track-item-views {
-        font-size: 0.8rem;
-        color: var(--text-dim);
+      .ranking-list {
+        width: 100%;
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .ranking-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.35rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+        border-radius: 14px;
+        transition: transform 0.2s;
+      }
+
+      .ranking-row.rank-1 {
+        background: linear-gradient(
+          135deg,
+          rgba(229, 185, 95, 0.22) 0%,
+          rgba(201, 147, 45, 0.08) 100%
+        );
+        border-color: var(--accent-gold);
+        box-shadow: 0 8px 28px rgba(229, 185, 95, 0.18);
+      }
+
+      .ranking-left {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+      }
+
+      .rank-medal {
+        font-size: 1.55rem;
+        width: 38px;
+        text-align: center;
+      }
+
+      .rank-name {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--text-main);
+      }
+
+      .ranking-row.rank-1 .rank-name {
+        color: var(--accent-gold);
+        font-size: 1.25rem;
+      }
+
+      .rank-score {
+        font-family: "Noto Serif TC", serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: var(--accent-gold);
+      }
+
+      /* Round History Log in Settlement */
+      .round-history-box {
+        width: 100%;
+        max-width: 640px;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border-subtle);
+        border-radius: 14px;
+        padding: 1.1rem 1.35rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .round-history-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .round-history-list {
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      .round-history-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.88rem;
+        padding: 0.5rem 0.75rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        gap: 0.5rem;
+      }
+
+      .settlement-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        width: 100%;
       }
 
       /* Footer info */
@@ -573,6 +1218,7 @@
         flex-direction: column;
         align-items: center;
         gap: 0.5rem;
+        margin-top: 0.5rem;
       }
 
       .file-source-tip {
@@ -592,33 +1238,35 @@
 
       @media (max-width: 640px) {
         .container {
-          padding: 1.5rem 1rem 3rem;
-          gap: 1.5rem;
+          padding: 1.25rem 0.9rem 3rem;
+          gap: 1.15rem;
         }
 
         h1 {
-          font-size: 2.1rem;
+          font-size: 2rem;
         }
 
-        .btn-random {
+        .setup-body,
+        .settlement-body {
+          padding: 1.35rem 1.2rem;
+        }
+
+        .video-container {
+          padding-top: 68%;
+        }
+
+        .blind-main-title {
+          font-size: 1.3rem;
+        }
+
+        .btn-gold-large {
           width: 100%;
-          justify-content: center;
-          padding: 0.95rem 1.5rem;
-          font-size: 1.2rem;
+          font-size: 1.15rem;
+          padding: 0.9rem 1.5rem;
         }
 
         .track-title {
-          font-size: 1.4rem;
-        }
-
-        .track-header-row {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .search-box {
-          max-width: 100%;
-          width: 100%;
+          font-size: 1.35rem;
         }
       }
     </style>
@@ -627,10 +1275,10 @@
     <div class="container">
       <!-- Header -->
       <header>
-        <span class="badge-sub">🎋 經典國樂典藏 · 隨選隨播</span>
+        <span class="badge-sub">🎋 經典國樂盲聽猜歌 · 搶答爭霸賽</span>
         <h1>國樂之王</h1>
         <p class="subtitle">
-          典藏 100 首經典華語國樂、協奏曲與絲竹名作，感受悠遠中華音律。
+          隨機切入經典國樂段落，盲聽搶答曲名！本局播過的曲目絕不重複出現。
         </p>
       </header>
 
@@ -666,132 +1314,407 @@
         </div>
       </div>
 
-      <!-- Random Action Button -->
-      <div class="action-panel">
-        <button class="btn-random" id="btnRandom" onclick="playRandomTrack()">
-          <span class="dice-icon">🎲</span>
-          <span>隨機播放一首</span>
-        </button>
-        <div class="track-counter-pill">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">正在讀取曲目表.json...</span>
-        </div>
-      </div>
+      <!-- =====================================================
+           SECTION 1: 開新局設定 (選擇遊戲人數、輸入玩家名字)
+      ====================================================== -->
+      <section id="setupSection" class="stage-card">
+        <div class="setup-body">
+          <div class="setup-header">
+            <div class="setup-title">
+              <span>🏮 開新局設定</span>
+            </div>
+            <div class="track-counter-pill">
+              <span class="status-dot" id="statusDot"></span>
+              <span id="statusText">正在載入曲目庫...</span>
+            </div>
+          </div>
 
-      <!-- Main Player Card -->
-      <main class="player-card">
-        <div class="track-meta">
-          <div class="track-header-row">
-            <div class="track-title-box">
-              <div class="track-title" id="trackTitle">點擊隨機播放</div>
+          <!-- Step 1: Player Count -->
+          <div class="setup-group">
+            <div class="setup-label">
+              <span class="step-num">1</span>
+              <span>選擇遊戲人數</span>
             </div>
-            <div class="track-tags">
-              <span class="tag-category" id="trackInst">國樂之美</span>
-              <span class="tag-views" id="trackViews">準備就緒</span>
+            <div class="count-selector-row">
+              <button class="count-pill" onclick="setPlayerCount(2)">2 人</button>
+              <button class="count-pill" onclick="setPlayerCount(3)">3 人</button>
+              <button class="count-pill active" onclick="setPlayerCount(4)">4 人</button>
+              <button class="count-pill" onclick="setPlayerCount(5)">5 人</button>
+              <button class="count-pill" onclick="setPlayerCount(6)">6 人</button>
+              <button class="count-pill" onclick="setPlayerCount(8)">8 人</button>
+
+              <div class="count-stepper">
+                <button
+                  class="stepper-btn"
+                  onclick="changePlayerCount(-1)"
+                  title="減少人數"
+                >
+                  −
+                </button>
+                <span class="stepper-value" id="playerCountDisplay">4 人</span>
+                <button
+                  class="stepper-btn"
+                  onclick="changePlayerCount(1)"
+                  title="增加人數"
+                >
+                  ＋
+                </button>
+              </div>
             </div>
+          </div>
+
+          <!-- Step 2: Player Names -->
+          <div class="setup-group">
+            <div class="setup-label">
+              <span class="step-num">2</span>
+              <span>輸入大家的名字（可留空使用預設名稱）</span>
+            </div>
+            <div class="player-inputs-grid" id="playerInputsContainer">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Game Flow Summary -->
+          <div class="rules-summary">
+            <strong>🎯 遊戲流程說明：</strong><br />
+            1. 點擊<strong>「隨機播放」</strong>將從隨機段落開始播歌，<strong>畫面與曲名全程隱藏</strong>，且同一局播過的曲目不會再出現。<br />
+            2. 有人要搶答時，<strong>直接點擊畫面任意處即可「暫停搶答」</strong>（或按空白鍵）。<br />
+            3. 猜完後點擊<strong>「揭曉答案」</strong>觀看影片與曲名，由裁判選擇<strong>有沒有人答對</strong>並將分數加給答對的玩家，接著繼續下一首！
+          </div>
+
+          <div style="display: flex; justify-content: center">
+            <button class="btn-gold-large" onclick="startNewGame()">
+              <span>⚔️ 開始新局爭霸</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION 2: 遊戲進行中主舞台
+      ====================================================== -->
+      <section
+        id="gameSection"
+        style="display: none; width: 100%; flex-direction: column; gap: 1.2rem"
+      >
+        <!-- Top Status & Quick Settlement / New Game Bar -->
+        <div class="game-top-bar">
+          <div class="game-progress-info">
+            <span class="round-pill" id="roundBadge">第 1 題</span>
+            <span class="remaining-pill">
+              曲目庫剩餘：<strong id="remainingCount">100</strong> /
+              <span id="totalPoolCount">100</span> 首
+            </span>
+          </div>
+          <div class="game-top-actions">
+            <button
+              class="btn-top-action btn-settle-early"
+              onclick="finishGame('提前結算')"
+              title="結束本局並查看最終排名"
+            >
+              🏆 提前結算
+            </button>
+            <button
+              class="btn-top-action"
+              onclick="confirmReturnToSetup()"
+              title="放棄目前進度並重新設定新局"
+            >
+              🔄 開新局
+            </button>
           </div>
         </div>
 
-        <div class="video-container">
+        <!-- Live Scoreboard -->
+        <div class="scoreboard-panel">
+          <div class="scoreboard-header">
+            <span>👑 即時積分榜（答對一首得 1 分）</span>
+            <span id="leaderHintText">各憑本事搶答！</span>
+          </div>
+          <div class="scoreboard-grid" id="scoreboardGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Main Player & Blindfold Card -->
+        <main class="stage-card">
+          <div class="track-meta">
+            <div class="track-header-row">
+              <div class="track-title-box">
+                <div class="track-title mystery-text" id="trackTitle">
+                  🔒 神秘曲目待播放
+                </div>
+              </div>
+              <div class="track-tags">
+                <span class="tag-category" id="trackInst">盲聽搶答模式</span>
+                <span class="tag-views" id="trackViews">畫面已隱藏</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Area + Blindfold Overlay -->
+          <div class="video-container is-blind" id="videoContainer">
+            <!-- YouTube Player Mount -->
+            <div class="yt-mount-wrapper" id="ytMountWrapper">
+              <div id="ytPlayer"></div>
+            </div>
+
+            <!-- Blindfold Overlay (Hidden only when Answer is Revealed) -->
+            <div
+              class="blind-overlay"
+              id="blindOverlay"
+              onclick="handleBlindOverlayClick(event)"
+            >
+              <!-- Sub-state A: Waiting to start random playback -->
+              <div
+                class="blind-center-box"
+                id="overlayStateReady"
+                style="display: flex"
+              >
+                <div class="blind-emblem">🎲</div>
+                <div class="blind-main-title" id="readyTitleText">
+                  準備開始本題盲聽
+                </div>
+                <div class="blind-sub-desc">
+                  將從本局未出現過的曲目中，隨機擷取一段開始播放（不顯示畫面）
+                </div>
+                <button
+                  class="btn-gold-large"
+                  onclick="startNextRandomRound(event)"
+                >
+                  <span>🎵 點擊隨機播放</span>
+                </button>
+              </div>
+
+              <!-- Sub-state B: Playing Blind -> Click Screen to Pause for Buzz -->
+              <div
+                class="blind-center-box"
+                id="overlayStatePlaying"
+                style="display: none"
+              >
+                <div class="blind-emblem playing-pulse">
+                  <div class="eq-bars">
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                  </div>
+                </div>
+                <div class="blind-main-title" id="playingStatusTitle">
+                  🎶 隨機段落播放中...
+                </div>
+                <div class="blind-sub-desc">
+                  請仔細聆聽！知道答案請立即點擊畫面暫停搶答
+                </div>
+                <div class="buzz-cta-banner">
+                  <span>✋ 點擊畫面任意處【暫停搶答】</span>
+                </div>
+                <div
+                  class="blind-helper-row"
+                  onclick="event.stopPropagation()"
+                >
+                  <button
+                    class="btn-blind-secondary"
+                    onclick="seekAnotherRandomSegment(event)"
+                    title="若剛好抽到安靜片段，可切換至同曲另一段隨機位置"
+                  >
+                    🔀 換個隨機段落聽
+                  </button>
+                  <button
+                    class="btn-blind-secondary"
+                    onclick="redrawCurrentRoundTrack(event)"
+                    title="若遇到影片失效或無聲，可重抽另一首（不消耗題數）"
+                  >
+                    ⚠️ 影片異常？重抽一首
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sub-state C: Paused for Buzz -> Guess then Reveal Answer -->
+              <div
+                class="blind-center-box"
+                id="overlayStatePaused"
+                style="display: none"
+                onclick="event.stopPropagation()"
+              >
+                <div
+                  class="blind-emblem"
+                  style="
+                    border-color: #f87171;
+                    color: #f87171;
+                    background: rgba(201, 59, 59, 0.15);
+                  "
+                >
+                  ⏸️
+                </div>
+                <div class="blind-main-title">✋ 已暫停！請搶答玩家作答</div>
+                <div class="blind-sub-desc">
+                  玩家說出曲名後，請點擊下方「揭曉答案」查看影片與正確曲名
+                </div>
+                <button class="btn-gold-large" onclick="revealAnswer(event)">
+                  <span>✨ 揭曉答案</span>
+                </button>
+                <div class="blind-helper-row">
+                  <button
+                    class="btn-blind-secondary"
+                    onclick="resumeBlindPlayback(event)"
+                  >
+                    ▶️ 還沒猜出來，繼續播放音樂
+                  </button>
+                  <button
+                    class="btn-blind-secondary"
+                    onclick="seekAnotherRandomSegment(event)"
+                  >
+                    🔀 換個隨機段落繼續聽
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Referee Judgment Panel (Visible after Reveal Answer) -->
           <div
-            class="video-placeholder"
-            id="videoPlaceholder"
-            onclick="playRandomTrack()"
-          >
-            <div class="placeholder-icon">▶</div>
-            <p>點擊上方「隨機播放一首」或直接點此開始</p>
-          </div>
-          <iframe
-            id="ytPlayer"
-            style="display: none"
-            src=""
-            title="YouTube video player"
-            frameborder="0"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="
-              accelerometer;
-              autoplay;
-              clipboard-write;
-              encrypted-media;
-              gyroscope;
-              picture-in-picture;
-              web-share;
-            "
-            allowfullscreen
-          >
-          </iframe>
-        </div>
-
-        <div class="player-controls">
-          <div class="control-group-left">
-            <button
-              class="control-btn"
-              onclick="playPrevTrack()"
-              id="btnPrev"
-              title="播放上一首"
-              disabled
-            >
-              ⏮️ 上一首
-            </button>
-            <button
-              class="control-btn"
-              onclick="playRandomTrack()"
-              title="換下一首隨機曲目"
-            >
-              ⏭️ 再抽一首
-            </button>
-          </div>
-          <a
-            class="control-btn btn-yt-highlight"
-            id="btnExternalLink"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+            class="referee-panel"
+            id="refereePanel"
             style="display: none"
           >
-            ▶ 在 YouTube 開啟此曲
-          </a>
-        </div>
-      </main>
+            <!-- Step 1: Did anyone get it right? -->
+            <div class="referee-step-box" id="refereeStepAsk">
+              <div class="referee-prompt">
+                🎯 答案已揭曉！裁判請判定：有沒有人答對？
+              </div>
+              <div class="referee-choice-row">
+                <button
+                  class="btn-judge-yes"
+                  onclick="showWinnerSelection()"
+                >
+                  ⭕ 有答對！（選擇得分玩家）
+                </button>
+                <button
+                  class="btn-judge-no"
+                  onclick="handleNoOneCorrect()"
+                >
+                  ❌ 沒人答對，繼續下一首
+                </button>
+              </div>
+            </div>
 
-      <!-- Playlist Browser -->
-      <section class="playlist-section">
-        <div class="section-header">
-          <div class="section-title">
-            <span>📜 全部曲目清單</span>
-            <span
-              style="
-                font-size: 0.85rem;
-                color: var(--text-dim);
-                font-weight: normal;
-              "
-              id="playlistCount"
-              >(0 首)</span
+            <!-- Step 2: Select which player gets the point, then continue -->
+            <div
+              class="referee-step-box"
+              id="refereeStepSelectPlayer"
+              style="display: none"
             >
+              <div class="referee-prompt">
+                👑 請選擇分數 (+1 分) 要給哪一位玩家：
+              </div>
+              <div class="winner-select-grid" id="winnerSelectGrid">
+                <!-- Player award buttons rendered by JS -->
+              </div>
+              <div
+                class="referee-choice-row"
+                style="margin-top: 0.4rem"
+              >
+                <button
+                  class="btn-gold-large"
+                  id="btnConfirmWinnerNext"
+                  onclick="confirmWinnerAndNext()"
+                  style="display: none; padding: 0.85rem 2.2rem; font-size: 1.15rem"
+                >
+                  <span id="btnConfirmWinnerText">🎲 確認給分，繼續下一首</span>
+                </button>
+                <button
+                  class="btn-blind-secondary"
+                  onclick="backToRefereeAsk()"
+                >
+                  ↩️ 返回重選「有沒有答對」
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="search-box">
-            <input
-              type="text"
-              class="search-input"
-              id="searchInput"
-              placeholder="搜尋曲名或樂器 (例如：二胡, 琵琶)..."
-              oninput="renderTrackList()"
-            />
+
+          <!-- Footer Controls (Shown when revealed) -->
+          <div class="player-controls" id="revealedFooterControls" style="display: none">
+            <span style="font-size: 0.85rem; color: var(--text-muted)">
+              💡 答案揭曉中，可自由觀看上方演奏畫面
+            </span>
+            <a
+              class="control-btn btn-yt-highlight"
+              id="btnExternalLink"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ▶ 在 YouTube 開啟此曲
+            </a>
           </div>
-        </div>
-        <div class="track-list" id="trackListContainer">
-          <!-- Tracks rendered by JS -->
+        </main>
+      </section>
+
+      <!-- =====================================================
+           SECTION 3: 結算畫面 (提前結算 / 曲目庫用完結算)
+      ====================================================== -->
+      <section id="settlementSection" class="stage-card" style="display: none">
+        <div class="settlement-body">
+          <div class="settlement-banner">
+            <span class="settlement-reason-badge" id="settlementReasonBadge"
+              >🏆 賽事結算</span
+            >
+            <div class="settlement-title">最終榮耀排行榜</div>
+            <p class="subtitle" id="settlementSummaryText">
+              本局共進行 0 題搶答
+            </p>
+          </div>
+
+          <div class="ranking-list" id="rankingListContainer">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="round-history-box">
+            <div class="round-history-title">
+              <span>📜 本局播放曲目與搶答紀錄</span>
+              <span id="historyTotalLabel">0 首</span>
+            </div>
+            <div class="round-history-list" id="roundHistoryList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="settlement-actions">
+            <button
+              class="btn-blind-secondary"
+              id="btnResumeUnfinished"
+              onclick="resumeFromEarlySettlement()"
+              style="display: none; padding: 0.85rem 1.4rem"
+            >
+              🔙 返回繼續未完牌局
+            </button>
+            <button
+              class="btn-gold-large"
+              onclick="restartSamePlayers()"
+              style="padding: 0.9rem 2rem; font-size: 1.15rem"
+            >
+              <span>🔥 原班人馬再開一局</span>
+            </button>
+            <button
+              class="btn-blind-secondary"
+              onclick="goToSetupScreen()"
+              style="padding: 0.85rem 1.5rem"
+            >
+              👥 重新設定人數與名字
+            </button>
+          </div>
         </div>
       </section>
 
       <!-- Footer -->
       <footer>
-        <div>國樂之王 · 隨機曲目播放系統</div>
+        <div>國樂之王 · 盲聽搶答爭霸系統</div>
         <label
           class="file-source-tip"
           title="點擊可手動載入更新後的 曲目表.json"
         >
-          📂 點此手動載入本機 JSON 檔案
+          📂 點此手動載入自訂 曲目表.json
           <input
             type="file"
             id="fileSelector"
@@ -804,811 +1727,803 @@
     </div>
 
     <script>
-      // 內建備援資料庫 (防止使用者以 file:/// 本機協議直接雙擊開啟時受瀏覽器 CORS 限制)
-      const EMBEDDED_FALLBACK = [
-        {
-          曲名: "梁山伯與祝英台",
-          "編制 / 主奏": "二胡協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/tu5XohUR3Pg",
-          參考觀看量: 12496172,
-        },
-        {
-          曲名: "春江花月夜",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/Lykgg5phVJE",
-          參考觀看量: 10460088,
-        },
-        {
-          曲名: "平湖秋月",
-          "編制 / 主奏": "廣東音樂 / 高胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/WXbYMxexCV8",
-          參考觀看量: 1919466,
-        },
-        {
-          曲名: "百鳥朝鳳",
-          "編制 / 主奏": "嗩吶協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/Rq_IIvzuF5Y",
-          參考觀看量: 6157533,
-        },
-        {
-          曲名: "二泉映月",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/Fj13KU3SAvE",
-          參考觀看量: 4236585,
-        },
-        {
-          曲名: "江河水",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/RD6hq_hVDLM",
-          參考觀看量: 3669599,
-        },
-        {
-          曲名: "賽馬",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/zH1ch4Ydg1k",
-          參考觀看量: 45821,
-        },
-        {
-          曲名: "高山流水",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/WbCjceRPXyw",
-          參考觀看量: 3445728,
-        },
-        {
-          曲名: "闖將令",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/8eQ2y8-jO1M",
-          參考觀看量: 2867589,
-        },
-        {
-          曲名: "十面埋伏",
-          "編制 / 主奏": "琵琶齊奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/3PfNnmtfGvE",
-          參考觀看量: 2704379,
-        },
-        {
-          曲名: "流水",
-          "編制 / 主奏": "古琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/BcElotwrZ8o",
-          參考觀看量: 2627754,
-        },
-        {
-          曲名: "彩雲追月",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/DRFJBXLlvfs",
-          參考觀看量: 535741,
-        },
-        {
-          曲名: "漁舟唱晚",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/T2AzQyb5_Jg",
-          參考觀看量: 2308015,
-        },
-        {
-          曲名: "得勝令",
-          "編制 / 主奏": "廣東音樂 / 絲竹吹打",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/4fUPn0a1TMY",
-          參考觀看量: 67974,
-        },
-        {
-          曲名: "夜深沉",
-          "編制 / 主奏": "京胡與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/dyf8zpGlHZw",
-          參考觀看量: 2168758,
-        },
-        {
-          曲名: "戰馬奔騰",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/tgotVTkTSwo",
-          參考觀看量: 2136210,
-        },
-        {
-          曲名: "霸王卸甲",
-          "編制 / 主奏": "琵琶獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/-ZmAgFyVo48",
-          參考觀看量: 2124852,
-        },
-        {
-          曲名: "牧民新歌",
-          "編制 / 主奏": "笛子與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/SIyRi_LD0Yw",
-          參考觀看量: 2096274,
-        },
-        {
-          曲名: "蘭花花敘事曲",
-          "編制 / 主奏": "二胡協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/T2LIJb6O9KM",
-          參考觀看量: 1694046,
-        },
-        {
-          曲名: "鬧天宮",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/NS3QNJTvudQ",
-          參考觀看量: 8018,
-        },
-        {
-          曲名: "彝族舞曲",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/H6qcG4-i1tg",
-          參考觀看量: 1490628,
-        },
-        {
-          曲名: "金蛇狂舞",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/1x5TeFkR6qI",
-          參考觀看量: 1483529,
-        },
-        {
-          曲名: "豫北敘事曲",
-          "編制 / 主奏": "二胡與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/wrLj6nPWawE",
-          參考觀看量: 245356,
-        },
-        {
-          曲名: "柳青娘",
-          "編制 / 主奏": "潮州弦詩樂",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/LGAloB6TO3Q",
-          參考觀看量: 1090430,
-        },
-        {
-          曲名: "廣陵散",
-          "編制 / 主奏": "古琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/IV4rkOdELrs",
-          參考觀看量: 1067875,
-        },
-        {
-          曲名: "妝台秋思",
-          "編制 / 主奏": "廣東音樂 / 高胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/q7D87BsxB-0",
-          參考觀看量: 979217,
-        },
-        {
-          曲名: "雨打芭蕉",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/pwXFDDj8biE",
-          參考觀看量: 971000,
-        },
-        {
-          曲名: "陽關三疊",
-          "編制 / 主奏": "古琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/n8eS9KpRpXo",
-          參考觀看量: 962158,
-        },
-        {
-          曲名: "瑤族舞曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/JmFwAPbJxxs",
-          參考觀看量: 895362,
-        },
-        {
-          曲名: "花好月圓",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/-9crGpn9Ed8",
-          參考觀看量: 886412,
-        },
-        {
-          曲名: "陽春白雪",
-          "編制 / 主奏": "琵琶獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/o1d3lsISQFk",
-          參考觀看量: 794629,
-        },
-        {
-          曲名: "寒鴉戲水",
-          "編制 / 主奏": "潮州弦詩樂",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/8S5eH_59b1M",
-          參考觀看量: 757868,
-        },
-        {
-          曲名: "旱天雷",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/NvlhKw2DNig",
-          參考觀看量: 755497,
-        },
-        {
-          曲名: "倒垂簾",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/OIxmka7Cm6Y",
-          參考觀看量: 5738,
-        },
-        {
-          曲名: "春節序曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/DTx-DkdZ-i8",
-          參考觀看量: 741123,
-        },
-        {
-          曲名: "雙星恨",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/m7grngKfk_8",
-          參考觀看量: 696861,
-        },
-        {
-          曲名: "戰颱風",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/ORH7wi1tAbY",
-          參考觀看量: 637527,
-        },
-        {
-          曲名: "揚鞭催馬運糧忙",
-          "編制 / 主奏": "梆笛獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/3JrdJu7Vb00",
-          參考觀看量: 630071,
-        },
-        {
-          曲名: "塞上曲",
-          "編制 / 主奏": "琵琶獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/PImQ7BddYa0",
-          參考觀看量: 617977,
-        },
-        {
-          曲名: "鳳凰展翅",
-          "編制 / 主奏": "笙獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/_iR-KrbeFs0",
-          參考觀看量: 558027,
-        },
-        {
-          曲名: "絲綢之路",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/1_hOYfMgL0g",
-          參考觀看量: 531611,
-        },
-        {
-          曲名: "劍器",
-          "編制 / 主奏": "柳琴與民族管弦樂",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/qD7g5eQRYns",
-          參考觀看量: 217,
-        },
-        {
-          曲名: "行者",
-          "編制 / 主奏": "古箏與打擊樂 / 民族室內樂",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/O266fF4sxPU",
-          參考觀看量: 487114,
-        },
-        {
-          曲名: "東海漁歌",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/1OwmYFc7o3Y",
-          參考觀看量: 485784,
-        },
-        {
-          曲名: "台灣追想曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/6KDnl6I1p2o",
-          參考觀看量: 481027,
-        },
-        {
-          曲名: "花木蘭",
-          "編制 / 主奏": "琵琶協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/BdpGA7dTy28",
-          參考觀看量: 470290,
-        },
-        {
-          曲名: "秦·兵馬俑",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/i7Hz_xpMt4I",
-          參考觀看量: 461538,
-        },
-        {
-          曲名: "酒狂",
-          "編制 / 主奏": "古琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/S6XAjpEa2r0",
-          參考觀看量: 446791,
-        },
-        {
-          曲名: "走西口",
-          "編制 / 主奏": "竹笛協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/81AwmQqDY9o",
-          參考觀看量: 422898,
-        },
-        {
-          曲名: "賽龍奪錦",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/40KTXcXb4GU",
-          參考觀看量: 394879,
-        },
-        {
-          曲名: "平沙落雁",
-          "編制 / 主奏": "古琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/uPurIC-Cbj4",
-          參考觀看量: 380607,
-        },
-        {
-          曲名: "小刀會序曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/Z41dLqfV5wo",
-          參考觀看量: 364019,
-        },
-        {
-          曲名: "喜洋洋",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/FGfewK2e_tU",
-          參考觀看量: 351630,
-        },
-        {
-          曲名: "桃花過渡",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/U_pxSbofyEQ",
-          參考觀看量: 21524,
-        },
-        {
-          曲名: "風獅爺傳奇",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/LN2f4ZDAY9U",
-          參考觀看量: 328287,
-        },
-        {
-          曲名: "月夜",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/EKO4Jp37zAY",
-          參考觀看量: 322688,
-        },
-        {
-          曲名: "娛樂升平",
-          "編制 / 主奏": "廣東音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/OaVihym86-U",
-          參考觀看量: 320734,
-        },
-        {
-          曲名: "茉莉花",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/qGeSTMQK_EA",
-          參考觀看量: 320536,
-        },
-        {
-          曲名: "雲想花想",
-          "編制 / 主奏": "琵琶協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/9Sd_AfEVDQc",
-          參考觀看量: 319079,
-        },
-        {
-          曲名: "昭君怨",
-          "編制 / 主奏": "潮州音樂 / 絲竹",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/ne64ukBLhL0",
-          參考觀看量: 310918,
-        },
-        {
-          曲名: "太陽頌",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/DdaPvzqtjPY",
-          參考觀看量: 306131,
-        },
-        {
-          曲名: "春",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/pV-ZqjFQJBs",
-          參考觀看量: 294587,
-        },
-        {
-          曲名: "紅樓夢序曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/0V37J9ty_0w",
-          參考觀看量: 203087,
-        },
-        {
-          曲名: "豐收鑼鼓",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/LgtCTUIMtT4",
-          參考觀看量: 282467,
-        },
-        {
-          曲名: "北京喜訊到邊寨",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/cqNAd6Rc6lM",
-          參考觀看量: 280009,
-        },
-        {
-          曲名: "狂想曲",
-          "編制 / 主奏": "揚琴協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/eA23RsgV2nQ",
-          參考觀看量: 258428,
-        },
-        {
-          曲名: "挑山",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/B--H3wWHSKI",
-          參考觀看量: 249696,
-        },
-        {
-          曲名: "姑蘇行",
-          "編制 / 主奏": "笛子與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/zlh25zKrBZY",
-          參考觀看量: 232310,
-        },
-        {
-          曲名: "黃土情",
-          "編制 / 主奏": "揚琴協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/gV6dnoGzchs",
-          參考觀看量: 6537,
-        },
-        {
-          曲名: "慶典序曲",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/pdPCSb2pb_U",
-          參考觀看量: 221220,
-        },
-        {
-          曲名: "病中吟",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/ibiUvwZY7GQ",
-          參考觀看量: 203528,
-        },
-        {
-          曲名: "大浪淘沙",
-          "編制 / 主奏": "琵琶獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/KCK29taZ2N4",
-          參考觀看量: 200420,
-        },
-        {
-          曲名: "白蛇傳",
-          "編制 / 主奏": "竹笛協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/o1aKUSU2Hss",
-          參考觀看量: 199764,
-        },
-        {
-          曲名: "紫竹調",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/5WTpKQFCehU",
-          參考觀看量: 199654,
-        },
-        {
-          曲名: "丟丟銅仔",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/aM9tIFCZWBM",
-          參考觀看量: 97768,
-        },
-        {
-          曲名: "陽明春曉",
-          "編制 / 主奏": "梆笛獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/2mV0VQti4zA",
-          參考觀看量: 193203,
-        },
-        {
-          曲名: "將軍令",
-          "編制 / 主奏": "揚琴獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/A5i4O6DQmXI",
-          參考觀看量: 169077,
-        },
-        {
-          曲名: "一枝花",
-          "編制 / 主奏": "二胡與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/c9MsLPamJTs",
-          參考觀看量: 167938,
-        },
-        {
-          曲名: "臨安遺恨",
-          "編制 / 主奏": "古箏協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/r4T4chpPogo",
-          參考觀看量: 161665,
-        },
-        {
-          曲名: "獅子滾繡球",
-          "編制 / 主奏": "潮州大鑼鼓",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/JNMJtgUDvzg",
-          參考觀看量: 154507,
-        },
-        {
-          曲名: "步步高",
-          "編制 / 主奏": "民族管弦樂合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/ugN0CdyUJJM",
-          參考觀看量: 147283,
-        },
-        {
-          曲名: "香山射鼓",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/jd2kodD4aoM",
-          參考觀看量: 145403,
-        },
-        {
-          曲名: "良宵",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/pOLN3gLYZ74",
-          參考觀看量: 136127,
-        },
-        {
-          曲名: "草原英雄小姐妹",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/2i3AXEvUerk",
-          參考觀看量: 126923,
-        },
-        {
-          曲名: "龍騰虎躍",
-          "編制 / 主奏": "打擊樂與樂隊合奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/T66v_jzPSHI",
-          參考觀看量: 124394,
-        },
-        {
-          曲名: "唐響",
-          "編制 / 主奏": "琵琶協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/gcgiVGDsRAc",
-          參考觀看量: 110269,
-        },
-        {
-          曲名: "葡萄熟了",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/dBemWIKtdeY",
-          參考觀看量: 109831,
-        },
-        {
-          曲名: "出水蓮",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/a8onhhhoUDc",
-          參考觀看量: 107064,
-        },
-        {
-          曲名: "空山鳥語",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/0zDEWsOBitU",
-          參考觀看量: 103866,
-        },
-        {
-          曲名: "三門峽暢想曲",
-          "編制 / 主奏": "二胡與鋼琴",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/-7M8w3z2oIg",
-          參考觀看量: 99909,
-        },
-        {
-          曲名: "秦川抒懷",
-          "編制 / 主奏": "笛子與樂隊",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/_Wm4jh4TYm4",
-          參考觀看量: 95553,
-        },
-        {
-          曲名: "雲南回憶",
-          "編制 / 主奏": "中阮協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/Z2POBECt2Jw",
-          參考觀看量: 85444,
-        },
-        {
-          曲名: "雪山春曉",
-          "編制 / 主奏": "古箏獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/QqtJPv3rYJk",
-          參考觀看量: 78502,
-        },
-        {
-          曲名: "長城隨想",
-          "編制 / 主奏": "二胡協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/g8mNMcNBhNI",
-          參考觀看量: 77320,
-        },
-        {
-          曲名: "定風波",
-          "編制 / 主奏": "古箏協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/ZkWKS5bsy88",
-          參考觀看量: 39571,
-        },
-        {
-          曲名: "楓橋夜泊",
-          "編制 / 主奏": "古箏協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/NjkCw8duzHE",
-          參考觀看量: 23895,
-        },
-        {
-          曲名: "聽松",
-          "編制 / 主奏": "二胡獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/cvXqVBtPAjI",
-          參考觀看量: 14085,
-        },
-        {
-          曲名: "鷓鴣飛",
-          "編制 / 主奏": "曲笛獨奏",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/VBZmDMAj56M",
-          參考觀看量: 12765,
-        },
-        {
-          曲名: "霸王別姬",
-          "編制 / 主奏": "京胡與樂隊協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/AUUIbCYhLg8",
-          參考觀看量: 2417,
-        },
-        {
-          曲名: "陌上花開",
-          "編制 / 主奏": "竹笛協奏曲",
-          "YouTube 外嵌連結": "https://www.youtube.com/embed/VX2H74DYydY",
-          參考觀看量: 1232,
-        },
-      ];
+      // =====================================================
+      // 全域狀態管理
+      // =====================================================
+      let playlist = []; // 完整曲目庫
+      let unplayedTracks = []; // 本局尚未播放過的曲目池（不重複抽取）
+      let currentTrack = null; // 當前題目的曲目物件
+      let currentRoundNumber = 0; // 目前題號
+      let roundPhase = "IDLE"; // 'IDLE' | 'PLAYING' | 'PAUSED' | 'REVEALED'
 
-      let playlist = [];
-      let currentTrack = null;
-      let history = [];
-      let historyIndex = -1;
+      // 玩家設定與分數
+      let setupPlayerCount = 4;
+      let savedPlayerNames = ["", "", "", ""];
+      let players = []; // [{ name: '玩家 1', score: 0 }, ...]
+      let selectedWinnerIdx = null;
+      let roundHistory = []; // [{ round, track, winnerName }]
 
-      // 初始化讀取曲目表.json
+      // YouTube IFrame API 播放器狀態
+      let ytPlayer = null;
+      let ytApiReady = false;
+      let pendingVideoLoad = null;
+      let needsProportionalRandomSeek = false;
+      let unmuteSafetyTimer = null;
+
+      // =====================================================
+      // 初始化與曲目讀取
+      // =====================================================
       async function init() {
         const statusText = document.getElementById("statusText");
         const statusDot = document.getElementById("statusDot");
 
-        // 檢查是否直接以 file:/// 協定開啟
         if (window.location.protocol === "file:") {
           const notice = document.getElementById("fileProtocolNotice");
           if (notice) notice.style.display = "flex";
         }
 
         try {
-          // 優先嘗試從同目錄讀取 曲目表.json
           const response = await fetch("./曲目表.json", { cache: "no-store" });
           if (!response.ok) throw new Error("HTTP Status " + response.status);
           playlist = await response.json();
-          statusText.innerText = `已讀取 曲目表.json (共 ${playlist.length} 首)`;
+          statusText.innerText = `已載入 曲目表.json (共 ${playlist.length} 首)`;
           statusDot.style.backgroundColor = "#10b981";
         } catch (err) {
-          // 若以 file:// 協定直接點開被瀏覽器安全性原則擋下 fetch，平滑切換至內建備援清單
-          console.warn(
-            "無法透過 fetch 讀取曲目表.json (通常為 file:// 協議限制)，已切換至備援資料庫",
-            err,
-          );
-          playlist = EMBEDDED_FALLBACK;
-          statusText.innerText = `曲目表已就緒 (共 ${playlist.length} 首)`;
-          statusDot.style.backgroundColor = "#10b981";
+          console.error("載入 曲目表.json 失敗：", err);
+          statusText.innerText = `無法載入 曲目表.json`;
+          statusDot.style.backgroundColor = "#ef4444";
         }
 
-        document.getElementById("playlistCount").innerText =
-          `(${playlist.length} 首)`;
-        renderTrackList();
+        renderPlayerInputs();
+        loadYouTubeIframeAPI();
+
+        // 支援空白鍵快速暫停搶答
+        window.addEventListener("keydown", (e) => {
+          if (
+            e.code === "Space" &&
+            document.getElementById("gameSection").style.display !== "none" &&
+            roundPhase === "PLAYING"
+          ) {
+            e.preventDefault();
+            pauseForBuzz();
+          }
+        });
       }
 
-      // 隨機播放一首
-      function playRandomTrack() {
-        if (!playlist || playlist.length === 0) {
-          alert("曲目表為空，無法播放！");
+      // =====================================================
+      // YouTube IFrame Player API 載入與隨機段落控制
+      // =====================================================
+      function loadYouTubeIframeAPI() {
+        if (window.YT && window.YT.Player) {
+          initYTPlayerInstance();
           return;
         }
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      }
 
-        let randomIndex;
-        if (playlist.length === 1) {
-          randomIndex = 0;
+      window.onYouTubeIframeAPIReady = function () {
+        initYTPlayerInstance();
+      };
+
+      function initYTPlayerInstance() {
+        if (ytPlayer) return;
+        const playerVars = {
+          autoplay: 0,
+          controls: 1,
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1,
+          enablejsapi: 1,
+        };
+        if (window.location.protocol.startsWith("http")) {
+          playerVars.origin = window.location.origin;
+        }
+
+        ytPlayer = new YT.Player("ytPlayer", {
+          width: "100%",
+          height: "100%",
+          playerVars: playerVars,
+          events: {
+            onReady: () => {
+              ytApiReady = true;
+              if (pendingVideoLoad) {
+                const { videoId, fallbackStart } = pendingVideoLoad;
+                pendingVideoLoad = null;
+                executeRandomSegmentLoad(videoId, fallbackStart);
+              }
+            },
+            onStateChange: onYTStateChange,
+            onError: onYTError,
+          },
+        });
+      }
+
+      function onYTStateChange(event) {
+        // 當影片首次開始播放時，若尚未根據真實曲長做隨機段落切入，則根據總長度動態跳轉至 12%~78% 之間的隨機段落
+        if (
+          event.data === YT.PlayerState.PLAYING &&
+          needsProportionalRandomSeek
+        ) {
+          needsProportionalRandomSeek = false;
+          try {
+            const duration = ytPlayer.getDuration();
+            if (duration && duration > 45) {
+              const minSec = Math.max(12, Math.floor(duration * 0.12));
+              const maxSec = Math.max(
+                minSec + 10,
+                Math.min(Math.floor(duration - 20), Math.floor(duration * 0.78)),
+              );
+              const randomStart =
+                Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
+              ytPlayer.seekTo(randomStart, true);
+            }
+          } catch (e) {
+            console.warn("動態段落跳轉失敗，維持預設隨機秒數", e);
+          }
+
+          clearTimeout(unmuteSafetyTimer);
+          unmuteSafetyTimer = setTimeout(() => {
+            try {
+              ytPlayer.unMute();
+              ytPlayer.setVolume(100);
+            } catch (e) {}
+          }, 220);
+        }
+      }
+
+      function onYTError(event) {
+        console.warn("YouTube 播放器回報錯誤代碼：", event.data);
+        const titleEl = document.getElementById("playingStatusTitle");
+        if (titleEl && roundPhase === "PLAYING") {
+          titleEl.innerText = "⚠️ 此曲目影片無法內嵌播放，請點下方「重抽一首」";
+        }
+      }
+
+      function extractVideoId(embedUrl) {
+        if (!embedUrl) return "";
+        const match = embedUrl.match(/(?:embed\/|v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        return match ? match[1] : "";
+      }
+
+      function loadTrackAtRandomSegment(track) {
+        const embedUrl = track["YouTube 外嵌連結"] || "";
+        const videoId = extractVideoId(embedUrl);
+
+        // 預設隨機起點 (25秒 ~ 95秒)，若 YT.Player 取得真實總長會再精準校正至全曲 12%~78% 區間
+        const fallbackStart = Math.floor(Math.random() * 70) + 25;
+
+        // 更新外部 YouTube 連結按鈕 (僅揭曉答案後顯示)
+        const btnExternal = document.getElementById("btnExternalLink");
+        if (videoId) {
+          btnExternal.href = `https://www.youtube.com/watch?v=${videoId}`;
         } else {
-          // 避免連續抽到同一首
-          do {
-            randomIndex = Math.floor(Math.random() * playlist.length);
-          } while (
-            currentTrack &&
-            playlist[randomIndex]["曲名"] === currentTrack["曲名"]
+          btnExternal.href = embedUrl;
+        }
+
+        if (ytApiReady && ytPlayer && typeof ytPlayer.loadVideoById === "function") {
+          executeRandomSegmentLoad(videoId, fallbackStart);
+        } else if (window.YT && window.YT.Player && !ytApiReady) {
+          pendingVideoLoad = { videoId, fallbackStart };
+        } else {
+          // 備援：直接使用 iframe src 搭配 start 參數與 enablejsapi
+          fallbackIframeLoad(embedUrl, fallbackStart);
+        }
+      }
+
+      function executeRandomSegmentLoad(videoId, fallbackStart) {
+        needsProportionalRandomSeek = true;
+        clearTimeout(unmuteSafetyTimer);
+        try {
+          ytPlayer.mute();
+          ytPlayer.loadVideoById({
+            videoId: videoId,
+            startSeconds: fallbackStart,
+          });
+          unmuteSafetyTimer = setTimeout(() => {
+            try {
+              ytPlayer.unMute();
+              ytPlayer.setVolume(100);
+            } catch (e) {}
+          }, 950);
+        } catch (err) {
+          console.warn("YT.Player loadVideoById 異常：", err);
+        }
+      }
+
+      function fallbackIframeLoad(embedUrl, startSec) {
+        const wrapper = document.getElementById("ytMountWrapper");
+        const separator = embedUrl.includes("?") ? "&" : "?";
+        let params = `autoplay=1&playsinline=1&enablejsapi=1&rel=0&start=${startSec}`;
+        if (window.location.protocol.startsWith("http")) {
+          params += `&origin=${encodeURIComponent(window.location.origin)}`;
+        }
+        wrapper.innerHTML = `<iframe id="ytFallbackIframe" src="${embedUrl}${separator}${params}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+      }
+
+      function pauseCurrentVideo() {
+        if (ytApiReady && ytPlayer && typeof ytPlayer.pauseVideo === "function") {
+          try {
+            ytPlayer.pauseVideo();
+          } catch (e) {}
+        }
+        const iframe = wrapperIframeElement();
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+            "*",
           );
         }
-
-        const selected = playlist[randomIndex];
-
-        // 記錄播放歷史
-        history.push(selected);
-        historyIndex = history.length - 1;
-        updateHistoryButtons();
-
-        playTrack(selected, true);
       }
 
-      // 播放指定曲目
-      function playTrack(track, autoplay = true) {
-        if (!track) return;
-        currentTrack = track;
+      function playCurrentVideo() {
+        if (ytApiReady && ytPlayer && typeof ytPlayer.playVideo === "function") {
+          try {
+            ytPlayer.unMute();
+            ytPlayer.setVolume(100);
+            ytPlayer.playVideo();
+          } catch (e) {}
+        }
+        const iframe = wrapperIframeElement();
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+            "*",
+          );
+        }
+      }
 
-        // 更新曲目資訊
-        document.getElementById("trackTitle").innerText =
-          track["曲名"] || "未知曲目";
-        document.getElementById("trackInst").innerText =
-          track["編制 / 主奏"] || "國樂演奏";
+      function wrapperIframeElement() {
+        return document.querySelector("#ytMountWrapper iframe");
+      }
 
-        const views = track["參考觀看量"];
-        document.getElementById("trackViews").innerText = views
-          ? `🔥 ${Number(views).toLocaleString()} 次觀看`
-          : "熱門推薦";
+      // =====================================================
+      // STEP 1 & 2: 開新局、選擇遊戲人數與輸入名字
+      // =====================================================
+      function saveCurrentInputValues() {
+        const inputs = document.querySelectorAll(".player-name-input");
+        inputs.forEach((input, idx) => {
+          savedPlayerNames[idx] = input.value;
+        });
+      }
 
-        // YouTube 播放設定
-        const embedUrl = track["YouTube 外嵌連結"] || "";
-        if (embedUrl) {
-          const separator = embedUrl.includes("?") ? "&" : "?";
-          let params = `autoplay=${autoplay ? 1 : 0}&playsinline=1&enablejsapi=1`;
+      function setPlayerCount(count) {
+        saveCurrentInputValues();
+        setupPlayerCount = Math.max(1, Math.min(20, count));
+        while (savedPlayerNames.length < setupPlayerCount) {
+          savedPlayerNames.push("");
+        }
+        renderPlayerInputs();
+      }
 
-          // 若透過本機伺服器 (http) 提供標準 Origin 參數給 YouTube API
-          if (window.location.protocol.startsWith("http")) {
-            params += `&origin=${encodeURIComponent(window.location.origin)}`;
-          }
+      function changePlayerCount(delta) {
+        setPlayerCount(setupPlayerCount + delta);
+      }
 
-          const finalUrl = `${embedUrl}${separator}${params}`;
+      function renderPlayerInputs() {
+        document.getElementById("playerCountDisplay").innerText =
+          `${setupPlayerCount} 人`;
 
-          const iframe = document.getElementById("ytPlayer");
-          const placeholder = document.getElementById("videoPlaceholder");
-
-          iframe.src = finalUrl;
-          iframe.style.display = "block";
-          placeholder.style.display = "none";
-
-          // 外部連結按鈕
-          const btnExternal = document.getElementById("btnExternalLink");
-          const videoIdMatch = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
-          if (videoIdMatch && videoIdMatch[1]) {
-            btnExternal.href = `https://www.youtube.com/watch?v=${videoIdMatch[1]}`;
-            btnExternal.style.display = "inline-flex";
+        // 更新快速人數按鈕高亮
+        const presetCounts = [2, 3, 4, 5, 6, 8];
+        document.querySelectorAll(".count-pill").forEach((btn, idx) => {
+          if (presetCounts[idx] === setupPlayerCount) {
+            btn.classList.add("active");
           } else {
-            btnExternal.href = embedUrl;
-            btnExternal.style.display = "inline-flex";
+            btn.classList.remove("active");
           }
-        }
-
-        // 更新清單高亮
-        highlightPlayingItem();
-      }
-
-      // 播放上一首
-      function playPrevTrack() {
-        if (historyIndex > 0) {
-          historyIndex--;
-          updateHistoryButtons();
-          playTrack(history[historyIndex], true);
-        }
-      }
-
-      function updateHistoryButtons() {
-        const btnPrev = document.getElementById("btnPrev");
-        if (btnPrev) {
-          btnPrev.disabled = historyIndex <= 0;
-        }
-      }
-
-      // 渲染下方曲目清單與搜尋過濾
-      function renderTrackList() {
-        const container = document.getElementById("trackListContainer");
-        const query = (document.getElementById("searchInput").value || "")
-          .trim()
-          .toLowerCase();
-
-        const filtered = playlist.filter((item) => {
-          if (!query) return true;
-          const name = (item["曲名"] || "").toLowerCase();
-          const inst = (item["編制 / 主奏"] || "").toLowerCase();
-          return name.includes(query) || inst.includes(query);
         });
 
+        const container = document.getElementById("playerInputsContainer");
         container.innerHTML = "";
 
-        if (filtered.length === 0) {
-          container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 2rem;">無符合「${query}」的曲目</div>`;
+        for (let i = 0; i < setupPlayerCount; i++) {
+          const val = savedPlayerNames[i] || "";
+          const card = document.createElement("div");
+          card.className = "player-input-card";
+          card.innerHTML = `
+            <div class="player-avatar-badge">P${i + 1}</div>
+            <input
+              type="text"
+              class="player-name-input"
+              placeholder="玩家 ${i + 1} 名字"
+              value="${escapeHtml(val)}"
+              maxlength="16"
+            />
+          `;
+          container.appendChild(card);
+        }
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // 點擊「開始新局爭霸」
+      function startNewGame() {
+        if (!playlist || playlist.length === 0) {
+          alert("曲目庫為空，請確認曲目表.json是否正確！");
           return;
         }
 
-        filtered.forEach((item, index) => {
-          const isCurrent =
-            currentTrack && currentTrack["曲名"] === item["曲名"];
-          const div = document.createElement("div");
-          div.className = `track-item ${isCurrent ? "playing" : ""}`;
-          div.dataset.name = item["曲名"];
-          div.onclick = () => {
-            history.push(item);
-            historyIndex = history.length - 1;
-            updateHistoryButtons();
-            playTrack(item, true);
-          };
+        saveCurrentInputValues();
+        players = [];
+        for (let i = 0; i < setupPlayerCount; i++) {
+          const rawName = (savedPlayerNames[i] || "").trim();
+          players.push({
+            name: rawName || `玩家 ${i + 1}`,
+            score: 0,
+          });
+        }
 
-          const views = item["參考觀看量"]
-            ? Number(item["參考觀看量"]).toLocaleString() + " 次"
-            : "";
-
-          div.innerHTML = `
-          <div class="track-item-left">
-            <span class="track-item-index">${index + 1}</span>
-            <div>
-              <span class="track-item-name">${item["曲名"]}</span>
-              <span class="track-item-inst" style="margin-left: 0.5rem;">${item["編制 / 主奏"]}</span>
-            </div>
-          </div>
-          <div class="track-item-views">${views}</div>
-        `;
-          container.appendChild(div);
-        });
+        initGameSession();
       }
 
-      function highlightPlayingItem() {
+      // 原班人馬再開一局
+      function restartSamePlayers() {
+        players.forEach((p) => (p.score = 0));
+        initGameSession();
+      }
+
+      function initGameSession() {
+        // 重置本局未播曲目池（深拷貝索引陣列，確保同一局播過的不再出現）
+        unplayedTracks = [...playlist];
+        currentTrack = null;
+        currentRoundNumber = 0;
+        roundHistory = [];
+        selectedWinnerIdx = null;
+        roundPhase = "IDLE";
+
+        pauseCurrentVideo();
+
+        // 切換顯示區
+        document.getElementById("setupSection").style.display = "none";
+        document.getElementById("settlementSection").style.display = "none";
+        document.getElementById("gameSection").style.display = "flex";
+
+        // 更新頂部狀態與計分板
+        document.getElementById("roundBadge").innerText = "準備開賽";
+        document.getElementById("remainingCount").innerText =
+          unplayedTracks.length;
+        document.getElementById("totalPoolCount").innerText = playlist.length;
+
+        renderScoreboard();
+        setStageToReadyForFirstRound();
+      }
+
+      function setStageToReadyForFirstRound() {
+        roundPhase = "IDLE";
+        const videoContainer = document.getElementById("videoContainer");
+        videoContainer.classList.add("is-blind");
+
+        const blindOverlay = document.getElementById("blindOverlay");
+        blindOverlay.style.display = "flex";
+        blindOverlay.classList.remove("clickable-buzz");
+
+        document.getElementById("overlayStateReady").style.display = "flex";
+        document.getElementById("overlayStatePlaying").style.display = "none";
+        document.getElementById("overlayStatePaused").style.display = "none";
+
+        document.getElementById("refereePanel").style.display = "none";
+        document.getElementById("revealedFooterControls").style.display = "none";
+
+        const titleEl = document.getElementById("trackTitle");
+        titleEl.innerText = "🔒 準備開始第 1 題";
+        titleEl.classList.add("mystery-text");
+        document.getElementById("trackInst").innerText = "盲聽搶答模式";
+        document.getElementById("trackViews").innerText = "畫面與曲名已隱藏";
+      }
+
+      // =====================================================
+      // STEP 3: 點擊隨機播放（不重複曲目、隱藏畫面、隨機段落）
+      // =====================================================
+      function startNextRandomRound(event) {
+        if (event) event.stopPropagation();
+
+        // 若曲目庫已用完，自動進入結算
+        if (!unplayedTracks || unplayedTracks.length === 0) {
+          finishGame("曲目庫已全數播完");
+          return;
+        }
+
+        // 從本局未播放池中隨機抽取一首並移除（確保本局絕不重複）
+        const randomIndex = Math.floor(Math.random() * unplayedTracks.length);
+        currentTrack = unplayedTracks.splice(randomIndex, 1)[0];
+        currentRoundNumber++;
+        selectedWinnerIdx = null;
+
+        // 更新頂部題號與剩餘曲目數
+        document.getElementById("roundBadge").innerText =
+          `第 ${currentRoundNumber} 題`;
+        document.getElementById("remainingCount").innerText =
+          unplayedTracks.length;
+        document.getElementById("totalPoolCount").innerText = playlist.length;
+
+        // 進入盲聽播放狀態（隱藏影片與曲名）
+        roundPhase = "PLAYING";
+        const videoContainer = document.getElementById("videoContainer");
+        videoContainer.classList.add("is-blind");
+
+        const blindOverlay = document.getElementById("blindOverlay");
+        blindOverlay.style.display = "flex";
+        blindOverlay.classList.add("clickable-buzz");
+
+        document.getElementById("overlayStateReady").style.display = "none";
+        document.getElementById("overlayStatePlaying").style.display = "flex";
+        document.getElementById("overlayStatePaused").style.display = "none";
+        document.getElementById("playingStatusTitle").innerText =
+          `🎶 第 ${currentRoundNumber} 題：隨機段落播放中...`;
+
+        document.getElementById("refereePanel").style.display = "none";
+        document.getElementById("revealedFooterControls").style.display = "none";
+
+        const titleEl = document.getElementById("trackTitle");
+        titleEl.innerText = `🔒 神秘曲目（第 ${currentRoundNumber} 題）`;
+        titleEl.classList.add("mystery-text");
+        document.getElementById("trackInst").innerText = "🙈 盲聽猜歌中";
+        document.getElementById("trackViews").innerText = "點擊下方畫面暫停搶答";
+
+        // 載入並從隨機段落開始播放
+        loadTrackAtRandomSegment(currentTrack);
+      }
+
+      // 同曲目換另一個隨機段落聽
+      function seekAnotherRandomSegment(event) {
+        if (event) event.stopPropagation();
         if (!currentTrack) return;
-        document.querySelectorAll(".track-item").forEach((el) => {
-          if (el.dataset.name === currentTrack["曲名"]) {
-            el.classList.add("playing");
-          } else {
-            el.classList.remove("playing");
+
+        if (
+          ytApiReady &&
+          ytPlayer &&
+          typeof ytPlayer.getDuration === "function"
+        ) {
+          const duration = ytPlayer.getDuration();
+          let randomSec = Math.floor(Math.random() * 80) + 20;
+          if (duration && duration > 45) {
+            const minSec = Math.max(10, Math.floor(duration * 0.1));
+            const maxSec = Math.max(
+              minSec + 10,
+              Math.min(Math.floor(duration - 18), Math.floor(duration * 0.82)),
+            );
+            randomSec =
+              Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
           }
+          ytPlayer.seekTo(randomSec, true);
+          ytPlayer.unMute();
+          ytPlayer.playVideo();
+        } else {
+          loadTrackAtRandomSegment(currentTrack);
+        }
+
+        // 若原本在暫停狀態，切回盲聽播放狀態
+        if (roundPhase === "PAUSED") {
+          resumeBlindPlayback();
+        }
+      }
+
+      // 若遇到失效影片，允許不扣題號重抽一首
+      function redrawCurrentRoundTrack(event) {
+        if (event) event.stopPropagation();
+        if (!unplayedTracks || unplayedTracks.length === 0) {
+          alert("曲目庫已無其他剩餘曲目可重抽，將進入結算！");
+          finishGame("曲目庫已全數播完");
+          return;
+        }
+        currentRoundNumber = Math.max(0, currentRoundNumber - 1);
+        startNextRandomRound();
+      }
+
+      // =====================================================
+      // STEP 4: 點擊畫面暫停搶答 -> 猜完揭曉答案 -> 裁判選擇有沒有答對
+      // =====================================================
+      function handleBlindOverlayClick(event) {
+        if (roundPhase === "PLAYING") {
+          pauseForBuzz();
+        }
+      }
+
+      function pauseForBuzz() {
+        if (roundPhase !== "PLAYING") return;
+        roundPhase = "PAUSED";
+        pauseCurrentVideo();
+
+        const blindOverlay = document.getElementById("blindOverlay");
+        blindOverlay.classList.remove("clickable-buzz");
+
+        document.getElementById("overlayStateReady").style.display = "none";
+        document.getElementById("overlayStatePlaying").style.display = "none";
+        document.getElementById("overlayStatePaused").style.display = "flex";
+
+        document.getElementById("trackInst").innerText = "⏸️ 搶答暫停中";
+        document.getElementById("trackViews").innerText = "等待揭曉答案";
+      }
+
+      function resumeBlindPlayback(event) {
+        if (event) event.stopPropagation();
+        roundPhase = "PLAYING";
+        playCurrentVideo();
+
+        const blindOverlay = document.getElementById("blindOverlay");
+        blindOverlay.classList.add("clickable-buzz");
+
+        document.getElementById("overlayStateReady").style.display = "none";
+        document.getElementById("overlayStatePlaying").style.display = "flex";
+        document.getElementById("overlayStatePaused").style.display = "none";
+
+        document.getElementById("trackInst").innerText = "🙈 盲聽猜歌中";
+        document.getElementById("trackViews").innerText = "點擊下方畫面暫停搶答";
+      }
+
+      // 點擊「揭曉答案」
+      function revealAnswer(event) {
+        if (event) event.stopPropagation();
+        if (!currentTrack) return;
+
+        roundPhase = "REVEALED";
+
+        // 解除盲聽遮罩，顯示影片畫面与真實曲名資訊
+        document.getElementById("videoContainer").classList.remove("is-blind");
+        document.getElementById("blindOverlay").style.display = "none";
+
+        // 恢復播放讓大家邊看畫面邊聽答案
+        playCurrentVideo();
+
+        const titleEl = document.getElementById("trackTitle");
+        titleEl.innerText = `🎵 ${currentTrack["曲名"] || "未知曲目"}`;
+        titleEl.classList.remove("mystery-text");
+
+        document.getElementById("trackInst").innerText =
+          currentTrack["編制 / 主奏"] || "國樂演奏";
+
+        const views = currentTrack["參考觀看量"];
+        document.getElementById("trackViews").innerText = views
+          ? `🔥 ${Number(views).toLocaleString()} 次觀看`
+          : "經典名曲";
+
+        // 顯示裁判判定面板（步驟 1：有沒有人答對）
+        document.getElementById("refereePanel").style.display = "flex";
+        document.getElementById("refereeStepAsk").style.display = "flex";
+        document.getElementById("refereeStepSelectPlayer").style.display =
+          "none";
+        document.getElementById("revealedFooterControls").style.display = "flex";
+      }
+
+      // =====================================================
+      // STEP 5: 裁判選擇有沒有答對 -> 選擇分數給哪位玩家 -> 繼續下一首
+      // =====================================================
+      function showWinnerSelection() {
+        selectedWinnerIdx = null;
+        document.getElementById("refereeStepAsk").style.display = "none";
+        document.getElementById("refereeStepSelectPlayer").style.display =
+          "flex";
+
+        const confirmBtn = document.getElementById("btnConfirmWinnerNext");
+        confirmBtn.style.display = "none";
+
+        renderWinnerSelectButtons();
+      }
+
+      function backToRefereeAsk() {
+        selectedWinnerIdx = null;
+        document.getElementById("refereeStepAsk").style.display = "flex";
+        document.getElementById("refereeStepSelectPlayer").style.display =
+          "none";
+      }
+
+      function renderWinnerSelectButtons() {
+        const grid = document.getElementById("winnerSelectGrid");
+        grid.innerHTML = "";
+
+        players.forEach((player, idx) => {
+          const isSelected = selectedWinnerIdx === idx;
+          const btn = document.createElement("button");
+          btn.className = `btn-player-award ${isSelected ? "selected" : ""}`;
+          btn.onclick = () => selectWinnerPlayer(idx);
+          btn.innerHTML = `
+            <span>${isSelected ? "✅ " : "👤 "}${escapeHtml(player.name)}</span>
+            <span class="award-pts">${
+              isSelected
+                ? `${player.score} → ${player.score + 1} 分`
+                : `目前 ${player.score} 分`
+            }</span>
+          `;
+          grid.appendChild(btn);
         });
       }
 
-      // 手動載入本機 JSON 檔案 (如果使用者有自訂或替換檔案的需求)
+      function selectWinnerPlayer(idx) {
+        selectedWinnerIdx = idx;
+        renderWinnerSelectButtons();
+
+        const confirmBtn = document.getElementById("btnConfirmWinnerNext");
+        const confirmText = document.getElementById("btnConfirmWinnerText");
+        confirmBtn.style.display = "inline-flex";
+
+        const isLastTrack = unplayedTracks.length === 0;
+        confirmText.innerText = isLastTrack
+          ? `🏆 給分給「${players[idx].name}」，曲目已用完進入結算`
+          : `🎲 給分給「${players[idx].name}」，繼續下一首`;
+      }
+
+      function confirmWinnerAndNext() {
+        if (selectedWinnerIdx === null || !players[selectedWinnerIdx]) return;
+
+        const winner = players[selectedWinnerIdx];
+        winner.score += 1;
+
+        roundHistory.push({
+          round: currentRoundNumber,
+          track: currentTrack,
+          winnerName: winner.name,
+        });
+
+        renderScoreboard(selectedWinnerIdx);
+        proceedToNextOrSettle();
+      }
+
+      function handleNoOneCorrect() {
+        roundHistory.push({
+          round: currentRoundNumber,
+          track: currentTrack,
+          winnerName: null,
+        });
+
+        proceedToNextOrSettle();
+      }
+
+      function proceedToNextOrSettle() {
+        if (!unplayedTracks || unplayedTracks.length === 0) {
+          finishGame("曲目庫已全數播完");
+        } else {
+          startNextRandomRound();
+        }
+      }
+
+      // 更新即時積分榜
+      function renderScoreboard(justScoredIdx = null) {
+        const grid = document.getElementById("scoreboardGrid");
+        grid.innerHTML = "";
+
+        const maxScore = Math.max(...players.map((p) => p.score), 0);
+
+        players.forEach((player, idx) => {
+          const isLeader = maxScore > 0 && player.score === maxScore;
+          const card = document.createElement("div");
+          card.className = `score-card ${isLeader ? "is-leader" : ""} ${
+            justScoredIdx === idx ? "just-scored" : ""
+          }`;
+          card.innerHTML = `
+            <div class="score-player-name" title="${escapeHtml(player.name)}">
+              <span>${isLeader ? "👑" : "🎋"}</span>
+              <span>${escapeHtml(player.name)}</span>
+            </div>
+            <div class="score-badge">${player.score} 分</div>
+          `;
+          grid.appendChild(card);
+        });
+
+        const leaderHint = document.getElementById("leaderHintText");
+        if (maxScore === 0) {
+          leaderHint.innerText = "尚未有人得分，快搶答拿下首勝！";
+        } else {
+          const leaders = players
+            .filter((p) => p.score === maxScore)
+            .map((p) => p.name);
+          leaderHint.innerText = `目前領先：${leaders.join("、")} (${maxScore} 分)`;
+        }
+      }
+
+      // =====================================================
+      // STEP 6: 提前結算 或 曲目庫用完結算
+      // =====================================================
+      function finishGame(reasonText = "賽事結算") {
+        pauseCurrentVideo();
+
+        document.getElementById("setupSection").style.display = "none";
+        document.getElementById("gameSection").style.display = "none";
+        document.getElementById("settlementSection").style.display = "block";
+
+        document.getElementById("settlementReasonBadge").innerText =
+          reasonText === "曲目庫已全數播完"
+            ? "🎉 曲目庫已全數播完 · 完賽結算"
+            : `🏆 ${reasonText}`;
+
+        document.getElementById("settlementSummaryText").innerText =
+          `本局共完成 ${roundHistory.length} 題曲目搶答（剩餘未播曲目：${unplayedTracks.length} 首）`;
+
+        // 若是提前結算且還有未播完的曲目，提供「返回繼續未完牌局」按鈕以防誤觸
+        const btnResume = document.getElementById("btnResumeUnfinished");
+        if (reasonText === "提前結算" && unplayedTracks.length > 0) {
+          btnResume.style.display = "inline-flex";
+        } else {
+          btnResume.style.display = "none";
+        }
+
+        // 依分數高低排序玩家（同分並列同名次）
+        const sorted = [...players].sort((a, b) => b.score - a.score);
+        const rankingContainer = document.getElementById(
+          "rankingListContainer",
+        );
+        rankingContainer.innerHTML = "";
+
+        let currentRank = 1;
+        sorted.forEach((player, index) => {
+          if (index > 0 && player.score < sorted[index - 1].score) {
+            currentRank = index + 1;
+          }
+          const medal =
+            currentRank === 1
+              ? "🥇"
+              : currentRank === 2
+                ? "🥈"
+                : currentRank === 3
+                  ? "🥉"
+                  : `第 ${currentRank} 名`;
+
+          const row = document.createElement("div");
+          row.className = `ranking-row ${currentRank === 1 && player.score > 0 ? "rank-1" : ""}`;
+          row.innerHTML = `
+            <div class="ranking-left">
+              <span class="rank-medal">${medal}</span>
+              <span class="rank-name">${escapeHtml(player.name)}</span>
+            </div>
+            <div class="rank-score">${player.score} 分</div>
+          `;
+          rankingContainer.appendChild(row);
+        });
+
+        // 渲染本局每題搶答紀錄
+        const historyList = document.getElementById("roundHistoryList");
+        document.getElementById("historyTotalLabel").innerText =
+          `共 ${roundHistory.length} 首`;
+        historyList.innerHTML = "";
+
+        if (roundHistory.length === 0) {
+          historyList.innerHTML = `<div style="text-align:center; color: var(--text-dim); padding: 1rem;">本局尚無已揭曉判定的題目紀錄</div>`;
+        } else {
+          roundHistory.forEach((item) => {
+            const div = document.createElement("div");
+            div.className = "round-history-item";
+            const winnerBadge = item.winnerName
+              ? `<span style="color: #10b981; font-weight: 700;">⭕ ${escapeHtml(item.winnerName)} (+1)</span>`
+              : `<span style="color: var(--text-dim);">❌ 無人答對</span>`;
+            div.innerHTML = `
+              <div>
+                <span style="color: var(--accent-gold); font-weight: 700; margin-right: 0.4rem;">第 ${item.round} 題</span>
+                <span>${escapeHtml(item.track["曲名"])}</span>
+                <span style="color: var(--text-dim); font-size: 0.8rem; margin-left: 0.4rem;">(${escapeHtml(item.track["編制 / 主奏"] || "")})</span>
+              </div>
+              <div>${winnerBadge}</div>
+            `;
+            historyList.appendChild(div);
+          });
+        }
+      }
+
+      function resumeFromEarlySettlement() {
+        document.getElementById("settlementSection").style.display = "none";
+        document.getElementById("gameSection").style.display = "flex";
+      }
+
+      function confirmReturnToSetup() {
+        goToSetupScreen();
+      }
+
+      function goToSetupScreen() {
+        pauseCurrentVideo();
+        document.getElementById("gameSection").style.display = "none";
+        document.getElementById("settlementSection").style.display = "none";
+        document.getElementById("setupSection").style.display = "block";
+        renderPlayerInputs();
+      }
+
+      // 手動載入自訂本機 JSON 檔案
       function handleFileSelect(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -1620,11 +2535,10 @@
             if (Array.isArray(data) && data.length > 0) {
               playlist = data;
               document.getElementById("statusText").innerText =
-                `已載入新檔案：${file.name} (共 ${playlist.length} 首)`;
-              document.getElementById("playlistCount").innerText =
-                `(${playlist.length} 首)`;
-              renderTrackList();
-              alert(`成功載入 ${playlist.length} 首曲目！`);
+                `已載入自訂檔案：${file.name} (共 ${playlist.length} 首)`;
+              alert(
+                `成功載入 ${playlist.length} 首曲目！開新局時將使用新的曲目庫。`,
+              );
             } else {
               alert("檔案格式不正確，需為包含曲目陣列的 JSON！");
             }
@@ -1635,7 +2549,6 @@
         reader.readAsText(file, "utf-8");
       }
 
-      // 頁面載入完成後執行
       window.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
