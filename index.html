@@ -556,6 +556,10 @@
         animation: scorePulse 0.6s ease;
       }
 
+      .score-card.just-penalized {
+        animation: penaltyPulse 0.6s ease;
+      }
+
       @keyframes scorePulse {
         0% {
           transform: scale(1);
@@ -563,6 +567,20 @@
         40% {
           transform: scale(1.06);
           border-color: #10b981;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes penaltyPulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(0.95);
+          border-color: #ef4444;
+          box-shadow: 0 0 16px rgba(239, 68, 68, 0.45);
         }
         100% {
           transform: scale(1);
@@ -590,6 +608,13 @@
         padding: 0.15rem 0.6rem;
         border-radius: 8px;
         flex-shrink: 0;
+        transition: all 0.25s;
+      }
+
+      .score-badge.is-negative {
+        color: #fca5a5;
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.45);
       }
 
       /* Track Meta Header */
@@ -933,7 +958,7 @@
         color: #ffffff;
         font-size: 1.1rem;
         font-weight: 800;
-        padding: 0.85rem 2rem;
+        padding: 0.85rem 1.8rem;
         border: none;
         border-radius: 14px;
         cursor: pointer;
@@ -947,6 +972,50 @@
       .btn-judge-yes:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45);
+      }
+
+      .btn-judge-wrong {
+        background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 800;
+        padding: 0.85rem 1.8rem;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+        transition: all 0.2s;
+      }
+
+      .btn-judge-wrong:hover {
+        background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(239, 68, 68, 0.5);
+      }
+
+      .btn-judge-skip {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid var(--border-subtle);
+        color: var(--text-muted);
+        font-size: 0.98rem;
+        font-weight: 700;
+        padding: 0.85rem 1.4rem;
+        border-radius: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+      }
+
+      .btn-judge-skip:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--text-main);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
       }
 
       .btn-judge-no {
@@ -1017,6 +1086,49 @@
       .btn-player-award.selected .award-pts {
         background: rgba(18, 20, 26, 0.2);
         color: #12141a;
+        font-weight: 900;
+      }
+
+      .btn-player-penalty {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid var(--border-subtle);
+        color: var(--text-main);
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.98rem;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+
+      .btn-player-penalty:hover {
+        background: rgba(239, 68, 68, 0.16);
+        border-color: #f87171;
+        transform: translateY(-2px);
+      }
+
+      .btn-player-penalty.selected {
+        background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+        color: #ffffff;
+        border-color: #ffffff;
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+      }
+
+      .btn-player-penalty .penalty-pts {
+        font-size: 0.82rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.25);
+        color: #fca5a5;
+      }
+
+      .btn-player-penalty.selected .penalty-pts {
+        background: rgba(0, 0, 0, 0.35);
+        color: #ffffff;
         font-weight: 900;
       }
 
@@ -1790,12 +1902,41 @@
             </div>
           </div>
 
+          <!-- Step 3: Wrong Answer Penalty Rule -->
+          <div class="setup-group">
+            <div class="setup-label">
+              <span class="step-num">3</span>
+              <span>答錯扣分規則（提示開越多，扣越多分）</span>
+            </div>
+            <div class="count-selector-row">
+              <button
+                class="count-pill active"
+                id="btnPenaltyOn"
+                type="button"
+                onclick="setPenaltyMode(true)"
+              >
+                🔥 啟用答錯階梯扣分（0提示 -1 ｜ 1提示 -2 ｜ 2提示 -3 分）
+              </button>
+              <button
+                class="count-pill"
+                id="btnPenaltyOff"
+                type="button"
+                onclick="setPenaltyMode(false)"
+              >
+                🌱 練習模式（答錯不扣分）
+              </button>
+            </div>
+          </div>
+
           <!-- Game Flow Summary -->
-          <div class="rules-summary">
-            <strong>🎯 遊戲流程與階梯計分說明：</strong><br />
+          <div class="rules-summary" id="rulesSummaryBox">
+            <strong>🎯 遊戲流程與階梯計分／扣分說明：</strong><br />
             1. 點擊<strong>「隨機播放」</strong>將從隨機段落開始播歌，<strong>畫面與曲名全程隱藏</strong>，且同一局播過的曲目不會再出現。<br />
-            2. <strong>💡 提示與階梯計分制：</strong>每題預設答對得 <strong>3 分</strong>；點擊開啟<strong>「提示 1」</strong>後答對得 <strong>2 分</strong>；再開啟<strong>「提示 2」</strong>後答對得 <strong>1 分</strong>。<br />
-            3. 有人要搶答時，<strong>直接點擊畫面任意處即可「暫停搶答」</strong>（或按空白鍵），揭曉答案後由裁判判定給分！
+            2. <strong>💡 提示與階梯計扣分制（提示開越多，答錯扣越重）：</strong><br />
+            &nbsp;&nbsp;• <strong>0 提示：</strong>答對得 <strong>+3 分</strong> ｜ 答錯扣 <strong>-1 分</strong><br />
+            &nbsp;&nbsp;• <strong>1 提示：</strong>答對得 <strong>+2 分</strong> ｜ 答錯扣 <strong>-2 分</strong><br />
+            &nbsp;&nbsp;• <strong>2 提示：</strong>答對得 <strong>+1 分</strong> ｜ 答錯扣 <strong>-3 分</strong><br />
+            3. 有人要搶答時，<strong>直接點擊畫面任意處即可「暫停搶答」</strong>（或按空白鍵），揭曉答案後由裁判判定得分或扣分！
           </div>
 
           <div
@@ -1857,7 +1998,7 @@
         <!-- Live Scoreboard -->
         <div class="scoreboard-panel">
           <div class="scoreboard-header">
-            <span>👑 即時積分榜（0 提示 +3 分｜1 提示 +2 分｜2 提示 +1 分）</span>
+            <span id="scoreboardRuleText">👑 即時積分榜（0 提示 +3/-1 分｜1 提示 +2/-2 分｜2 提示 +1/-3 分）</span>
             <span id="leaderHintText">各憑本事搶答！</span>
           </div>
           <div class="scoreboard-grid" id="scoreboardGrid">
@@ -2018,7 +2159,16 @@
                     id="btnOverlayPausedHint"
                     onclick="unlockNextHint(event)"
                   >
-                    💡 開啟提示 1（答對變 2 分）
+                    💡 開啟提示 1（答對變 2 分，答錯扣 2 分）
+                  </button>
+                  <button
+                    class="btn-blind-secondary"
+                    id="btnOverlayQuickWrong"
+                    onclick="togglePausedPenaltyBox(event)"
+                    style="border-color: rgba(248, 113, 113, 0.45); color: #fca5a5"
+                    title="若此玩家說出的曲名錯誤，可先扣分並繼續播放讓其他人搶答"
+                  >
+                    ❌ 此玩家答錯（扣 1 分）
                   </button>
                   <button
                     class="btn-blind-secondary"
@@ -2033,6 +2183,34 @@
                     🔀 換個隨機段落繼續聽
                   </button>
                 </div>
+
+                <!-- Paused Quick Penalty Sub-Box -->
+                <div
+                  id="pausedPenaltyBox"
+                  style="
+                    display: none;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.65rem;
+                    width: 100%;
+                    background: rgba(0, 0, 0, 0.45);
+                    border: 1px solid rgba(239, 68, 68, 0.4);
+                    border-radius: 14px;
+                    padding: 0.95rem;
+                    margin-top: 0.5rem;
+                  "
+                >
+                  <div style="font-size: 0.95rem; font-weight: 700; color: #fca5a5">
+                    ⚠️ 請點擊答錯要扣除 <span id="quickPenaltyPointsLabel">1</span> 分的玩家：
+                  </div>
+                  <div
+                    class="winner-select-grid"
+                    id="pausedPenaltyGrid"
+                    style="max-width: 520px"
+                  >
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2043,23 +2221,30 @@
             id="refereePanel"
             style="display: none"
           >
-            <!-- Step 1: Did anyone get it right? -->
+            <!-- Step 1: Did anyone get it right or wrong? -->
             <div class="referee-step-box" id="refereeStepAsk">
               <div class="referee-prompt" id="refereeAskPrompt">
-                🎯 答案已揭曉！裁判請判定：有沒有人答對？
+                🎯 答案已揭曉！裁判請判定本題結果：
               </div>
               <div class="referee-choice-row">
                 <button
                   class="btn-judge-yes"
                   onclick="showWinnerSelection()"
                 >
-                  ⭕ 有答對！（選擇得分玩家）
+                  ⭕ 有人答對！（選擇得分玩家）
                 </button>
                 <button
-                  class="btn-judge-no"
+                  class="btn-judge-wrong"
+                  id="btnJudgeWrong"
+                  onclick="showPenaltySelection()"
+                >
+                  ❌ 有人答錯！（選擇扣分玩家）
+                </button>
+                <button
+                  class="btn-judge-skip"
                   onclick="handleNoOneCorrect()"
                 >
-                  ❌ 沒人答對，繼續下一首
+                  ⏭️ 無人作答（不扣分，下一首）
                 </button>
               </div>
             </div>
@@ -2092,7 +2277,48 @@
                   class="btn-blind-secondary"
                   onclick="backToRefereeAsk()"
                 >
-                  ↩️ 返回重選「有沒有答對」
+                  ↩️ 返回重選
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Select which player loses points for wrong answer -->
+            <div
+              class="referee-step-box"
+              id="refereeStepSelectPenaltyPlayer"
+              style="display: none"
+            >
+              <div class="referee-prompt" id="refereeSelectPenaltyPrompt">
+                ⚠️ 請選擇答錯要扣分 (-1 分) 的玩家：
+              </div>
+              <div class="winner-select-grid" id="penaltySelectGrid">
+                <!-- Player penalty buttons rendered by JS -->
+              </div>
+              <div
+                class="referee-choice-row"
+                style="margin-top: 0.4rem"
+              >
+                <button
+                  class="btn-gold-large"
+                  id="btnConfirmPenaltyNext"
+                  onclick="confirmPenaltyAndNext()"
+                  style="display: none; padding: 0.85rem 2.2rem; font-size: 1.15rem"
+                >
+                  <span id="btnConfirmPenaltyText">🎲 確認扣分，繼續下一首</span>
+                </button>
+                <button
+                  class="btn-judge-yes"
+                  id="btnConfirmPenaltyThenWinner"
+                  onclick="confirmPenaltyThenWinner()"
+                  style="display: none; padding: 0.85rem 1.8rem; font-size: 1.05rem"
+                >
+                  <span id="btnConfirmPenaltyThenWinnerText">⭕ 扣分後，接著選擇得分玩家</span>
+                </button>
+                <button
+                  class="btn-blind-secondary"
+                  onclick="backToRefereeAsk()"
+                >
+                  ↩️ 返回重選
                 </button>
               </div>
             </div>
@@ -2348,9 +2574,11 @@
       let currentRoundNumber = 0; // 目前題號
       let roundPhase = "IDLE"; // 'IDLE' | 'PLAYING' | 'PAUSED' | 'REVEALED'
 
-      // 提示與階梯計分狀態 (0提示=3分, 1提示=2分, 2提示=1分)
+      // 提示與階梯計分／扣分狀態 (0提示=+3/-1, 1提示=+2/-2, 2提示=+1/-3)
+      let penaltyEnabled = true;
       let hintsUsedCount = 0;
       let currentRoundPoints = 3;
+      let currentRoundPenalty = 1;
 
       // 模式切換狀態 ('quiz' | 'free')
       let appMode = "quiz";
@@ -2361,7 +2589,8 @@
       let savedPlayerNames = ["", "", "", ""];
       let players = []; // [{ name: '玩家 1', score: 0 }, ...]
       let selectedWinnerIdx = null;
-      let roundHistory = []; // [{ round, track, winnerName, points, hintsUsed }]
+      let selectedPenaltyPlayerIdx = null;
+      let roundHistory = []; // [{ round, track, winnerName, wrongName, points, hintsUsed, type }]
 
       // YouTube IFrame API 播放器狀態 (競賽主舞台)
       let ytPlayer = null;
@@ -2726,11 +2955,34 @@
       }
 
       // =====================================================
-      // 提示按鈕與階梯計分系統 (0提示=3分, 1提示=2分, 2提示=1分)
+      // 提示按鈕與階梯計分／扣分系統 (0提示=+3/-1, 1提示=+2/-2, 2提示=+1/-3)
       // =====================================================
+      function setPenaltyMode(enabled) {
+        penaltyEnabled = enabled;
+        const btnOn = document.getElementById("btnPenaltyOn");
+        const btnOff = document.getElementById("btnPenaltyOff");
+        if (btnOn && btnOff) {
+          if (enabled) {
+            btnOn.classList.add("active");
+            btnOff.classList.remove("active");
+          } else {
+            btnOff.classList.add("active");
+            btnOn.classList.remove("active");
+          }
+        }
+        updateHintUI();
+      }
+
       function resetRoundHints() {
         hintsUsedCount = 0;
         currentRoundPoints = 3;
+        currentRoundPenalty = 1;
+        selectedWinnerIdx = null;
+        selectedPenaltyPlayerIdx = null;
+
+        const pausedBox = document.getElementById("pausedPenaltyBox");
+        if (pausedBox) pausedBox.style.display = "none";
+
         updateHintUI();
       }
 
@@ -2742,7 +2994,14 @@
 
         hintsUsedCount++;
         currentRoundPoints = Math.max(1, 3 - hintsUsedCount);
+        currentRoundPenalty = 1 + hintsUsedCount;
         updateHintUI();
+
+        // 若暫停快速扣分選單開著，同步更新其中的扣分數字
+        const pausedBox = document.getElementById("pausedPenaltyBox");
+        if (pausedBox && pausedBox.style.display === "flex") {
+          renderPausedPenaltyButtons();
+        }
       }
 
       function updateHintUI() {
@@ -2750,40 +3009,68 @@
         const btnHeaderHint = document.getElementById("btnHeaderHint");
         const btnPlayingHint = document.getElementById("btnOverlayPlayingHint");
         const btnPausedHint = document.getElementById("btnOverlayPausedHint");
+        const btnPausedQuickWrong = document.getElementById("btnOverlayQuickWrong");
+        const quickPenaltyLabel = document.getElementById("quickPenaltyPointsLabel");
+        const scoreboardRuleText = document.getElementById("scoreboardRuleText");
         const hintPanel = document.getElementById("hintPanel");
         const hintCard1 = document.getElementById("hintCard1");
         const hintCard2 = document.getElementById("hintCard2");
         const hintText1 = document.getElementById("hintText1");
         const hintText2 = document.getElementById("hintText2");
 
-        // 更新本題可得積分標籤
-        pointsTag.className = "tag-points";
-        if (roundPhase === "IDLE") {
-          pointsTag.innerText = "💎 每題最高 3 分";
-        } else if (hintsUsedCount === 0) {
-          pointsTag.innerText = "💎 本題可得 3 分（未用提示）";
-        } else if (hintsUsedCount === 1) {
-          pointsTag.innerText = "💎 本題可得 2 分（已用 1 提示）";
-          pointsTag.classList.add("pts-2");
-        } else {
-          pointsTag.innerText = "💎 本題可得 1 分（已用 2 提示）";
-          pointsTag.classList.add("pts-1");
+        // 更新即時計分板規則標籤
+        if (scoreboardRuleText) {
+          scoreboardRuleText.innerText = penaltyEnabled
+            ? "👑 即時積分榜（0 提示 +3/-1 分｜1 提示 +2/-2 分｜2 提示 +1/-3 分）"
+            : "👑 即時積分榜（0 提示 +3 分｜1 提示 +2 分｜2 提示 +1 分）";
+        }
+
+        // 更新本題可得積分與答錯扣分標籤
+        if (pointsTag) {
+          pointsTag.className = "tag-points";
+          if (roundPhase === "IDLE") {
+            pointsTag.innerText = penaltyEnabled
+              ? "💎 答對最高 +3 分 ｜ ⚠️ 答錯扣 1~3 分"
+              : "💎 每題最高 3 分";
+          } else if (hintsUsedCount === 0) {
+            pointsTag.innerText = penaltyEnabled
+              ? "💎 答對 +3 分 ｜ ⚠️ 答錯 -1 分"
+              : "💎 本題可得 3 分（未用提示）";
+          } else if (hintsUsedCount === 1) {
+            pointsTag.innerText = penaltyEnabled
+              ? "💎 答對 +2 分 ｜ ⚠️ 答錯 -2 分"
+              : "💎 本題可得 2 分（已用 1 提示）";
+            pointsTag.classList.add("pts-2");
+          } else {
+            pointsTag.innerText = penaltyEnabled
+              ? "💎 答對 +1 分 ｜ ⚠️ 答錯 -3 分"
+              : "💎 本題可得 1 分（已用 2 提示）";
+            pointsTag.classList.add("pts-1");
+          }
         }
 
         // 控制頂部提示按鈕顯示時機
-        if (roundPhase === "PLAYING" || roundPhase === "PAUSED") {
-          btnHeaderHint.style.display = "inline-flex";
-        } else {
-          btnHeaderHint.style.display = "none";
+        if (btnHeaderHint) {
+          if (roundPhase === "PLAYING" || roundPhase === "PAUSED") {
+            btnHeaderHint.style.display = "inline-flex";
+          } else {
+            btnHeaderHint.style.display = "none";
+          }
         }
 
         // 更新三處提示按鈕的文字與啟用狀態
-        let btnLabel = "💡 開啟提示 1（答對變 2 分）";
+        let btnLabel = penaltyEnabled
+          ? "💡 開啟提示 1（答對變 2 分，答錯扣 2 分）"
+          : "💡 開啟提示 1（答對變 2 分）";
         let isDisabled = false;
         if (hintsUsedCount === 1) {
-          btnLabel = "💡 開啟提示 2（答對變 1 分）";
+          btnLabel = penaltyEnabled
+            ? "💡 開啟提示 2（答對變 1 分，答錯扣 3 分）"
+            : "💡 開啟提示 2（答對變 1 分）";
         } else if (hintsUsedCount >= 2) {
-          btnLabel = "💡 提示已全開（本題 1 分）";
+          btnLabel = penaltyEnabled
+            ? "💡 提示已全開（答對 +1 分，答錯扣 3 分）"
+            : "💡 提示已全開（本題 1 分）";
           isDisabled = true;
         }
 
@@ -2792,6 +3079,15 @@
           btn.innerText = btnLabel;
           btn.disabled = isDisabled;
         });
+
+        // 更新暫停時的快速答錯扣分按鈕
+        if (btnPausedQuickWrong) {
+          btnPausedQuickWrong.style.display = penaltyEnabled ? "inline-flex" : "none";
+          btnPausedQuickWrong.innerText = `❌ 此玩家答錯（扣 ${currentRoundPenalty} 分）`;
+        }
+        if (quickPenaltyLabel) {
+          quickPenaltyLabel.innerText = currentRoundPenalty;
+        }
 
         // 更新提示內容卡片顯示
         if (!currentTrack || roundPhase === "IDLE") {
@@ -2823,6 +3119,67 @@
           hintCard1.style.display = "none";
           hintCard2.style.display = "none";
         }
+      }
+
+      // =====================================================
+      // 暫停搶答中的即時答錯扣分（不揭曉答案，可繼續播給他人聽）
+      // =====================================================
+      function togglePausedPenaltyBox(event) {
+        if (event) event.stopPropagation();
+        const box = document.getElementById("pausedPenaltyBox");
+        if (!box) return;
+
+        if (box.style.display === "none" || box.style.display === "") {
+          box.style.display = "flex";
+          renderPausedPenaltyButtons();
+        } else {
+          box.style.display = "none";
+        }
+      }
+
+      function renderPausedPenaltyButtons() {
+        const grid = document.getElementById("pausedPenaltyGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        players.forEach((player, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "btn-player-penalty";
+          btn.onclick = (e) => executePausedPenalty(e, idx);
+          btn.innerHTML = `
+            <span>❌ ${escapeHtml(player.name)}</span>
+            <span class="penalty-pts">${player.score} → ${player.score - currentRoundPenalty} 分 (-${currentRoundPenalty})</span>
+          `;
+          grid.appendChild(btn);
+        });
+      }
+
+      function executePausedPenalty(event, playerIdx) {
+        if (event) event.stopPropagation();
+        if (!players[playerIdx]) return;
+
+        const player = players[playerIdx];
+        player.score -= currentRoundPenalty;
+
+        roundHistory.push({
+          round: currentRoundNumber,
+          track: currentTrack,
+          wrongName: player.name,
+          points: -currentRoundPenalty,
+          hintsUsed: hintsUsedCount,
+          type: "WRONG",
+        });
+
+        renderScoreboard(null, playerIdx);
+
+        const box = document.getElementById("pausedPenaltyBox");
+        if (box) box.style.display = "none";
+
+        alert(
+          `⚠️ 已扣除「${player.name}」${currentRoundPenalty} 分！\n` +
+            `• 若還有其他玩家要搶答：請點擊「▶️ 繼續播放音樂」\n` +
+            `• 若無人能猜出要看答案：請點擊「✨ 揭曉答案」`,
+        );
       }
 
       // =====================================================
