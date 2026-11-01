@@ -12,4 +12,3 @@ if %errorlevel% neq 0 (
     python -m http.server 8000
     pause
 )
-

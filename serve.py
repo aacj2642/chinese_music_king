@@ -20,11 +20,11 @@ def main():
         sys.exit(1)
 
     url = f"http://localhost:{port}"
-    print("=" * 60)
-    print("  國樂之王 · 隨機播放伺服器已啟動！")
-    print(f"  請於瀏覽器開啟：{url}")
-    print("  (關閉此視窗即可停止伺服器)")
-    print("=" * 60)
+    print("=" * 60, flush=True)
+    print("  國樂之王 · 隨機播放伺服器已啟動！", flush=True)
+    print(f"  請於瀏覽器開啟：{url}", flush=True)
+    print("  (關閉此視窗即可停止伺服器)", flush=True)
+    print("=" * 60, flush=True)
 
     webbrowser.open(url)
     try:
